@@ -37,7 +37,7 @@ public class MainScreen extends JFrame {
 
         btnSell.addActionListener(new ActionListener() { // when controller is simple, we can declare it on the fly
             public void actionPerformed(ActionEvent e) {
-                Application.getInstance().getProductView().setVisible(true);
+                Application.getInstance().getProductViewController().setVisible(true);
             }
         });
     }

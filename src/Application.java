@@ -27,7 +27,11 @@ public class Application {
         this.currentUser = user;
     }
 
-    private ProductView productView = new ProductView();
+    private ProductViewController productViewController = new ProductViewController();
+
+    public ProductViewController getProductViewController() {
+        return productViewController;
+    }
 
     private OrderView orderView = new OrderView();
 
@@ -37,25 +41,13 @@ public class Application {
         return mainScreen;
     }
 
-    public ProductView getProductView() {
-        return productView;
-    }
-
     public OrderView getOrderView() {
         return orderView;
     }
 
     public LoginScreenController loginScreenController = new LoginScreenController();
 
-    public LoginScreenController getLoginScreenController() {
-        return loginScreenController;
-    }
-
-    private ProductController productController;
-
-    public ProductController getProductController() {
-        return productController;
-    }
+    public LoginScreenController getLoginScreenController() { return loginScreenController; }
 
     private OrderController orderController;
 
@@ -66,7 +58,6 @@ public class Application {
     public DataAdapter getDataAdapter() {
         return dataAdapter;
     }
-
 
     private Application() {
         // create SQLite database connection here!
@@ -91,12 +82,9 @@ public class Application {
             System.exit(2);
         }
 
-        productController = new ProductController(productView);
-
         orderController = new OrderController(orderView);
 
     }
-
 
     public static void main(String[] args) {
         Application.getInstance().getLoginScreenController().setVisible(true);
