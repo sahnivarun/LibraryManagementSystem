@@ -69,6 +69,12 @@ public class OrderViewController extends JFrame implements ActionListener {
 
     private void addProduct() {
         String id = JOptionPane.showInputDialog("Enter ProductID: ");
+
+        if (id == null || id.isEmpty() || !id.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "Invalid product ID. Please enter a valid ProductID.");
+            return;
+        }
+
         Product product = Application.getInstance().getDataAdapter().loadProduct(Integer.parseInt(id));
         if (product == null) {
             JOptionPane.showMessageDialog(null, "This product does not exist!");
@@ -77,7 +83,7 @@ public class OrderViewController extends JFrame implements ActionListener {
 
         double quantity = Double.parseDouble(JOptionPane.showInputDialog(null,"Enter quantity: "));
 
-        if (quantity < 0 || quantity > product.getQuantity()) {
+        if (quantity <= 0 || quantity > product.getQuantity()) {
             JOptionPane.showMessageDialog(null, "This quantity is not valid!");
             return;
         }
