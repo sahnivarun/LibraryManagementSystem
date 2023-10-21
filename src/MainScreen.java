@@ -8,6 +8,9 @@ public class MainScreen extends JFrame {
     private JButton btnBuy = new JButton("Order View");
     private JButton btnSell = new JButton("Product View");
 
+    // Label to display user information
+    private JLabel lblUserInfo = new JLabel();
+
     public MainScreen() {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,7 +31,8 @@ public class MainScreen extends JFrame {
 
         this.getContentPane().add(panelButton);
 
-        btnBuy.addActionListener(new ActionListener() { // when controller is simple, we can declare it on the fly
+        btnBuy.addActionListener(new ActionListener() {
+            // when controller is simple, we can declare it on the fly
             public void actionPerformed(ActionEvent e) {
                 Application.getInstance().getOrderViewController().setVisible(true);            }
         });
@@ -39,7 +43,22 @@ public class MainScreen extends JFrame {
                 Application.getInstance().getProductViewController().setVisible(true);
             }
         });
+
+        // Add user info label and make it visible
+        JPanel panelUserInfo = new JPanel();
+        panelUserInfo.add(lblUserInfo);
+        lblUserInfo.setVisible(true);
+
+        this.getContentPane().add(panelUserInfo);
+
     }
+
+    public void setUserInfo(User user) {
+        // Display userID, username, and fullName in the label
+        lblUserInfo.setText("User ID: " + user.getUserID() + "    |    Username: " + user.getUsername() + "    |    Full Name: " + user.getFullName());
+    }
+
+
 
 
 }

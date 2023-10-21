@@ -56,6 +56,10 @@ public class LoginScreenController extends JFrame implements ActionListener {
             }
             else {
                 Application.getInstance().setCurrentUser(user);
+
+                // Set user information in the MainScreen
+                Application.getInstance().getMainScreen().setUserInfo(user);
+
                 this.setVisible(false);
                 Application.getInstance().getMainScreen().setVisible(true);
             }
