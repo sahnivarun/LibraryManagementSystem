@@ -16,7 +16,6 @@ public class MainScreen extends JFrame {
         btnSell.setPreferredSize(new Dimension(120, 50));
         btnBuy.setPreferredSize(new Dimension(120, 50));
 
-
         JLabel title = new JLabel("Store Management System");
         title.setFont(new Font("Sans Serif", Font.BOLD, 24));
         JPanel panelTitle = new JPanel();
@@ -31,7 +30,7 @@ public class MainScreen extends JFrame {
 
         btnBuy.addActionListener(new ActionListener() { // when controller is simple, we can declare it on the fly
             public void actionPerformed(ActionEvent e) {
-                Application.getInstance().getOrderView().setVisible(true);            }
+                Application.getInstance().getOrderViewController().setVisible(true);            }
         });
 
 

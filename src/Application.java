@@ -33,7 +33,11 @@ public class Application {
         return productViewController;
     }
 
-    private OrderView orderView = new OrderView();
+    private OrderViewController orderViewController = new OrderViewController();
+
+    public OrderViewController getOrderViewController() {
+        return orderViewController;
+    }
 
     private MainScreen mainScreen = new MainScreen();
 
@@ -41,19 +45,9 @@ public class Application {
         return mainScreen;
     }
 
-    public OrderView getOrderView() {
-        return orderView;
-    }
-
     public LoginScreenController loginScreenController = new LoginScreenController();
 
     public LoginScreenController getLoginScreenController() { return loginScreenController; }
-
-    private OrderController orderController;
-
-    public OrderController getOrderController() {
-        return orderController;
-    }
 
     public DataAdapter getDataAdapter() {
         return dataAdapter;
@@ -81,8 +75,6 @@ public class Application {
 
             System.exit(2);
         }
-
-        orderController = new OrderController(orderView);
 
     }
 
