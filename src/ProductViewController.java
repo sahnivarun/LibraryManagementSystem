@@ -61,6 +61,10 @@ public class ProductViewController extends JFrame implements ActionListener {
         int productID;
         try {
             productID = Integer.parseInt(txtProductID.getText());
+            if(productID <=0){
+                JOptionPane.showMessageDialog(null, "Product ID must be a positive integer!" );
+                return;
+            }
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Invalid product ID! Please provide a valid product ID!");
@@ -70,6 +74,10 @@ public class ProductViewController extends JFrame implements ActionListener {
         double productPrice;
         try {
             productPrice = Double.parseDouble(txtProductPrice.getText());
+            if(productPrice <= 0){
+                JOptionPane.showMessageDialog(null, "Product price must be a positive number!");
+                return;
+            }
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Invalid product price! Please provide a valid product price!");
@@ -79,6 +87,11 @@ public class ProductViewController extends JFrame implements ActionListener {
         double productQuantity;
         try {
             productQuantity = Double.parseDouble(txtProductQuantity.getText());
+            if(productQuantity <= 0){
+                JOptionPane.showMessageDialog(null, "Product quantity must be a positive number!");
+                return;
+            }
+
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Invalid product quantity! Please provide a valid product quantity!");
@@ -101,9 +114,22 @@ public class ProductViewController extends JFrame implements ActionListener {
         product.setPrice(productPrice);
         product.setQuantity(productQuantity);
 
-        // Store the product to the database
+        // Check if the product with the same ID already exists in the database
+        Product existingProduct = Application.getInstance().getDataAdapter().loadProduct(productID);
 
-        Application.getInstance().getDataAdapter().saveProduct(product);
+        if(existingProduct != null){
+            JOptionPane.showMessageDialog(null, "Product with this ID already exists. Please use a different product ID.");
+        }
+
+        else{
+            // Store the product to the database and check if it was saved successfully
+            if (Application.getInstance().getDataAdapter().saveProduct(product)) {
+                JOptionPane.showMessageDialog(null, "Product Saved Successfully");
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to save the product. Please check the data and try again.");
+            }
+        }
+
     }
 
     private void loadProduct() {

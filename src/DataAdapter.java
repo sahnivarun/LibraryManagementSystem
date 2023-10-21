@@ -19,6 +19,8 @@ public class DataAdapter {
                 product.setName(resultSet.getString(2));
                 product.setPrice(resultSet.getDouble(3));
                 product.setQuantity(resultSet.getDouble(4));
+                product.setSellerID(resultSet.getInt(5));
+
                 resultSet.close();
                 statement.close();
 
@@ -40,18 +42,20 @@ public class DataAdapter {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) { // this product exists, update its fields
-                statement = connection.prepareStatement("UPDATE Products SET Name = ?, Price = ?, Quantity = ? WHERE ProductID = ?");
+                statement = connection.prepareStatement("UPDATE Products SET Name = ?, Price = ?, Quantity = ?, SellerID = SellerID WHERE ProductID = ?");
                 statement.setString(1, product.getName());
                 statement.setDouble(2, product.getPrice());
                 statement.setDouble(3, product.getQuantity());
                 statement.setInt(4, product.getProductID());
+                //statement.setNull(5, Types.INTEGER);
             }
             else { // this product does not exist, use insert into
-                statement = connection.prepareStatement("INSERT INTO Products VALUES (?, ?, ?, ?)");
+                statement = connection.prepareStatement("INSERT INTO Products VALUES (?, ?, ?, ?, ?)");
                 statement.setString(2, product.getName());
                 statement.setDouble(3, product.getPrice());
                 statement.setDouble(4, product.getQuantity());
                 statement.setInt(1, product.getProductID());
+                statement.setNull(5, Types.INTEGER);
             }
             statement.execute();
             resultSet.close();
