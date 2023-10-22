@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataAdapter {
     private Connection connection;
@@ -106,12 +108,49 @@ public class DataAdapter {
         }
     }
 
-    public boolean saveOrder(Order order) {
+    public int getOrderCount() {
+        int orderCount = 0;
+
         try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM Orders");
+
+            if (resultSet.next()) {
+                orderCount = resultSet.getInt(1);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+
+        return orderCount;
+
+    }
+
+    // Function to calculate the total cost of the order
+    private double calculateTotalCost(Order order) {
+        double totalCost = 0.0;
+
+        for (OrderLine line : order.getLines()) {
+            totalCost += line.getCost();
+        }
+
+        return totalCost;
+    }
+
+    public boolean saveOrder(Order order) {
+
+        try {
+
+            int nextOrderID = getOrderCount() + 1;
+
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Orders VALUES (?, ?, ?, ?, ?)");
-            statement.setInt(1, order.getOrderID());
-            statement.setInt(3, order.getBuyerID());
-            statement.setString(2, order.getDate());
+            statement.setInt(1, nextOrderID);
+            statement.setInt(3, nextOrderID);
+            statement.setString(2, String.valueOf(new Date(System.currentTimeMillis())));
             statement.setDouble(4, order.getTotalCost());
             statement.setDouble(5, order.getTotalTax());
 
@@ -121,7 +160,7 @@ public class DataAdapter {
             statement = connection.prepareStatement("INSERT INTO OrderLine VALUES (?, ?, ?, ?)");
 
             for (OrderLine line: order.getLines()) { // store for each order line!
-                statement.setInt(1, line.getOrderID());
+                statement.setInt(1,nextOrderID);
                 statement.setInt(2, line.getProductID());
                 statement.setDouble(3, line.getQuantity());
                 statement.setDouble(4, line.getCost());

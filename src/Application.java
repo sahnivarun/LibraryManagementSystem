@@ -2,6 +2,7 @@ import java.sql.*;
 
 public class Application {
 
+    private String url = "jdbc:sqlite:store.db";
     private static Application instance;   // Singleton pattern
 
     public static Application getInstance() {
@@ -33,7 +34,7 @@ public class Application {
         return productViewController;
     }
 
-    private OrderViewController orderViewController = new OrderViewController();
+    private OrderViewController orderViewController = new OrderViewController(setConnection());
 
     public OrderViewController getOrderViewController() {
         return orderViewController;
@@ -53,13 +54,26 @@ public class Application {
         return dataAdapter;
     }
 
+    private Connection setConnection() {
+        if (connection == null){
+            try {
+                Class.forName("org.sqlite.JDBC");
+                connection = DriverManager.getConnection(url);
+
+                return  connection;
+            } catch (Exception e) {
+                return  null;
+            }
+        }else {
+            return connection;
+        }
+
+    }
+
     private Application() {
         // create SQLite database connection here!
         try {
             Class.forName("org.sqlite.JDBC");
-
-            String url = "jdbc:sqlite:store.db";
-
             connection = DriverManager.getConnection(url);
             dataAdapter = new DataAdapter(connection);
 
@@ -72,7 +86,6 @@ public class Application {
 
         catch (SQLException ex) {
             System.out.println("SQLite database is not ready. System exits with error!" + ex.getMessage());
-
             System.exit(2);
         }
 

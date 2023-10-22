@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.Connection;
 
 public class OrderViewController extends JFrame implements ActionListener {
     private JButton btnAdd = new JButton("Add a new item");
@@ -14,8 +15,11 @@ public class OrderViewController extends JFrame implements ActionListener {
     private JLabel labTotal = new JLabel("Total: ");
 
     private Order order = null;
+    private DataAdapter dataAdapter;
+    private Product product; // Store the selected product
+    private double quantity; // Store the selected quantity
 
-    public OrderViewController() {
+    public OrderViewController(Connection connection) {
         this.setTitle("Order View");
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setSize(400, 600);
@@ -46,7 +50,6 @@ public class OrderViewController extends JFrame implements ActionListener {
         btnPay.addActionListener(this);
 
         order = new Order();
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -58,12 +61,41 @@ public class OrderViewController extends JFrame implements ActionListener {
     }
 
     private void makeOrder() {
-        JOptionPane.showMessageDialog(null, "This function is being implemented!");
 
-        /* Remember to update new quantity of products!
-        product.setQuantity(product.getQuantity() - quantity); // update new quantity!!
-        dataAdapter.saveProduct(product); // and save this product back
-        */
+        if (order.getLines().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No items in the order.");
+            return;
+        }
+
+        if (dataAdapter == null){
+            dataAdapter = Application.getInstance().getDataAdapter();
+        }
+
+        // Use the DataAdapter to save the order to the database
+        if (dataAdapter.saveOrder(order)) {
+
+            for (OrderLine line : order.getLines()) {
+                int productID = line.getProductID();
+                double lineQuantity = line.getQuantity();
+
+                Product product = dataAdapter.loadProduct(productID);
+
+                if (product != null) {
+                    double updatedQuantity = product.getQuantity() - lineQuantity;
+                    product.setQuantity(updatedQuantity);
+                    dataAdapter.saveProduct(product); // Update the product's quantity
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Order created and saved successfully!");
+
+            // Now, you can reset the order and clear the table
+            order = new Order();
+            items.setRowCount(0);
+            labTotal.setText("Total: $0.0");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error creating and saving the order.");
+        }
 
     }
 
