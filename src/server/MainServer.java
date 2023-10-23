@@ -20,7 +20,7 @@ public class MainServer {
         PreparedStatement updateStatement =
                 connection.prepareStatement("UPDATE Products SET name = ?, price = ?, quantity = ? WHERE productID = ?");
 
-        System.out.println("Waiting for connection at port"+ MAIN_SERVER_PORT + ".....");
+        System.out.println("Waiting for connection at port "+ MAIN_SERVER_PORT + ".....");
         ServerSocket serverSocket = new ServerSocket(MAIN_SERVER_PORT);
         Socket clientSocket = serverSocket.accept();
 

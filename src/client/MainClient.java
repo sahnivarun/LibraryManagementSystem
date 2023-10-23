@@ -65,7 +65,7 @@ public class MainClient {
             stdIn.close();
             socket.close();
         }catch (Exception e){
-            System.out.println("");
+            System.out.println(e.toString());
         }
 
 

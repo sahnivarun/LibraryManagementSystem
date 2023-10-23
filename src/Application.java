@@ -1,8 +1,9 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import client.MainClient;
 import server.MainServer;
-
-import java.sql.*;
-import java.util.logging.Handler;
 
 public class Application {
 
@@ -15,6 +16,7 @@ public class Application {
         }
         return instance;
     }
+
     // Main components of this application
     private Connection connection;
 
@@ -26,7 +28,9 @@ public class Application {
 
     private User currentUser = null;
 
-    public User getCurrentUser() { return currentUser; }
+    public User getCurrentUser() {
+        return currentUser;
+    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -52,23 +56,25 @@ public class Application {
 
     public LoginScreenController loginScreenController = new LoginScreenController();
 
-    public LoginScreenController getLoginScreenController() { return loginScreenController; }
+    public LoginScreenController getLoginScreenController() {
+        return loginScreenController;
+    }
 
     public DataAdapter getDataAdapter() {
         return dataAdapter;
     }
 
     private Connection setConnection() {
-        if (connection == null){
+        if (connection == null) {
             try {
                 Class.forName("org.sqlite.JDBC");
                 connection = DriverManager.getConnection(url);
 
-                return  connection;
+                return connection;
             } catch (Exception e) {
-                return  null;
+                return null;
             }
-        }else {
+        } else {
             return connection;
         }
 
@@ -80,38 +86,42 @@ public class Application {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection(url);
             dataAdapter = new DataAdapter(connection);
-        }
-        catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             System.out.println("SQLite is not installed. System exits with error!");
             ex.printStackTrace();
             System.exit(1);
-        }
-
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("SQLite database is not ready. System exits with error!" + ex.getMessage());
             System.exit(2);
         }
-        try {
-            MainServer.main(null);
 
-            Thread thread = new Thread(()->{
-               try {
-                   Thread.sleep(5000);
-                   MainClient.main(null);
-               }catch (Exception e){
-                   e.printStackTrace();
-               }
-            });
-            thread.start();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {
+        try {
 
-        Application.getInstance().getLoginScreenController().setVisible(true); // Show Login Screen
+
+            Application.getInstance().getLoginScreenController().setVisible(true); // Show Login Screen
+            Thread thread = new Thread(() -> {
+                System.out.println("Thread Started");
+                try {
+                    Thread.sleep(2000);
+                    System.out.println("Thread after 5s");
+                    MainClient.main(null);
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                    e.printStackTrace();
+                }
+            });
+            thread.start();
+            MainServer.main(null);
+
+        } catch (Exception e) {
+            System.out.println("e2: "+e.toString());
+            e.printStackTrace();
+        }
+
     }
 
 }
