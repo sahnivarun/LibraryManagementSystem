@@ -8,6 +8,8 @@ import java.sql.Connection;
 public class OrderViewController extends JFrame implements ActionListener {
     private JButton btnAdd = new JButton("Add a new item");
     private JButton btnPay = new JButton("Finish and pay");
+    private JButton btnAddAddress = new JButton("Add Shipping Address");
+    private JButton btnAddCard = new JButton("Add Credit Card");
 
     private DefaultTableModel items = new DefaultTableModel(); // store information for the table!
 
@@ -15,9 +17,11 @@ public class OrderViewController extends JFrame implements ActionListener {
     private JLabel labTotal = new JLabel("Total: ");
 
     private Order order = null;
+
     private DataAdapter dataAdapter;
     private Product product; // Store the selected product
     private double quantity; // Store the selected quantity
+    private Receipt receipt;
 
     public OrderViewController(Connection connection) {
         this.setTitle("Order View");
@@ -43,11 +47,15 @@ public class OrderViewController extends JFrame implements ActionListener {
         JPanel panelButton = new JPanel();
         panelButton.setPreferredSize(new Dimension(400, 100));
         panelButton.add(btnAdd);
+        panelButton.add(btnAddAddress);
+        panelButton.add(btnAddCard);
         panelButton.add(btnPay);
         this.getContentPane().add(panelButton);
 
         btnAdd.addActionListener(this);
         btnPay.addActionListener(this);
+        btnAddAddress.addActionListener(this);
+        btnAddCard.addActionListener(this);
 
         order = new Order();
     }
@@ -55,9 +63,12 @@ public class OrderViewController extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd)
             addProduct();
-        else
-        if (e.getSource() == btnPay)
+        else if (e.getSource() == btnPay)
             makeOrder();
+        else if (e.getSource() == btnAddAddress)
+            addShippingAddress();
+        else if (e.getSource() == btnAddCard)
+            addCreditCard();
     }
 
     private void makeOrder() {
@@ -69,6 +80,20 @@ public class OrderViewController extends JFrame implements ActionListener {
 
         if (dataAdapter == null){
             dataAdapter = Application.getInstance().getDataAdapter();
+        }
+
+        // Capture Shipping Address and Credit Card information
+        ShippingAddress shippingAddress = getShippingAddressFromUI();
+        CreditCard creditCard = getCreditCardFromUI();
+
+        // Save Shipping Address and Credit Card
+        if (dataAdapter.saveShippingAddress(shippingAddress) && dataAdapter.saveCreditCard(creditCard)) {
+            order.setShippingAddress(shippingAddress);
+            order.setCreditCard(creditCard);
+
+            // Continue with the existing code to save the order and update product quantities
+        } else {
+            JOptionPane.showMessageDialog(null, "Error saving shipping address or credit card.");
         }
 
         // Use the DataAdapter to save the order to the database
@@ -87,12 +112,26 @@ public class OrderViewController extends JFrame implements ActionListener {
                 }
             }
 
-            JOptionPane.showMessageDialog(null, "Order created and saved successfully!");
+            // Create a new Receipt instance and set its properties
+            Receipt receipt = new Receipt();
+            receipt.setOrderId(order.getOrderID());
+            receipt.setUserId(order.getBuyerID());
+            receipt.setDateTime(System.currentTimeMillis());
+            receipt.setTotalCost(order.getTotalCost());
+            receipt.setShippingAddress(order.getShippingAddress().getFullAddress());
+            receipt.setCreditCardNumber(String.valueOf(order.getCreditCard().getCardNumber()));
 
-            // Now, you can reset the order and clear the table
-            order = new Order();
-            items.setRowCount(0);
-            labTotal.setText("Total: $0.0");
+            // Use the DataAdapter to save the receipt to the database
+            if (dataAdapter.saveReceipt(receipt)) {
+                JOptionPane.showMessageDialog(null, "Order created and saved successfully!");
+
+                // Now, you can reset the order and clear the table
+                order = new Order();
+                items.setRowCount(0);
+                labTotal.setText("Total: $0.0");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error saving the receipt.");
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Error creating and saving the order.");
         }
@@ -143,5 +182,69 @@ public class OrderViewController extends JFrame implements ActionListener {
     public void addRow(Object[] row) {
         items.addRow(row);
     }
+
+    private void addShippingAddress() {
+        ShippingAddress shippingAddress = getShippingAddressFromUI();
+        if (shippingAddress != null) {
+            order.setShippingAddress(shippingAddress);
+        }
+    }
+
+    private void addCreditCard() {
+        CreditCard creditCard = getCreditCardFromUI();
+        if (creditCard != null) {
+            order.setCreditCard(creditCard);
+        }
+    }
+
+    private ShippingAddress getShippingAddressFromUI() {
+        // Collect user input from your UI components
+        String street = JOptionPane.showInputDialog("Enter Street: ");
+        String apt = JOptionPane.showInputDialog("Enter Apt/Unit: ");
+        String city = JOptionPane.showInputDialog("Enter City: ");
+        String state = JOptionPane.showInputDialog("Enter State: ");
+        String zipCodeStr = JOptionPane.showInputDialog("Enter Zip Code: ");
+
+        // Convert zip code to an integer (you may need error handling here)
+        int zipCode = Integer.parseInt(zipCodeStr);
+
+        // Create a ShippingAddress object
+        ShippingAddress address = new ShippingAddress();
+        address.setStreetNumberAndName(street);
+        address.setApartmentOrUnitNumber(apt);
+        address.setCity(city);
+        address.setState(state);
+        address.setZipCode(zipCode);
+
+        return address;
+    }
+
+    private CreditCard getCreditCardFromUI() {
+        // Collect user input from your UI components
+        String cardNumberStr = JOptionPane.showInputDialog("Enter Card Number: ");
+        String name = JOptionPane.showInputDialog("Enter Cardholder Name: ");
+        String expiryMonthStr = JOptionPane.showInputDialog("Enter Expiry Month: ");
+        String expiryYearStr = JOptionPane.showInputDialog("Enter Expiry Year: ");
+        String cvvStr = JOptionPane.showInputDialog("Enter CVV: ");
+        String billingAddress = JOptionPane.showInputDialog("Enter Billing Address: ");
+
+        // Convert input to appropriate data types (you may need error handling here)
+        int cardNumber = Integer.parseInt(cardNumberStr);
+        int expiryMonth = Integer.parseInt(expiryMonthStr);
+        int expiryYear = Integer.parseInt(expiryYearStr);
+        int cvv = Integer.parseInt(cvvStr);
+
+        // Create a CreditCard object
+        CreditCard card = new CreditCard();
+        card.setCardNumber(cardNumber);
+        card.setName(name);
+        card.setExpiryMonth(expiryMonth);
+        card.setExpiryYear(expiryYear);
+        card.setCvv(cvv);
+        card.setBillingAddress(billingAddress);
+
+        return card;
+    }
+
 
 }

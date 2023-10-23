@@ -55,6 +55,10 @@ public class ShippingAddress {
                 this.zipCode = zipCode;
         }
 
+        public String getFullAddress() {
+                return streetNumberAndName + (apartmentOrUnitNumber.isEmpty() ? "" : ", " + apartmentOrUnitNumber) + ", " + city + ", " + state + " " + zipCode;
+        }
+
         @Override
         public String toString() {
                 return "Street: " + streetNumberAndName +

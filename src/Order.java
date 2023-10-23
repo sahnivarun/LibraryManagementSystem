@@ -9,6 +9,25 @@ public class Order {
     private double totalTax;
     private String date;
 
+    private ShippingAddress shippingAddress;
+    private CreditCard creditCard;
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
     private List<OrderLine> lines;
 
     public Order() {
