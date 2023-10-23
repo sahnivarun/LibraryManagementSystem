@@ -6,6 +6,7 @@ import java.awt.*;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DecimalFormat;
 
 public class OrderViewController extends JFrame implements ActionListener {
     private JButton btnAdd = new JButton("Add a new item");
@@ -113,6 +114,8 @@ public class OrderViewController extends JFrame implements ActionListener {
             // Use the DataAdapter to save the receipt to the database
             if (dataAdapter.saveReceipt(receipt)) {
                 JOptionPane.showMessageDialog(null, "Order created and saved successfully!");
+
+                showReceiptDialog(receipt);
 
                 // Now, you can reset the order and clear the table
                 order = new Order();
@@ -369,6 +372,50 @@ public class OrderViewController extends JFrame implements ActionListener {
         paymentDialog.setVisible(true);
 
         return card;
+    }
+
+    private void showReceiptDialog(Receipt receipt) {
+        // Create a dialog to display the receipt information
+        JDialog receiptDialog = new JDialog(this, "Receipt", true);
+        receiptDialog.setLayout(new BorderLayout());
+
+        JPanel receiptPanel = new JPanel();
+        receiptPanel.setLayout(new GridLayout(0, 1));
+
+        double totalCostWithTax = receipt.getTotalCost() * 1.08;
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formattedTotalCost = df.format(totalCostWithTax);
+
+        // Add receipt information labels
+        JLabel lblReceiptNumber = new JLabel("Receipt Number: " + receipt.getOrderId());
+        JLabel lblOrderID = new JLabel("Order ID: " + receipt.getOrderId());
+        JLabel lblDateTime = new JLabel("Date and Time: " + receipt.getDateTime());
+        JLabel lblShippingAddress = new JLabel("Shipping Address: " + receipt.getShippingAddress());
+        JLabel lblTotalCost = new JLabel("Total Cost(with 8% Tax): $" + formattedTotalCost);
+        JLabel lblCreditCardNumber = new JLabel("Credit Card Number: " + receipt.getCreditCardNumber());
+
+        receiptPanel.add(lblReceiptNumber);
+        receiptPanel.add(lblOrderID);
+        receiptPanel.add(lblDateTime);
+        receiptPanel.add(lblShippingAddress);
+        receiptPanel.add(lblTotalCost);
+        receiptPanel.add(lblCreditCardNumber);
+
+        receiptDialog.add(receiptPanel, BorderLayout.CENTER);
+
+        // Create a Close button to close the dialog
+        JButton btnClose = new JButton("Close");
+        btnClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                receiptDialog.dispose();
+            }
+        });
+        receiptDialog.add(btnClose, BorderLayout.SOUTH);
+
+        receiptDialog.pack();
+        receiptDialog.setLocationRelativeTo(this);
+        receiptDialog.setVisible(true);
     }
 
 }
