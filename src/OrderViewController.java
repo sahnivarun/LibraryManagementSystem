@@ -10,8 +10,6 @@ import java.util.Date;
 public class OrderViewController extends JFrame implements ActionListener {
     private JButton btnAdd = new JButton("Add a new item");
     private JButton btnPay = new JButton("Finish and pay");
-    private JButton btnAddAddress = new JButton("Add Shipping Address");
-    private JButton btnAddCard = new JButton("Add Credit Card");
 
     private DefaultTableModel items = new DefaultTableModel(); // store information for the table!
 
@@ -24,6 +22,8 @@ public class OrderViewController extends JFrame implements ActionListener {
     private Product product; // Store the selected product
     private double quantity; // Store the selected quantity
     private Receipt receipt;
+    private ShippingAddress address;
+    private CreditCard card;
 
     public OrderViewController(Connection connection) {
         this.setTitle("Order View");
@@ -49,15 +49,11 @@ public class OrderViewController extends JFrame implements ActionListener {
         JPanel panelButton = new JPanel();
         panelButton.setPreferredSize(new Dimension(400, 100));
         panelButton.add(btnAdd);
-        panelButton.add(btnAddAddress);
-        panelButton.add(btnAddCard);
         panelButton.add(btnPay);
         this.getContentPane().add(panelButton);
 
         btnAdd.addActionListener(this);
         btnPay.addActionListener(this);
-        btnAddAddress.addActionListener(this);
-        btnAddCard.addActionListener(this);
 
         order = new Order();
     }
@@ -67,10 +63,6 @@ public class OrderViewController extends JFrame implements ActionListener {
             addProduct();
         else if (e.getSource() == btnPay)
             makeOrder();
-        else if (e.getSource() == btnAddAddress)
-            addShippingAddress();
-        else if (e.getSource() == btnAddCard)
-            addCreditCard();
     }
 
     private void makeOrder() {
@@ -206,53 +198,165 @@ public class OrderViewController extends JFrame implements ActionListener {
     }
 
     private ShippingAddress getShippingAddressFromUI() {
-        // Collect user input from your UI components
-        String street = JOptionPane.showInputDialog("Enter Street: ");
-        String apt = JOptionPane.showInputDialog("Enter Apt/Unit: ");
-        String city = JOptionPane.showInputDialog("Enter City: ");
-        String state = JOptionPane.showInputDialog("Enter State: ");
-        String zipCodeStr = JOptionPane.showInputDialog("Enter Zip Code: ");
+        // Create a new dialog to enter payment information
+        JDialog addressDialog = new JDialog(this, "Shipping Address Information", true);
+        addressDialog.setLayout(new BorderLayout());
 
-        // Convert zip code to an integer (you may need error handling here)
-        int zipCode = Integer.parseInt(zipCodeStr);
+        JPanel addressPanel = new JPanel();
+        addressPanel.setLayout(new GridLayout(0, 2));
 
-        // Create a ShippingAddress object
-        ShippingAddress address = new ShippingAddress();
-        address.setStreetNumberAndName(street);
-        address.setApartmentOrUnitNumber(apt);
-        address.setCity(city);
-        address.setState(state);
-        address.setZipCode(zipCode);
+        // Create labels and input fields for shipping address
+        JLabel lblStreet = new JLabel("Street:");
+        JTextField txtStreet = new JTextField(20);
+
+        JLabel lblApt = new JLabel("Apt/Unit:");
+        JTextField txtApt = new JTextField(20);
+
+        JLabel lblCity = new JLabel("City:");
+        JTextField txtCity = new JTextField(20);
+
+        JLabel lblState = new JLabel("State:");
+        JTextField txtState = new JTextField(20);
+
+        JLabel lblZipCode = new JLabel("Zip Code:");
+        JTextField txtZipCode = new JTextField(20);
+
+        addressPanel.add(lblStreet);
+        addressPanel.add(txtStreet);
+        addressPanel.add(lblApt);
+        addressPanel.add(txtApt);
+        addressPanel.add(lblCity);
+        addressPanel.add(txtCity);
+        addressPanel.add(lblState);
+        addressPanel.add(txtState);
+        addressPanel.add(lblZipCode);
+        addressPanel.add(txtZipCode);
+
+        // Create a single OK button to save payment information and close the dialog
+        JButton btnOK = new JButton("OK");
+
+        btnOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Retrieve and process the input values for shipping address
+                String street = txtStreet.getText();
+                String apt = txtApt.getText();
+                String city = txtCity.getText();
+                String state = txtState.getText();
+                int zipCode = Integer.parseInt(txtZipCode.getText());
+
+                address = new ShippingAddress();
+                address.setStreetNumberAndName(street);
+                address.setApartmentOrUnitNumber(apt);
+                address.setCity(city);
+                address.setState(state);
+                address.setZipCode(zipCode);
+
+            // Save shipping address using DataAdapter
+            if (dataAdapter.saveShippingAddress(address)) {
+                order.setShippingAddress(address);
+
+                // After processing, close the dialog
+                addressDialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error saving shipping address.");
+            }
+            }
+        });
+
+        addressDialog.add(addressPanel, BorderLayout.CENTER);
+        addressDialog.add(btnOK, BorderLayout.SOUTH);
+
+        addressDialog.pack();
+        addressDialog.setLocationRelativeTo(this);
+        addressDialog.setVisible(true);
 
         return address;
+
     }
 
     private CreditCard getCreditCardFromUI() {
-        // Collect user input from your UI components
-        String cardNumberStr = JOptionPane.showInputDialog("Enter Card Number: ");
-        String name = JOptionPane.showInputDialog("Enter Cardholder Name: ");
-        String expiryMonthStr = JOptionPane.showInputDialog("Enter Expiry Month: ");
-        String expiryYearStr = JOptionPane.showInputDialog("Enter Expiry Year: ");
-        String cvvStr = JOptionPane.showInputDialog("Enter CVV: ");
-        String billingAddress = JOptionPane.showInputDialog("Enter Billing Address: ");
 
-        // Convert input to appropriate data types (you may need error handling here)
-        int cardNumber = Integer.parseInt(cardNumberStr);
-        int expiryMonth = Integer.parseInt(expiryMonthStr);
-        int expiryYear = Integer.parseInt(expiryYearStr);
-        int cvv = Integer.parseInt(cvvStr);
+        JDialog paymentDialog = new JDialog(this, "Payment Information", true);
+        paymentDialog.setLayout(new BorderLayout());
 
-        // Create a CreditCard object
-        CreditCard card = new CreditCard();
-        card.setCardNumber(cardNumber);
-        card.setName(name);
-        card.setExpiryMonth(expiryMonth);
-        card.setExpiryYear(expiryYear);
-        card.setCvv(cvv);
-        card.setBillingAddress(billingAddress);
+        JPanel paymentPanel = new JPanel();
+        paymentPanel.setLayout(new GridLayout(0, 2));
+
+        JLabel lblCardNumber = new JLabel("Card Number:");
+        JTextField txtCardNumber = new JTextField(20);
+
+        JLabel lblCardName = new JLabel("Cardholder Name:");
+        JTextField txtCardName = new JTextField(20);
+
+        JLabel lblExpiryMonth = new JLabel("Expiry Month:");
+        JTextField txtExpiryMonth = new JTextField(20);
+
+        JLabel lblExpiryYear = new JLabel("Expiry Year:");
+        JTextField txtExpiryYear = new JTextField(20);
+
+        JLabel lblCvv = new JLabel("CVV:");
+        JTextField txtCvv = new JTextField(20);
+
+        JLabel lblBillingAddress = new JLabel("Billing Address:");
+        JTextField txtBillingAddress = new JTextField(20);
+
+        paymentPanel.add(lblCardNumber);
+        paymentPanel.add(txtCardNumber);
+        paymentPanel.add(lblCardName);
+        paymentPanel.add(txtCardName);
+        paymentPanel.add(lblExpiryMonth);
+        paymentPanel.add(txtExpiryMonth);
+        paymentPanel.add(lblExpiryYear);
+        paymentPanel.add(txtExpiryYear);
+        paymentPanel.add(lblCvv);
+        paymentPanel.add(txtCvv);
+        paymentPanel.add(lblBillingAddress);
+        paymentPanel.add(txtBillingAddress);
+
+        // Create a single OK button to save payment information and close the dialog
+        JButton btnOK = new JButton("OK");
+
+        btnOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Retrieve and process the input values for credit card
+                int cardNumber = Integer.parseInt(txtCardNumber.getText());
+                String name = txtCardName.getText();
+                int expiryMonth = Integer.parseInt(txtExpiryMonth.getText());
+                int expiryYear = Integer.parseInt(txtExpiryYear.getText());
+                int cvv = Integer.parseInt(txtCvv.getText());
+                String billingAddress = txtBillingAddress.getText();
+
+                card = new CreditCard();
+                card.setCardNumber(cardNumber);
+                card.setName(name);
+                card.setExpiryMonth(expiryMonth);
+                card.setExpiryYear(expiryYear);
+                card.setCvv(cvv);
+                card.setBillingAddress(billingAddress);
+
+                // Save shipping address using DataAdapter
+                if (dataAdapter.saveCreditCard(card)) {
+                    order.setCreditCard(card);
+
+                    // After processing, close the dialog
+                    paymentDialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error saving credit card.");
+                }
+            }
+        });
+
+        paymentDialog.add(paymentPanel, BorderLayout.CENTER);
+        paymentDialog.add(btnOK, BorderLayout.SOUTH);
+
+        paymentDialog.pack();
+        paymentDialog.setLocationRelativeTo(this);
+        paymentDialog.setVisible(true);
 
         return card;
-    }
 
+    }
 
 }
