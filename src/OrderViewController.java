@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class OrderViewController extends JFrame implements ActionListener {
     private JButton btnAdd = new JButton("Add a new item");
@@ -112,11 +114,16 @@ public class OrderViewController extends JFrame implements ActionListener {
                 }
             }
 
+            long currentTimeMillis = System.currentTimeMillis();
+            Date date = new Date(currentTimeMillis);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+            String formattedDate = dateFormat.format(date);
+
             // Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(order.getOrderID());
             receipt.setUserId(order.getBuyerID());
-            receipt.setDateTime(System.currentTimeMillis());
+            receipt.setDateTime(formattedDate);
             receipt.setTotalCost(order.getTotalCost());
             receipt.setShippingAddress(order.getShippingAddress().getFullAddress());
             receipt.setCreditCardNumber(String.valueOf(order.getCreditCard().getCardNumber()));

@@ -5,7 +5,7 @@ public class Receipt {
     private int receiptNumber;
     private int orderId;
     private int userId;
-    private long dateTime;
+    private String dateTime;
     private double totalCost;
     private String shippingAddress;
     private String creditCardNumber;
@@ -13,7 +13,7 @@ public class Receipt {
     public Receipt() {
     }
 
-    public Receipt(int receiptNumber, int orderId, int userId, long dateTime, double totalCost, String shippingAddress, String creditCardNumber) {
+    public Receipt(int receiptNumber, int orderId, int userId, String dateTime, double totalCost, String shippingAddress, String creditCardNumber) {
         this.receiptNumber = receiptNumber;
         this.orderId = orderId;
         this.userId = userId;
@@ -49,11 +49,11 @@ public class Receipt {
         this.userId = userId;
     }
 
-    public long getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(long dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -78,7 +78,24 @@ public class Receipt {
     }
 
     public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
+        if (creditCardNumber.length() >= 4) {
+            // Extract the last 4 digits
+            String last4Digits = creditCardNumber.substring(creditCardNumber.length() - 4);
+
+            // Create a string with asterisks of the same length as the original number
+            StringBuilder maskedCreditCard = new StringBuilder();
+            for (int i = 0; i < creditCardNumber.length() - 4; i++) {
+                maskedCreditCard.append('*');
+            }
+
+            // Append the last 4 digits to the masked string
+            maskedCreditCard.append(last4Digits);
+
+            this.creditCardNumber = maskedCreditCard.toString();
+        } else {
+            // If the credit card number is less than 4 digits, keep it as is
+            this.creditCardNumber = creditCardNumber;
+        }
     }
 
     @Override

@@ -303,10 +303,12 @@
         // Change #2: Add a method to save a receipt.
         public boolean saveReceipt(Receipt receipt) {
             try {
+                int receiptOrderID = getOrderCount() + 1;
+
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, CreditCardNumber) VALUES (?, ?, ?, ?, ?, ?)");
-                statement.setInt(1, receipt.getOrderId());
-                statement.setInt(2, receipt.getUserId());
-                statement.setLong(3, receipt.getDateTime());
+                statement.setInt(1, receiptOrderID);
+                statement.setInt(2, receiptOrderID);
+                statement.setString(3, receipt.getDateTime());
                 statement.setDouble(4, receipt.getTotalCost());
                 statement.setString(5, receipt.getShippingAddress());
                 statement.setString(6, receipt.getCreditCardNumber());
