@@ -116,7 +116,7 @@ public class OrderViewController extends JFrame implements ActionListener {
 
             long currentTimeMillis = System.currentTimeMillis();
             Date date = new Date(currentTimeMillis);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
             String formattedDate = dateFormat.format(date);
 
             // Create a new Receipt instance and set its properties
@@ -173,6 +173,7 @@ public class OrderViewController extends JFrame implements ActionListener {
         line.setCost(quantity * product.getPrice());
         order.getLines().add(line);
         order.setTotalCost(order.getTotalCost() + line.getCost());
+        order.setTotalTax(order.getTotalCost()*0.08);
 
         Object[] row = new Object[5];
         row[0] = line.getProductID();
