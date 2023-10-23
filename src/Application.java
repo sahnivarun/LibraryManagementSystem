@@ -1,4 +1,8 @@
+import client.MainClient;
+import server.MainServer;
+
 import java.sql.*;
+import java.util.logging.Handler;
 
 public class Application {
 
@@ -76,7 +80,6 @@ public class Application {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection(url);
             dataAdapter = new DataAdapter(connection);
-
         }
         catch (ClassNotFoundException ex) {
             System.out.println("SQLite is not installed. System exits with error!");
@@ -88,7 +91,22 @@ public class Application {
             System.out.println("SQLite database is not ready. System exits with error!" + ex.getMessage());
             System.exit(2);
         }
+        try {
+            MainServer.main(null);
 
+            Thread thread = new Thread(()->{
+               try {
+                   Thread.sleep(5000);
+                   MainClient.main(null);
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
+            });
+            thread.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
