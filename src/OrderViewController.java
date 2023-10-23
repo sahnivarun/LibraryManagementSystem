@@ -72,23 +72,13 @@ public class OrderViewController extends JFrame implements ActionListener {
             return;
         }
 
-        if (dataAdapter == null){
+        if (dataAdapter == null) {
             dataAdapter = Application.getInstance().getDataAdapter();
         }
 
         // Capture Shipping Address and Credit Card information
         ShippingAddress shippingAddress = getShippingAddressFromUI();
         CreditCard creditCard = getCreditCardFromUI();
-
-        // Save Shipping Address and Credit Card
-        if (dataAdapter.saveShippingAddress(shippingAddress) && dataAdapter.saveCreditCard(creditCard)) {
-            order.setShippingAddress(shippingAddress);
-            order.setCreditCard(creditCard);
-
-            // Continue with the existing code to save the order and update product quantities
-        } else {
-            JOptionPane.showMessageDialog(null, "Error saving shipping address or credit card.");
-        }
 
         // Use the DataAdapter to save the order to the database
         if (dataAdapter.saveOrder(order)) {
@@ -151,7 +141,7 @@ public class OrderViewController extends JFrame implements ActionListener {
             return;
         }
 
-        double quantity = Double.parseDouble(JOptionPane.showInputDialog(null,"Enter quantity: "));
+        double quantity = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter quantity: "));
 
         if (quantity <= 0 || quantity > product.getQuantity()) {
             JOptionPane.showMessageDialog(null, "This quantity is not valid!");
@@ -165,7 +155,7 @@ public class OrderViewController extends JFrame implements ActionListener {
         line.setCost(quantity * product.getPrice());
         order.getLines().add(line);
         order.setTotalCost(order.getTotalCost() + line.getCost());
-        order.setTotalTax(order.getTotalCost()*0.08);
+        order.setTotalTax(order.getTotalCost() * 0.08);
 
         Object[] row = new Object[5];
         row[0] = line.getProductID();
@@ -243,24 +233,37 @@ public class OrderViewController extends JFrame implements ActionListener {
                 String apt = txtApt.getText();
                 String city = txtCity.getText();
                 String state = txtState.getText();
-                int zipCode = Integer.parseInt(txtZipCode.getText());
+                String zipCodeText = txtZipCode.getText();
 
-                address = new ShippingAddress();
-                address.setStreetNumberAndName(street);
-                address.setApartmentOrUnitNumber(apt);
-                address.setCity(city);
-                address.setState(state);
-                address.setZipCode(zipCode);
+                try {
+                    // Add validations
+                    int zipCode = Integer.parseInt(zipCodeText);
 
-            // Save shipping address using DataAdapter
-            if (dataAdapter.saveShippingAddress(address)) {
-                order.setShippingAddress(address);
+                    if (street.isEmpty() || city.isEmpty() || state.isEmpty() || zipCodeText.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please fill in all required fields.");
+                    } else if (zipCode < 0) {
+                        JOptionPane.showMessageDialog(null, "Zip code should not be negative.");
+                    } else {
+                        address = new ShippingAddress();
+                        address.setStreetNumberAndName(street);
+                        address.setApartmentOrUnitNumber(apt);
+                        address.setCity(city);
+                        address.setState(state);
+                        address.setZipCode(zipCode);
 
-                // After processing, close the dialog
-                addressDialog.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Error saving shipping address.");
-            }
+                        // Save shipping address using DataAdapter
+                        if (dataAdapter.saveShippingAddress(address)) {
+                            order.setShippingAddress(address);
+
+                            // After processing, close the dialog
+                            addressDialog.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error saving shipping address.");
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Invalid zip code format. Please enter a valid number.");
+                }
             }
         });
 
@@ -272,7 +275,6 @@ public class OrderViewController extends JFrame implements ActionListener {
         addressDialog.setVisible(true);
 
         return address;
-
     }
 
     private CreditCard getCreditCardFromUI() {
@@ -320,30 +322,41 @@ public class OrderViewController extends JFrame implements ActionListener {
         btnOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Retrieve and process the input values for credit card
-                int cardNumber = Integer.parseInt(txtCardNumber.getText());
-                String name = txtCardName.getText();
-                int expiryMonth = Integer.parseInt(txtExpiryMonth.getText());
-                int expiryYear = Integer.parseInt(txtExpiryYear.getText());
-                int cvv = Integer.parseInt(txtCvv.getText());
-                String billingAddress = txtBillingAddress.getText();
+                try {
+                    // Retrieve and process the input values for credit card
+                    int cardNumber = Integer.parseInt(txtCardNumber.getText());
+                    String name = txtCardName.getText();
+                    int expiryMonth = Integer.parseInt(txtExpiryMonth.getText());
+                    int expiryYear = Integer.parseInt(txtExpiryYear.getText());
+                    int cvv = Integer.parseInt(txtCvv.getText());
+                    String billingAddress = txtBillingAddress.getText();
 
-                card = new CreditCard();
-                card.setCardNumber(cardNumber);
-                card.setName(name);
-                card.setExpiryMonth(expiryMonth);
-                card.setExpiryYear(expiryYear);
-                card.setCvv(cvv);
-                card.setBillingAddress(billingAddress);
+                    // Add validations
+                    if (cardNumber < 0 || name.isEmpty() || name.matches(".*\\d.*") ||
+                            expiryMonth < 1 || expiryMonth > 12 || expiryYear < 2022 ||
+                            cvv < 0 || billingAddress.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Invalid details received. Please check the input.");
+                    } else {
+                        card = new CreditCard();
+                        card.setCardNumber(cardNumber);
+                        card.setName(name);
+                        card.setExpiryMonth(expiryMonth);
+                        card.setExpiryYear(expiryYear);
+                        card.setCvv(cvv);
+                        card.setBillingAddress(billingAddress);
 
-                // Save shipping address using DataAdapter
-                if (dataAdapter.saveCreditCard(card)) {
-                    order.setCreditCard(card);
+                        // Save credit card using DataAdapter
+                        if (dataAdapter.saveCreditCard(card)) {
+                            order.setCreditCard(card);
 
-                    // After processing, close the dialog
-                    paymentDialog.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error saving credit card.");
+                            // After processing, close the dialog
+                            paymentDialog.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error saving credit card.");
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Invalid input format. Please enter valid numbers.");
                 }
             }
         });
@@ -356,7 +369,6 @@ public class OrderViewController extends JFrame implements ActionListener {
         paymentDialog.setVisible(true);
 
         return card;
-
     }
 
 }
