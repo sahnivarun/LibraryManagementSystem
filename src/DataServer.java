@@ -125,9 +125,9 @@ class ClientHandler extends Thread {
 //                    case RequestModel.DELETE_PRODUCT_REQUEST:
 //                        handleDeleteProductRequest(req, res, dao, connection);
 //                        break;
-//                    case RequestModel.SAVE_ORDER_REQUEST:
-//                        handleSaveOrderRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.SAVE_ORDER_REQUEST:
+                        handleSaveOrderRequest(req, res, dao, connection);
+                        break;
 //                    case RequestModel.LOAD_ORDER_REQUEST:
 //                        handleLoadOrderRequest(req,res,dao,connection);
 //                        break;
@@ -150,9 +150,9 @@ class ClientHandler extends Thread {
 //                    case RequestModel.DELETE_USER_REQUEST:
 //                        handleDeleteUserRequest();
 //                        break;
-//                    case RequestModel.SAVE_SHIPPING_ADDRESS_REQUEST:
-//                        handleSaveShippingAddressRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.SAVE_SHIPPING_ADDRESS_REQUEST:
+                        handleSaveShippingAddressRequest(req, res, dao, connection);
+                        break;
 //                    case RequestModel.UPDATE_SHIPPING_ADDRESS_REQUEST:
 //                        handleUpdateShippingAddressRequest(req, res, dao, connection);
 //                        break;
@@ -162,9 +162,9 @@ class ClientHandler extends Thread {
 //                    case RequestModel.DELETE_SHIPPING_ADDRESS_REQUEST:
 //                        handleDeleteShippingAddressRequest(req, res, dao, connection);
 //                        break;
-//                    case RequestModel.SAVE_CREDIT_CARD_REQUEST:
-//                    handleSaveCreditCardRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.SAVE_CREDIT_CARD_REQUEST:
+                    handleSaveCreditCardRequest(req, res, dao, connection);
+                        break;
 //                    case RequestModel.UPDATE_CREDIT_CARD_REQUEST:
 //                        handleUpdateCreditCardRequest(req, res, dao, connection);
 //                        break;
@@ -174,9 +174,9 @@ class ClientHandler extends Thread {
 //                    case RequestModel.DELETE_CREDIT_CARD_REQUEST:
 //                        handleDeleteCreditCardRequest(req, res, dao, connection);
 //                        break;
-//                    case RequestModel.SAVE_RECEIPT_REQUEST:
-//                    handleSaveReceiptRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.SAVE_RECEIPT_REQUEST:
+                    handleSaveReceiptRequest(req, res, dao, connection);
+                        break;
 //                    case RequestModel.UPDATE_RECEIPT_REQUEST:
 //                        handleUpdateReceiptRequest(req, res, dao, connection);
 //                        break;
@@ -186,7 +186,6 @@ class ClientHandler extends Thread {
 //                    case RequestModel.DELETE_RECEIPT_REQUEST:
 //                        handleDeleteReceiptRequest(req, res, dao, connection);
 //                        break;
-
                     default:
                         handleUnknownRequest(req);
                 }
@@ -195,8 +194,19 @@ class ClientHandler extends Thread {
                 System.out.println("JSON object of ResponseModel: " + json);
                 dos.writeUTF(json);
                 dos.flush();
+            } catch (EOFException eofe) {
+                System.err.println("EOFException: " + eofe.getMessage());
+                // System.err.println("Received data: " + received);
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
+                break;
+            } finally {
+                try {
+                    clientSocket.close(); // Close the client connection
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -226,69 +236,100 @@ class ClientHandler extends Thread {
         }
     }
 
+//    private static void handleSaveProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+//        try {
+//            // Parse the JSON data from the request into a Product object
+//            Gson gson = new Gson();
+//            Product product = gson.fromJson(req.body, Product.class);
+//
+//            // Create a PreparedStatement for inserting a product into the database
+//            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Products (ProductID, Name, Price, Quantity) VALUES (?, ?, ?, ?)");
+//            stmt.setInt(1, product.getProductID());
+//            stmt.setString(2, product.getName());
+//            stmt.setDouble(3, product.getPrice());
+//            stmt.setInt(4, (int)product.getQuantity());
+//
+//            // Execute the SQL command to insert the product
+//            int rowsInserted = stmt.executeUpdate();
+//
+//            if (rowsInserted > 0) {
+//                // Product was successfully saved
+//                res.code = ResponseModel.OK;
+//                res.body = "Product saved successfully.";
+//            } else {
+//                // Product could not be saved
+//                res.code = ResponseModel.ERROR;
+//                res.body = "Error saving the product to the database.";
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res.code = ResponseModel.ERROR;
+//            res.body = "Error saving the product to the database.";
+//        }
+//    }
+
     private static void handleSaveProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        // Create a PreparedStatement for saving a product to the database
         try {
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Products (name, price, quantity) VALUES (?, ?, ?)");
+            // Parse the JSON data from the request into a Product object
             Gson gson = new Gson();
             Product product = gson.fromJson(req.body, Product.class);
-            stmt.setString(1, product.getName());
-            stmt.setDouble(2, product.getPrice());
-            stmt.setInt(3, (int)product.getQuantity());
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                res.code = ResponseModel.OK;
-                res.body = "Product saved successfully.";
+
+            // Check if a product with the same ProductID already exists
+            PreparedStatement checkStmt = connection.prepareStatement("SELECT COUNT(*) FROM Products WHERE ProductID = ?");
+            checkStmt.setInt(1, product.getProductID());
+            ResultSet checkResult = checkStmt.executeQuery();
+            checkResult.next();
+            int existingProductCount = checkResult.getInt(1);
+
+            if (existingProductCount > 0) {
+                // Update the existing product
+                PreparedStatement updateStmt = connection.prepareStatement("UPDATE Products SET Name = ?, Price = ?, Quantity = ? WHERE ProductID = ?");
+                updateStmt.setString(1, product.getName());
+                updateStmt.setDouble(2, product.getPrice());
+                updateStmt.setInt(3, (int) product.getQuantity());
+                updateStmt.setInt(4, product.getProductID());
+
+                int rowsUpdated = updateStmt.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    // Product was successfully updated
+                    res.code = ResponseModel.OK;
+                    res.body = "Product updated successfully.";
+                } else {
+                    // Product update failed
+                    res.code = ResponseModel.ERROR;
+                    res.body = "Error updating the product in the database.";
+                }
             } else {
-                res.code = ResponseModel.ERROR;
-                res.body = "Failed to save the product.";
+                // Insert a new product
+                PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO Products (ProductID, Name, Price, Quantity) VALUES (?, ?, ?, ?)");
+                insertStmt.setInt(1, product.getProductID());
+                insertStmt.setString(2, product.getName());
+                insertStmt.setDouble(3, product.getPrice());
+                insertStmt.setInt(4, (int) product.getQuantity());
+
+                int rowsInserted = insertStmt.executeUpdate();
+
+                if (rowsInserted > 0) {
+                    // New product was successfully saved
+                    res.code = ResponseModel.OK;
+                    res.body = "New product saved successfully.";
+                } else {
+                    // Product insertion failed
+                    res.code = ResponseModel.ERROR;
+                    res.body = "Error saving the new product to the database.";
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
             res.code = ResponseModel.ERROR;
-            res.body = "Error saving the product to the database.";
+            res.body = "Error saving or updating the product in the database.";
         }
     }
 
-//    private static void handleLoadUserRequest(RequestModel req, ResponseModel res, Connection connection) {
-//        // Create a PreparedStatement for loading a user from the database
-//        System.out.println("Handle Load UserRequst()");
-//        try {
-//            System.out.println("Inside try");
-//            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Users WHERE UserName = ?");
-//            String username = req.body;
-//            System.out.println("Body: " + username);
-//            stmt.setString(1, username);
-//            Gson gson = new Gson();
-//            ResultSet resultSet = stmt.executeQuery();
-//            System.out.println("result");
-//            if (resultSet.next()) {
-//                // Build a User object from the result and set it in the response
-//                User user = new User();
-//                user.setUserID(resultSet.getInt("UserID"));
-//                user.setUsername(resultSet.getString("UserName"));
-//                user.setFullName(resultSet.getString("DisplayName"));
-//                user.setPassword(resultSet.getString("Password"));
-//
-//                res.code = ResponseModel.OK;
-//                res.body = gson.toJson(user);
-//                System.out.println("User Created");
-//            } else {
-//                // User not found
-//                System.out.println("User not found");
-//                res.code = ResponseModel.DATA_NOT_FOUND;
-//                res.body = "";
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Exception: " + e.toString());
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error loading the user from the database.";
-//        }
-//    }
 
     private static void handleLoadUserRequest(RequestModel req, ResponseModel res, Connection connection) {
-        System.out.println("Handle Load UserRequst()");
+        System.out.println("Handle Load UserRequest()");
         try {
             System.out.println("Inside try");
 
