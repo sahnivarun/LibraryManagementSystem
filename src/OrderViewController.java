@@ -19,7 +19,9 @@ public class OrderViewController extends JFrame implements ActionListener {
 
     private Order order = null;
 
-    private DataAdapter dataAdapter;
+   // private DataAdapter dataAdapter;
+    private RemoteDataAdapter dao;
+
     private Product product; // Store the selected product
     private double quantity; // Store the selected quantity
     private Receipt receipt;
@@ -73,8 +75,8 @@ public class OrderViewController extends JFrame implements ActionListener {
             return;
         }
 
-        if (dataAdapter == null) {
-            dataAdapter = Application.getInstance().getDataAdapter();
+        if (dao == null) {
+            dao = Application.getInstance().getDao();
         }
 
         // Capture Shipping Address and Credit Card information
@@ -82,18 +84,18 @@ public class OrderViewController extends JFrame implements ActionListener {
         CreditCard creditCard = getCreditCardFromUI();
 
         // Use the DataAdapter to save the order to the database
-        if (dataAdapter.saveOrder(order)) {
+        if (dao.saveOrder(order)) {
 
             for (OrderLine line : order.getLines()) {
                 int productID = line.getProductID();
                 double lineQuantity = line.getQuantity();
 
-                Product product = dataAdapter.loadProduct(productID);
+                Product product = dao.loadProduct(productID);
 
                 if (product != null) {
                     double updatedQuantity = product.getQuantity() - lineQuantity;
                     product.setQuantity(updatedQuantity);
-                    dataAdapter.saveProduct(product); // Update the product's quantity
+                    dao.saveProduct(product); // Update the product's quantity
                 }
             }
 
@@ -112,7 +114,7 @@ public class OrderViewController extends JFrame implements ActionListener {
             receipt.setCreditCardNumber(String.valueOf(order.getCreditCard().getCardNumber()));
 
             // Use the DataAdapter to save the receipt to the database
-            if (dataAdapter.saveReceipt(receipt)) {
+            if (dao.saveReceipt(receipt)) {
                 JOptionPane.showMessageDialog(null, "Order created and saved successfully!");
 
                 showReceiptDialog(receipt);
@@ -138,7 +140,7 @@ public class OrderViewController extends JFrame implements ActionListener {
             return;
         }
 
-        Product product = Application.getInstance().getDataAdapter().loadProduct(Integer.parseInt(id));
+        Product product = Application.getInstance().getDao().loadProduct(Integer.parseInt(id));
         if (product == null) {
             JOptionPane.showMessageDialog(null, "This product does not exist!");
             return;
@@ -255,7 +257,7 @@ public class OrderViewController extends JFrame implements ActionListener {
                         address.setZipCode(zipCode);
 
                         // Save shipping address using DataAdapter
-                        if (dataAdapter.saveShippingAddress(address)) {
+                        if (dao.saveShippingAddress(address)) {
                             order.setShippingAddress(address);
 
                             // After processing, close the dialog
@@ -349,7 +351,7 @@ public class OrderViewController extends JFrame implements ActionListener {
                         card.setBillingAddress(billingAddress);
 
                         // Save credit card using DataAdapter
-                        if (dataAdapter.saveCreditCard(card)) {
+                        if (dao.saveCreditCard(card)) {
                             order.setCreditCard(card);
 
                             // After processing, close the dialog

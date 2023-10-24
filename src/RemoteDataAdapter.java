@@ -4,6 +4,8 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 import java.io.IOException;
 
+import static util.PortAddresses.MAIN_SERVER_PORT;
+
 public class RemoteDataAdapter implements DataAccess {
     private Gson gson = new Gson();
     private Socket s = null;
@@ -12,11 +14,13 @@ public class RemoteDataAdapter implements DataAccess {
 
     @Override
     public void connect() {
+        System.out.println("connect");
         try {
-            s = new Socket("localhost", 5056);
+            s = new Socket("localhost", MAIN_SERVER_PORT);
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            System.out.println("connect Ex:" + ex.toString());
             ex.printStackTrace();
         }
     }
@@ -190,6 +194,58 @@ public class RemoteDataAdapter implements DataAccess {
         }
 
         return false;
+    }
+
+    @Override
+    public User loadUser(String username, String password) {
+        System.out.println("loadUser()");
+        connect();
+        System.out.println("Setting up RequstModel");
+        RequestModel req = new RequestModel();
+        req.code = RequestModel.LOAD_USER_REQUEST;
+
+        // Create a User object with the provided username and password
+        User user = new User(username, password);
+        System.out.println("User : " + user.toString());
+
+        req.body = gson.toJson(user);
+
+        String json = gson.toJson(req);
+        System.out.println("json: " + json);
+        try {
+            System.out.println("Inside try");
+            dos.writeUTF(json);
+            System.out.println("dosWrite Complete ");
+            String received = dis.readUTF();  // No data received
+            System.out.println("Received: " + received);
+
+            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+
+            System.out.println("res: " + res.toString() + "  code: " + res.code + " body: "+ res.body);
+
+
+
+            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
+                System.out.println("The request is not recognized by the Server");
+                return null;
+            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
+                System.out.println("The Server could not find a user with that username and password!");
+                return null;
+            } else {
+                User loadedUser = gson.fromJson(res.body, User.class);
+                System.out.println("Receiving a User object");
+                System.out.println("Username = " + loadedUser.getUsername());
+                return loadedUser;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("exception: " + ex.toString() );
+            ex.printStackTrace();
+        }
+            disconnect();
+
+
+        return null;
     }
 
     @Override

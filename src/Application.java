@@ -1,9 +1,8 @@
+import client.MainClient;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import client.MainClient;
-import server.MainServer;
 
 public class Application {
 
@@ -24,7 +23,9 @@ public class Application {
         return connection;
     }
 
-    private DataAdapter dataAdapter;
+   // private DataAdapter dataAdapter;
+
+    private RemoteDataAdapter dao;
 
     private User currentUser = null;
 
@@ -60,9 +61,17 @@ public class Application {
         return loginScreenController;
     }
 
-    public DataAdapter getDataAdapter() {
-        return dataAdapter;
+  //  public DataAdapter getDataAdapter() {
+   //     return dataAdapter;
+  //  }
+    public RemoteDataAdapter getDao() {
+        return dao;
     }
+
+    public void setDao(RemoteDataAdapter dao) {
+        this.dao = dao;
+    }
+
 
     private Connection setConnection() {
         if (connection == null) {
@@ -85,7 +94,11 @@ public class Application {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection(url);
-            dataAdapter = new DataAdapter(connection);
+          //  dataAdapter = new DataAdapter(connection);
+
+            dao = new RemoteDataAdapter();
+            dao.connect();
+
         } catch (ClassNotFoundException ex) {
             System.out.println("SQLite is not installed. System exits with error!");
             ex.printStackTrace();
@@ -101,19 +114,18 @@ public class Application {
     public static void main(String[] args) {
         try {
             Application.getInstance().getLoginScreenController().setVisible(true); // Show Login Screen
-            Thread thread = new Thread(() -> {
-                System.out.println("Thread Started");
-                try {
-                    Thread.sleep(2000);
-                    System.out.println("Thread after 5s");
-                    MainClient.main(null);
-                } catch (Exception e) {
-                    System.out.println(e.toString());
-                    e.printStackTrace();
-                }
-            });
-            thread.start();
-            MainServer.main(null);
+//            Thread thread = new Thread(() -> {
+//                System.out.println("Thread Started");
+//                try {
+//                    Thread.sleep(2000);
+////                    MainClient.main(null);
+//                } catch (Exception e) {
+//                    System.out.println(e.toString());
+//                    e.printStackTrace();
+//                }
+//            });
+//            thread.start();
+//            DataServer.main(null);
 
         } catch (Exception e) {
             System.out.println("e2: "+e.toString());

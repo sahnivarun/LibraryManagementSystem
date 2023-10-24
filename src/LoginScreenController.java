@@ -49,7 +49,10 @@ public class LoginScreenController extends JFrame implements ActionListener {
             String password = txtPassword.getText().trim();
 
             System.out.println("Login with username = " + username + " and password = " + password);
-            User user = Application.getInstance().getDataAdapter().loadUser(username, password);
+            System.out.println("Loading Dao");
+            User user = Application.getInstance().getDao().loadUser(username, password);
+
+            System.out.println("User: " + user);
 
             if (user == null) {
                 JOptionPane.showMessageDialog(null, "This user does not exist!");

@@ -1,10 +1,21 @@
 public class Product {
-    private int productID;
 
+    private int productID;
     private int sellerID;
     private String name;
     private double price;
     private double quantity;
+
+    public Product(){
+
+    }
+    public Product(int productID, int sellerID, String name, double price, double quantity) {
+        this.productID = productID;
+        this.sellerID = sellerID;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
 
     public double getPrice() {
         return price;

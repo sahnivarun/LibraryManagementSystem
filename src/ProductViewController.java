@@ -123,7 +123,7 @@ public class ProductViewController extends JFrame implements ActionListener {
 //
 //        else{
             // Store the product to the database and check if it was saved successfully
-            if (Application.getInstance().getDataAdapter().saveProduct(product)) {
+            if (Application.getInstance().getDao().saveProduct(product)) {
                 JOptionPane.showMessageDialog(null, "Product Saved Successfully");
             } else {
                 JOptionPane.showMessageDialog(null, "Failed to save the product. Please check the data and try again.");
@@ -142,7 +142,7 @@ public class ProductViewController extends JFrame implements ActionListener {
             return;
         }
 
-        Product product = Application.getInstance().getDataAdapter().loadProduct(productID);
+        Product product = Application.getInstance().getDao().loadProduct(productID);
 
         if (product == null) {
             JOptionPane.showMessageDialog(null, "This product ID does not exist in the database!");

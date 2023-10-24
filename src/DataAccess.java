@@ -14,6 +14,8 @@ public interface DataAccess {
 
     boolean saveReceipt(Receipt receipt);
 
+    User loadUser(String username, String password);
+
 }
 
 
