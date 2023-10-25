@@ -16,6 +16,7 @@ public interface DataAccess {
 
     User loadUser(String username, String password);
 
+    int getOrderCount();
 }
 
 

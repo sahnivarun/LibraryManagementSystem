@@ -135,7 +135,6 @@ public class OrderViewController extends JFrame implements ActionListener {
 
                 showReceiptDialog(receipt);
 
-                // Now, you can reset the order and clear the table
                 order = new Order();
                 items.setRowCount(0);
                 labTotal.setText("Total: $0.0");
@@ -337,7 +336,7 @@ public class OrderViewController extends JFrame implements ActionListener {
         paymentPanel.add(lblBillingAddress);
         paymentPanel.add(txtBillingAddress);
 
-        // Create a single OK button to save payment information and close the dialog
+        // single OK button to save payment information and close the dialog
         JButton btnOK = new JButton("OK");
 
         btnOK.addActionListener(new ActionListener() {
@@ -393,7 +392,6 @@ public class OrderViewController extends JFrame implements ActionListener {
     }
 
     private void showReceiptDialog(Receipt receipt) {
-        // Create a dialog to display the receipt information
         JDialog receiptDialog = new JDialog(this, "Receipt", true);
         receiptDialog.setLayout(new BorderLayout());
 
@@ -404,9 +402,13 @@ public class OrderViewController extends JFrame implements ActionListener {
         DecimalFormat df = new DecimalFormat("#.##");
         String formattedTotalCost = df.format(totalCostWithTax);
 
+        int orderCount = dao.getOrderCount();
+        receipt.setReceiptNumber(orderCount);
+        System.out.println("OrderCount"+orderCount);
+
         // Add receipt information labels
-        JLabel lblReceiptNumber = new JLabel("Receipt Number: " + receipt.getOrderId());
-        JLabel lblOrderID = new JLabel("Order ID: " + receipt.getOrderId());
+        JLabel lblReceiptNumber = new JLabel("Receipt Number: " + orderCount);
+        JLabel lblOrderID = new JLabel("Order ID: " + orderCount);
         JLabel lblDateTime = new JLabel("Date and Time: " + receipt.getDateTime());
 
         JLabel lblProducts = new JLabel("Products: " + receipt.getProducts());

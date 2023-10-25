@@ -24,24 +24,7 @@ public class SQLiteDataAdapter implements DataAccess {
                 System.out.println("The connection object is " + connection);
 
             System.out.println("Connection to SQLite has been established.");
-            /* Test data!!!
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Product");
-            System.out.println("rs: " + rs);
 
-            while (rs.next())
-                System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
-            */
-//            DatabaseMetaData metaData = conn.getMetaData();
-//            ResultSet tables = metaData.getTables(null, null, "%", new String[] { "TABLE" });
-//
-//            System.out.println("Table Names:");
-//            while (tables.next()) {
-//                String tableName = tables.getString("TABLE_NAME");
-//                System.out.println(tableName);
-//            }
-//
-//            tables.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -338,15 +321,15 @@ public class SQLiteDataAdapter implements DataAccess {
 
     public boolean saveReceipt(Receipt receipt) {
         try {
-            int receiptOrderID = getOrderCount();
+            int receiptID = getOrderCount();
 
-            receipt.setOrderId(receiptOrderID);
-            receipt.setUserId(receiptOrderID);
-            receipt.setReceiptNumber(receiptOrderID);
+            receipt.setOrderId(receiptID);
+            receipt.setUserId(receiptID);
+            receipt.setReceiptNumber(receiptID);
 
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, CreditCardNumber, Products) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            statement.setInt(1, getOrderCount());
-            statement.setInt(2, getOrderCount());
+            statement.setInt(1, receipt.getOrderId());
+            statement.setInt(2, receipt.getUserId());
             statement.setString(3, receipt.getDateTime());
             statement.setDouble(4, receipt.getTotalCost());
             statement.setString(5, receipt.getShippingAddress());

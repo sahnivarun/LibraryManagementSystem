@@ -7,6 +7,7 @@ import java.io.IOException;
 import static util.PortAddresses.MAIN_SERVER_PORT;
 
 public class RemoteDataAdapter implements DataAccess {
+    private int orderCount;
     private Gson gson = new Gson();
     private Socket s = null;
     private DataInputStream dis = null;
@@ -223,8 +224,6 @@ public class RemoteDataAdapter implements DataAccess {
 
             System.out.println("res: " + res.toString() + "  code: " + res.code + " body: "+ res.body);
 
-
-
             if (res.code == ResponseModel.UNKNOWN_REQUEST) {
                 System.out.println("The request is not recognized by the Server");
                 return null;
@@ -287,4 +286,40 @@ public class RemoteDataAdapter implements DataAccess {
 
         return null;
     }
+
+    @Override
+    public int getOrderCount() {
+        connect();
+
+        // Create a request to fetch the order count
+        RequestModel req = new RequestModel();
+        req.code = RequestModel.GET_ORDER_COUNT_REQUEST;
+
+        try {
+            String json = gson.toJson(req);
+            dos.writeUTF(json);
+
+            // Receive the response from the server
+            String received = dis.readUTF();
+            System.out.println("Server response: " + received);
+
+            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+
+            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
+                System.out.println("The request is not recognized by the Server");
+                return -1; // Return an error value
+            } else {
+                int orderCount = Integer.parseInt(res.body); // Fetch and return the order count
+                System.out.println("Order count received from the server: " + orderCount);
+                return orderCount;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            disconnect(); // Assuming this method closes the connection to the server
+        }
+
+        return -1; // Return an error value if there's an issue
+    }
+
 }

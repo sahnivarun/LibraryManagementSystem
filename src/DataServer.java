@@ -4,12 +4,6 @@
 
 import java.io.*;
 import java.sql.Date;
-import java.text.*;
-import java.util.*;
-import java.net.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
@@ -49,17 +43,10 @@ public class DataServer
         while (true)
         {
             Socket s = null;
-
             try
-            {
-                // socket object to receive incoming client requests
-//                if (nClients < 1){
-                    s = ss.accept();
+            {       s = ss.accept();
                     nClients++;
 
-//                }else {
-//                    return;
-//                }
 
                 System.out.println("A new client is connected : " + s);
 
@@ -123,70 +110,58 @@ class ClientHandler extends Thread {
                     case RequestModel.SAVE_PRODUCT_REQUEST:
                         handleSaveProductRequest(req, res, dao, connection);
                         break;
-//                    case RequestModel.DELETE_PRODUCT_REQUEST:
-//                        handleDeleteProductRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.DELETE_PRODUCT_REQUEST:
+                        handleDeleteProductRequest(req, res, dao, connection);
+                        break;
                     case RequestModel.SAVE_ORDER_REQUEST:
                         handleSaveOrderRequest(req, res, dao, connection);
                         break;
-//                    case RequestModel.LOAD_ORDER_REQUEST:
-//                        handleLoadOrderRequest(req,res,dao,connection);
-//                        break;
-//                    case RequestModel.UPDATE_ORDER_REQUEST:
-//                        handleUpdateOrderRequest(req, res, dao, connection);
-//                        break;
-//                    case RequestModel.DELETE_ORDER_REQUEST:
-//                        handleDeleteOrderRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.DELETE_ORDER_REQUEST:
+                        handleDeleteOrderRequest(req, res, dao, connection);
+                        break;
                     case RequestModel.LOAD_USER_REQUEST:
                         System.out.println("Switch Load User ");
                         handleLoadUserRequest(req, res, connection);
                         break;
-//                    case RequestModel.SAVE_USER_REQUEST:
-//                        handleSaveUserRequest();
-//                        break;
-//                    case RequestModel.UPDATE_USER_REQUEST:
-//                        handleUpdateUserRequest();
-//                        break;
-//                    case RequestModel.DELETE_USER_REQUEST:
-//                        handleDeleteUserRequest();
-//                        break;
+                    case RequestModel.SAVE_USER_REQUEST:
+                        handleSaveUserRequest(req, res, dao, connection);
+                        break;
+                    case RequestModel.UPDATE_USER_REQUEST:
+                        handleUpdateUserRequest(req, res, dao, connection);
+                        break;
+                    case RequestModel.DELETE_USER_REQUEST:
+                        handleDeleteUserRequest(req, res, dao, connection);
+                        break;
                     case RequestModel.SAVE_SHIPPING_ADDRESS_REQUEST:
                         handleSaveShippingAddressRequest(req, res, dao, connection);
                         break;
-//                    case RequestModel.UPDATE_SHIPPING_ADDRESS_REQUEST:
-//                        handleUpdateShippingAddressRequest(req, res, dao, connection);
-//                        break;
-//                    case RequestModel.LOAD_SHIPPING_ADDRESS_REQUEST:
-//                        handleLoadShippingAddressRequest();
-//                        break;
-//                    case RequestModel.DELETE_SHIPPING_ADDRESS_REQUEST:
-//                        handleDeleteShippingAddressRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.UPDATE_SHIPPING_ADDRESS_REQUEST:
+                        handleUpdateShippingAddressRequest(req, res, dao, connection);
+                        break;
+                    case RequestModel.DELETE_SHIPPING_ADDRESS_REQUEST:
+                        handleDeleteShippingAddressRequest(req, res, dao, connection);
+                        break;
                     case RequestModel.SAVE_CREDIT_CARD_REQUEST:
                         handleSaveCreditCardRequest(req, res, dao, connection);
                         break;
-//                    case RequestModel.UPDATE_CREDIT_CARD_REQUEST:
-//                        handleUpdateCreditCardRequest(req, res, dao, connection);
-//                        break;
-//                    case RequestModel.LOAD_CREDIT_CARD_REQUEST:
-//                        handleLoadCreditCardRequest();
-//                        break;
-//                    case RequestModel.DELETE_CREDIT_CARD_REQUEST:
-//                        handleDeleteCreditCardRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.DELETE_CREDIT_CARD_REQUEST:
+                        handleDeleteCreditCardRequest(req, res, dao, connection);
+                        break;
                     case RequestModel.SAVE_RECEIPT_REQUEST:
                         handleSaveReceiptRequest(req, res, dao, connection);
                         break;
-//                    case RequestModel.UPDATE_RECEIPT_REQUEST:
-//                        handleUpdateReceiptRequest(req, res, dao, connection);
-//                        break;
-//                    case RequestModel.LOAD_RECEIPT_REQUEST:
-//                        handleLoadReceiptRequest();
-//                        break;
-//                    case RequestModel.DELETE_RECEIPT_REQUEST:
-//                        handleDeleteReceiptRequest(req, res, dao, connection);
-//                        break;
+                    case RequestModel.GET_ORDER_COUNT_REQUEST:
+                        handleGetOrderCountRequest(req, res, dao, connection);
+                        break;
+                    case RequestModel.UPDATE_RECEIPT_REQUEST:
+                        handleUpdateReceiptRequest(req, res, dao, connection);
+                        break;
+                    case RequestModel.LOAD_RECEIPT_REQUEST:
+                        handleLoadReceiptRequest(req,res,dao,connection);
+                        break;
+                    case RequestModel.DELETE_RECEIPT_REQUEST:
+                        handleDeleteReceiptRequest(req, res, dao, connection);
+                        break;
                     default:
                         handleUnknownRequest(req);
                 }
@@ -197,7 +172,6 @@ class ClientHandler extends Thread {
                 dos.flush();
             } catch (EOFException eofe) {
                 System.err.println("EOFException: " + eofe.getMessage());
-                // System.err.println("Received data: " + received);
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -445,6 +419,13 @@ class ClientHandler extends Thread {
             Gson gson = new Gson();
             Receipt receipt = gson.fromJson(req.body, Receipt.class);
 
+            // Get the next available receipt number
+            int receiptNumber = dao.getOrderCount();
+
+            receipt.setReceiptNumber(receiptNumber);
+            receipt.setUserId(receiptNumber);
+            receipt.setOrderId(receiptNumber);
+
             // Create a PreparedStatement for inserting receipt information into the database
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, CreditCardNumber, Products) VALUES (?, ?, ?, ?, ?, ?, ?)");
             stmt.setInt(1, receipt.getOrderId());
@@ -473,14 +454,358 @@ class ClientHandler extends Thread {
         }
     }
 
-    //TODO: All below functions to be implemented
-    private static void handleExitRequest(){
+    private static void handleGetOrderCountRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int orderCount = dao.getOrderCount();
 
+            // Set the response code to OK
+            res.code = ResponseModel.OK;
+
+            // Convert the orderCount to a string and set it as the response body
+            res.body = String.valueOf(orderCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error getting the order count from the database.";
+        }
     }
 
-    private static void handleUnknownRequest(RequestModel res){
+    // Handle Delete Product Request
+    private static void handleDeleteProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int id = Integer.parseInt(req.body);
+            // Create a PreparedStatement for deleting a product by ID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Products WHERE ProductID = ?");
+            stmt.setInt(1, id);
 
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Product deleted successfully
+                res.code = ResponseModel.OK;
+                res.body = "Product deleted successfully.";
+            } else {
+                // Product not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Product not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the product from the database.";
+        }
     }
+
+    // Handle Delete Order Request
+    private static void handleDeleteOrderRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int id = Integer.parseInt(req.body);
+            // Create a PreparedStatement for deleting an order by ID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Orders WHERE OrderID = ?");
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Order deleted successfully
+                res.code = ResponseModel.OK;
+                res.body = "Order deleted successfully.";
+            } else {
+                // Order not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Order not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the order from the database.";
+        }
+    }
+
+    // Handle Save User Request
+    private static void handleSaveUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            Gson gson = new Gson();
+            // Parse the JSON data from the request into a User object
+            User user = gson.fromJson(req.body, User.class);
+
+            // Create a PreparedStatement for inserting user information into the database
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Users (Username, Password, Email) VALUES (?, ?, ?)");
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getFullName());
+
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // User information was successfully saved
+                res.code = ResponseModel.OK;
+                res.body = "User information saved successfully.";
+            } else {
+                // User information could not be saved
+                res.code = ResponseModel.ERROR;
+                res.body = "Error saving the user information to the database.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error saving the user information to the database.";
+        }
+    }
+
+    // Handle Update User Request
+    private static void handleUpdateUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            Gson gson = new Gson();
+            // Parse the JSON data from the request into a User object
+            User user = gson.fromJson(req.body, User.class);
+
+            // Create a PreparedStatement for updating user information in the database
+            PreparedStatement stmt = connection.prepareStatement("UPDATE Users SET Username = ?, Password = ?, Email = ? WHERE UserID = ?");
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getFullName());
+            stmt.setInt(4, user.getUserID());
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // User information updated successfully
+                res.code = ResponseModel.OK;
+                res.body = "User information updated successfully.";
+            } else {
+                // User not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "User not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error updating the user information in the database.";
+        }
+    }
+
+    // Handle Delete User Request
+    private static void handleDeleteUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int id = Integer.parseInt(req.body);
+            // Create a PreparedStatement for deleting a user by ID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Users WHERE UserID = ?");
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // User deleted successfully
+                res.code = ResponseModel.OK;
+                res.body = "User deleted successfully.";
+            } else {
+                // User not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "User not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the user from the database.";
+        }
+    }
+
+    // Handle Update Shipping Address Request
+    private static void handleUpdateShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            Gson gson = new Gson();
+            // Parse the JSON data from the request into a ShippingAddress object
+            ShippingAddress shippingAddress = gson.fromJson(req.body, ShippingAddress.class);
+
+            // Create a PreparedStatement for updating a shipping address by ID
+            PreparedStatement stmt = connection.prepareStatement("UPDATE ShippingAddresses SET UserID = ?, Address = ? WHERE AddressID = ?");
+            stmt.setInt(1, shippingAddress.getAddressID());
+            stmt.setString(2, shippingAddress.getStreetNumberAndName());
+            stmt.setString(3, shippingAddress.getApartmentOrUnitNumber());
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Shipping address updated successfully
+                res.code = ResponseModel.OK;
+                res.body = "Shipping address updated successfully.";
+            } else {
+                // Shipping address not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Shipping address not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error updating the shipping address in the database.";
+        }
+    }
+
+    // Handle Delete Shipping Address Request
+    private static void handleDeleteShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int id = Integer.parseInt(req.body);
+            // Create a PreparedStatement for deleting a shipping address by ID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM ShippingAddresses WHERE AddressID = ?");
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Shipping address deleted successfully
+                res.code = ResponseModel.OK;
+                res.body = "Shipping address deleted successfully.";
+            } else {
+                // Shipping address not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Shipping address not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the shipping address from the database.";
+        }
+    }
+
+    // Handle Delete Credit Card Request
+    private static void handleDeleteCreditCardRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int id = Integer.parseInt(req.body);
+            // Create a PreparedStatement for deleting a credit card by ID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM CreditCards WHERE CardID = ?");
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Credit card deleted successfully
+                res.code = ResponseModel.OK;
+                res.body = "Credit card deleted successfully.";
+            } else {
+                // Credit card not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Credit card not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the credit card from the database.";
+        }
+    }
+
+    // Handle Update Receipt Request
+    private static void handleUpdateReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            Gson gson = new Gson();
+            // Parse the JSON data from the request into a Receipt object
+            Receipt receipt = gson.fromJson(req.body, Receipt.class);
+
+            // PreparedStatement for updating a receipt by ID
+            PreparedStatement stmt = connection.prepareStatement("UPDATE Receipt SET OrderID = ?, UserID = ?, DateTime = ?, TotalCost = ?, ShippingAddress = ?, CreditCardNumber = ?, Products = ? WHERE ReceiptNumber = ?");
+            stmt.setInt(1, receipt.getOrderId());
+            stmt.setInt(2, receipt.getUserId());
+            stmt.setString(3, receipt.getDateTime());
+            stmt.setDouble(4, receipt.getTotalCost());
+            stmt.setString(5, receipt.getShippingAddress());
+            stmt.setString(6, receipt.getCreditCardNumber());
+            stmt.setString(7, receipt.getProducts());
+            stmt.setInt(8, receipt.getReceiptNumber());
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Receipt updated successfully
+                res.code = ResponseModel.OK;
+                res.body = "Receipt updated successfully.";
+            } else {
+                // Receipt not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Receipt not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error updating the receipt in the database.";
+        }
+    }
+
+    // Handle Load Receipt Request
+    private static void handleLoadReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int id = Integer.parseInt(req.body);
+            // PreparedStatement for loading a receipt by ID
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Receipt WHERE ReceiptNumber = ?");
+            stmt.setInt(1, id);
+            Gson gson = new Gson();
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                // Receipt object from the result and set it in the response
+                Receipt receipt = new Receipt(
+                        id,
+                        resultSet.getInt("OrderID"),
+                        resultSet.getInt("UserID"),
+                        resultSet.getString("DateTime"),
+                        resultSet.getDouble("TotalCost"),
+                        resultSet.getString("ShippingAddress"),
+                        resultSet.getString("CreditCardNumber"),
+                        resultSet.getString("Products")
+                );
+                res.code = ResponseModel.OK;
+                res.body = gson.toJson(receipt);
+            } else {
+                // Receipt not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Receipt not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error loading the receipt from the database.";
+        }
+    }
+
+    // Handle Delete Receipt Request
+    private static void handleDeleteReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            int id = Integer.parseInt(req.body);
+            // PreparedStatement for deleting a receipt by ID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Receipt WHERE ReceiptNumber = ?");
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Receipt deleted successfully
+                res.code = ResponseModel.OK;
+                res.body = "Receipt deleted successfully.";
+            } else {
+                // Receipt not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "Receipt not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the receipt from the database.";
+        }
+    }
+
+    // Handle Exit Request
+    private static void handleExitRequest() {
+        System.out.println("Server is exiting.");
+        System.exit(0);
+    }
+
+    // Handle Unknown Request
+    private static void handleUnknownRequest(RequestModel res) {
+        // This function is called when the server receives an unknown request code.
+        System.out.println("Received an unknown request.");
+        res.code = ResponseModel.UNKNOWN_REQUEST;
+        res.body = "Request not recognized by the server.";
+    }
+
 
 
 }

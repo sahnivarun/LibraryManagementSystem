@@ -59,9 +59,6 @@ public class Application {
         return loginScreenController;
     }
 
-  //  public DataAdapter getDataAdapter() {
-   //     return dataAdapter;
-  //  }
     public RemoteDataAdapter getDao() {
         return dao;
     }
@@ -69,7 +66,6 @@ public class Application {
     public void setDao(RemoteDataAdapter dao) {
         this.dao = dao;
     }
-
 
     private Connection setConnection() {
         if (connection == null) {
@@ -105,25 +101,11 @@ public class Application {
             System.out.println("SQLite database is not ready. System exits with error!" + ex.getMessage());
             System.exit(2);
         }
-
-
     }
 
     public static void main(String[] args) {
         try {
             Application.getInstance().getLoginScreenController().setVisible(true); // Show Login Screen
-//            Thread thread = new Thread(() -> {
-//                System.out.println("Thread Started");
-//                try {
-//                    Thread.sleep(2000);
-////                    MainClient.main(null);
-//                } catch (Exception e) {
-//                    System.out.println(e.toString());
-//                    e.printStackTrace();
-//                }
-//            });
-//            thread.start();
-//            DataServer.main(null);
 
         } catch (Exception e) {
             System.out.println("e2: "+e.toString());

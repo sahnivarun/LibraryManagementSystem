@@ -26,6 +26,7 @@ public class RequestModel {
     public static final int UPDATE_RECEIPT_REQUEST = 77;
     public static final int LOAD_RECEIPT_REQUEST = 777;
     public static final int DELETE_RECEIPT_REQUEST = 7777;
+    public static final int GET_ORDER_COUNT_REQUEST = 8;
 
     public int code;
     public String body;

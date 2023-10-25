@@ -114,21 +114,12 @@ public class ProductViewController extends JFrame implements ActionListener {
         product.setPrice(productPrice);
         product.setQuantity(productQuantity);
 
-//        // Check if the product with the same ID already exists in the database
-//        Product existingProduct = Application.getInstance().getDataAdapter().loadProduct(productID);
-//
-//        if(existingProduct != null){
-//            JOptionPane.showMessageDialog(null, "Product with this ID already exists. Please use a different product ID.");
-//        }
-//
-//        else{
-            // Store the product to the database and check if it was saved successfully
-            if (Application.getInstance().getDao().saveProduct(product)) {
-                JOptionPane.showMessageDialog(null, "Product Saved Successfully");
-            } else {
-                JOptionPane.showMessageDialog(null, "Failed to save the product. Please check the data and try again.");
-            }
-       // }
+        // Store the product to the database and check if it was saved successfully
+        if (Application.getInstance().getDao().saveProduct(product)) {
+            JOptionPane.showMessageDialog(null, "Product Saved Successfully");
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to save the product. Please check the data and try again.");
+        }
 
     }
 
