@@ -336,21 +336,22 @@ public class SQLiteDataAdapter implements DataAccess {
         }
     }
 
-    // Change #2: Add a method to save a receipt.
     public boolean saveReceipt(Receipt receipt) {
         try {
             int receiptOrderID = getOrderCount();
 
             receipt.setOrderId(receiptOrderID);
             receipt.setUserId(receiptOrderID);
+            receipt.setReceiptNumber(receiptOrderID);
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, CreditCardNumber) VALUES (?, ?, ?, ?, ?, ?)");
-            statement.setInt(1, receiptOrderID);
-            statement.setInt(2, receiptOrderID);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, CreditCardNumber, Products) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            statement.setInt(1, getOrderCount());
+            statement.setInt(2, getOrderCount());
             statement.setString(3, receipt.getDateTime());
             statement.setDouble(4, receipt.getTotalCost());
             statement.setString(5, receipt.getShippingAddress());
             statement.setString(6, receipt.getCreditCardNumber());
+            statement.setString(7, receipt.getProducts());
 
             int rowsAffected = statement.executeUpdate();
             statement.close();

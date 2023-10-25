@@ -10,10 +10,20 @@ public class Receipt {
     private String shippingAddress;
     private String creditCardNumber;
 
+    public String getProducts() {
+        return products;
+    }
+
+    public void setProducts(String products) {
+        this.products = products;
+    }
+
+    private String products;
+
     public Receipt() {
     }
 
-    public Receipt(int receiptNumber, int orderId, int userId, String dateTime, double totalCost, String shippingAddress, String creditCardNumber) {
+    public Receipt(int receiptNumber, int orderId, int userId, String dateTime, double totalCost, String shippingAddress, String creditCardNumber, String products) {
         this.receiptNumber = receiptNumber;
         this.orderId = orderId;
         this.userId = userId;
@@ -21,6 +31,7 @@ public class Receipt {
         this.totalCost = totalCost;
         this.shippingAddress = shippingAddress;
         this.creditCardNumber = creditCardNumber;
+        this.products= products;
     }
 
     // Getters and setters for all fields

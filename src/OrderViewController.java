@@ -113,6 +113,22 @@ public class OrderViewController extends JFrame implements ActionListener {
             receipt.setShippingAddress(order.getShippingAddress().getFullAddress());
             receipt.setCreditCardNumber(String.valueOf(order.getCreditCard().getCardNumber()));
 
+            // Build the product details string from the order lines
+            StringBuilder productDetails = new StringBuilder();
+            for (OrderLine line : order.getLines()) {
+                Product orderedProduct = dao.loadProduct(line.getProductID());
+                if (orderedProduct != null) {
+                    String productDetail = orderedProduct.getName() + " x " + line.getQuantity();
+                    if (productDetails.length() > 0) {
+                        productDetails.append(", ");
+                    }
+                    productDetails.append(productDetail);
+                }
+            }
+
+            receipt.setProducts(productDetails.toString()); // Set the product details in the receipt
+
+
             // Use the DataAdapter to save the receipt to the database
             if (dao.saveReceipt(receipt)) {
                 JOptionPane.showMessageDialog(null, "Order created and saved successfully!");
@@ -392,6 +408,10 @@ public class OrderViewController extends JFrame implements ActionListener {
         JLabel lblReceiptNumber = new JLabel("Receipt Number: " + receipt.getOrderId());
         JLabel lblOrderID = new JLabel("Order ID: " + receipt.getOrderId());
         JLabel lblDateTime = new JLabel("Date and Time: " + receipt.getDateTime());
+
+        JLabel lblProducts = new JLabel("Products: " + receipt.getProducts());
+        receiptPanel.add(lblProducts);
+
         JLabel lblShippingAddress = new JLabel("Shipping Address: " + receipt.getShippingAddress());
         JLabel lblTotalCost = new JLabel("Total Cost(with 8% Tax): $" + formattedTotalCost);
         JLabel lblCreditCardNumber = new JLabel("Credit Card Number: " + receipt.getCreditCardNumber());
@@ -399,6 +419,7 @@ public class OrderViewController extends JFrame implements ActionListener {
         receiptPanel.add(lblReceiptNumber);
         receiptPanel.add(lblOrderID);
         receiptPanel.add(lblDateTime);
+        receiptPanel.add(lblProducts);
         receiptPanel.add(lblShippingAddress);
         receiptPanel.add(lblTotalCost);
         receiptPanel.add(lblCreditCardNumber);
