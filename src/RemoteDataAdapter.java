@@ -166,30 +166,64 @@ public class RemoteDataAdapter implements DataAccess {
         return false;
     }
 
+//    @Override
+//    public boolean saveShippingAddress(ShippingAddress address) {
+//        //connect();
+//        RequestModel req = new RequestModel();
+//        req.code = RequestModel.SAVE_SHIPPING_ADDRESS_REQUEST;
+//        req.body = gson.toJson(address);
+//
+//        String json = gson.toJson(req);
+//        try {
+//            dos.writeUTF(json);
+//
+//            String received = dis.readUTF();
+//
+//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+//
+//            if (res.code == ResponseModel.OK) {
+//                System.out.println("Shipping address saved on the server successfully.");
+//                return true;
+//            } else {
+//                System.out.println("Failed to save the shipping address on the server.");
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            System.out.println("Error while saving the shipping address on the server.");
+//        }
+//
+//        return false;
+//    }
+
     @Override
-    public boolean saveShippingAddress(ShippingAddress address) {
-        //connect();
+    public boolean saveStudentDetails(Student student) {
+        // Connect to the server (establish communication with the server)
+        // This may involve setting up a socket or making an HTTP request.
+
         RequestModel req = new RequestModel();
-        req.code = RequestModel.SAVE_SHIPPING_ADDRESS_REQUEST;
-        req.body = gson.toJson(address);
+        req.code = RequestModel.SAVE_STUDENT_REQUEST;
+        req.body = gson.toJson(student);
 
         String json = gson.toJson(req);
         try {
+            // Send the JSON request to the server
             dos.writeUTF(json);
 
+            // Receive the response from the server
             String received = dis.readUTF();
 
+            // Parse the response into a ResponseModel
             ResponseModel res = gson.fromJson(received, ResponseModel.class);
 
             if (res.code == ResponseModel.OK) {
-                System.out.println("Shipping address saved on the server successfully.");
+                System.out.println("Student details saved on the server successfully.");
                 return true;
             } else {
-                System.out.println("Failed to save the shipping address on the server.");
+                System.out.println("Failed to save the student details on the server.");
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("Error while saving the shipping address on the server.");
+            System.out.println("Error while saving the student details on the server.");
         }
 
         return false;
@@ -314,7 +348,6 @@ public class RemoteDataAdapter implements DataAccess {
 //    public Product loadProduct(int id) {
 //        return null;
 //    }
-
 
     @Override
     public int getOrderCount() {

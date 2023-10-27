@@ -8,9 +8,7 @@ public interface DataAccess {
 
     boolean saveOrderBook(OrderBook orderBook);
 
-    boolean saveShippingAddress(ShippingAddress address);
-
-    //boolean saveCreditCard(CreditCard card);
+    boolean saveStudentDetails(Student student);
 
     boolean saveReceipt(Receipt receipt);
 

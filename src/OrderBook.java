@@ -9,7 +9,15 @@ public class OrderBook {
     private String orderDate;
     private String returnDate;
 
-    private ShippingAddress shippingAddress;
+    private Student student;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     private List<OrderLineBook> lines;
 
@@ -47,14 +55,6 @@ public class OrderBook {
 
     public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
-    }
-
-    public ShippingAddress getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(ShippingAddress shippingAddress) {
-        this.shippingAddress = shippingAddress;
     }
 
     public List<OrderLineBook> getLines() {

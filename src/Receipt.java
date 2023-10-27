@@ -6,8 +6,8 @@ public class Receipt {
     private int orderId;
     private int studentId;
     private String dateTime;
-    private double totalCost;
-    private String shippingAddress;
+
+    private String studentDetails;
 
     public String getBooks() {
         return books;
@@ -22,13 +22,12 @@ public class Receipt {
     public Receipt() {
     }
 
-    public Receipt(int receiptNumber, int orderId, int userId, String dateTime, double totalCost, String shippingAddress, String books) {
+    public Receipt(int receiptNumber, int orderId, int studentId, String dateTime, String studentDetails, String books) {
         this.receiptNumber = receiptNumber;
         this.orderId = orderId;
-        this.studentId = userId;
+        this.studentId = studentId;
         this.dateTime = dateTime;
-        this.totalCost = totalCost;
-        this.shippingAddress = shippingAddress;
+        this.studentDetails = studentDetails;
         this.books= books;
     }
 
@@ -50,11 +49,11 @@ public class Receipt {
         this.orderId = orderId;
     }
 
-    public int getUserId() {
+    public int getStudentId() {
         return studentId;
     }
 
-    public void setUserId(int studentId) {
+    public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
 
@@ -62,30 +61,20 @@ public class Receipt {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public void setDateTime(String dateTime) { this.dateTime = dateTime; }
+
+    public String getStudentDetails() {
+        return studentDetails;
     }
 
-    public double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setStudentDetails(String studentDetails) {
+        this.studentDetails = studentDetails;
     }
 
     @Override
     public String toString() {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String formattedDate = dateFormat.format(new Date(dateTime));
 
         return "Receipt{" +
@@ -93,8 +82,7 @@ public class Receipt {
                 ", orderId=" + orderId +
                 ", studentID=" + studentId +
                 ", timestamp=" + formattedDate +
-                ", totalCost=" + totalCost +
-                ", shippingAddress='" + shippingAddress + '\'' +
+                ", studentDetails='" + studentDetails + '\'' +
                 '}';
     }
 }

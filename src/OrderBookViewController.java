@@ -24,7 +24,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
     private Book book; // Store the selected book
     private double quantity; // Store the selected quantity
     private Receipt receipt;
-    private ShippingAddress address;
+    private Student student;
 
     public OrderBookViewController(RemoteDataAdapter dao) {
 
@@ -76,7 +76,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         }
 
         // Capture Shipping Address and Credit Card information
-        ShippingAddress shippingAddress = getShippingAddressFromUI();
+        Student student = getStudentFromUI();
 
         // Use the DataAdapter to save the order to the database
         if (dao.saveOrderBook(orderBook)) {
@@ -102,12 +102,11 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             // Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(orderBook.getOrderID());
-            receipt.setUserId(orderBook.getStudentID());
+            receipt.setStudentId(orderBook.getStudentID());
             receipt.setDateTime(formattedDate);
-           // receipt.setTotalCost(orderBook.getTotalCost());
-            receipt.setShippingAddress(orderBook.getShippingAddress().getFullAddress());
+            receipt.setStudentDetails(orderBook.getStudent().getStudentDetails());
 
-            // Build the product details string from the order lines
+            // Build the book details string from the order lines
             StringBuilder bookDetails = new StringBuilder();
             for (OrderLineBook line : orderBook.getLines()) {
                 Book orderedBook = dao.loadBook(line.getBookID());
@@ -224,47 +223,42 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         items.addRow(row);
     }
 
-    private void addShippingAddress() {
-        ShippingAddress shippingAddress = getShippingAddressFromUI();
-        if (shippingAddress != null) {
-            orderBook.setShippingAddress(shippingAddress);
+    private void addStudentDetails() {
+        Student student = getStudentFromUI();
+        if (student != null) {
+            orderBook.setStudent(student);
         }
     }
 
-    private ShippingAddress getShippingAddressFromUI() {
+    private Student getStudentFromUI() {
         // Create a new dialog to enter payment information
-        JDialog addressDialog = new JDialog(this, "Shipping Address Information", true);
-        addressDialog.setLayout(new BorderLayout());
+        JDialog studentDialog = new JDialog(this, "Student Information", true);
+        studentDialog.setLayout(new BorderLayout());
 
-        JPanel addressPanel = new JPanel();
-        addressPanel.setLayout(new GridLayout(0, 2));
+        JPanel studentPanel = new JPanel();
+        studentPanel.setLayout(new GridLayout(0, 2));
 
         // Create labels and input fields for shipping address
-        JLabel lblStreet = new JLabel("Street:");
-        JTextField txtStreet = new JTextField(20);
+        JLabel lblStudentID = new JLabel("Student ID:");
+        JTextField txtStudentID = new JTextField(20);
 
-        JLabel lblApt = new JLabel("Apt/Unit:");
-        JTextField txtApt = new JTextField(20);
+        JLabel lblName = new JLabel("Student Name:");
+        JTextField txtName = new JTextField(20);
 
-        JLabel lblCity = new JLabel("City:");
-        JTextField txtCity = new JTextField(20);
+        JLabel lblEmail = new JLabel("Email ID:");
+        JTextField txtEmail = new JTextField(20);
 
-        JLabel lblState = new JLabel("State:");
-        JTextField txtState = new JTextField(20);
+        JLabel lblNum = new JLabel("Mobile Num:");
+        JTextField txtNum = new JTextField(20);
 
-        JLabel lblZipCode = new JLabel("Zip Code:");
-        JTextField txtZipCode = new JTextField(20);
-
-        addressPanel.add(lblStreet);
-        addressPanel.add(txtStreet);
-        addressPanel.add(lblApt);
-        addressPanel.add(txtApt);
-        addressPanel.add(lblCity);
-        addressPanel.add(txtCity);
-        addressPanel.add(lblState);
-        addressPanel.add(txtState);
-        addressPanel.add(lblZipCode);
-        addressPanel.add(txtZipCode);
+        studentPanel.add(lblStudentID);
+        studentPanel.add(txtStudentID);
+        studentPanel.add(lblName);
+        studentPanel.add(txtName);
+        studentPanel.add(lblEmail);
+        studentPanel.add(txtEmail);
+        studentPanel.add(lblNum);
+        studentPanel.add(txtNum);
 
         // Create a single OK button to save payment information and close the dialog
         JButton btnOK = new JButton("OK");
@@ -273,36 +267,31 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Retrieve and process the input values for shipping address
-                String street = txtStreet.getText();
-                String apt = txtApt.getText();
-                String city = txtCity.getText();
-                String state = txtState.getText();
-                String zipCodeText = txtZipCode.getText();
+                int studentID = Integer.parseInt(txtStudentID.getText());
+                String name = txtName.getText();
+                String email = txtEmail.getText();
+                String num = txtNum.getText();
 
                 try {
                     // Add validations
-                    int zipCode = Integer.parseInt(zipCodeText);
 
-                    if (street.isEmpty() || city.isEmpty() || state.isEmpty() || zipCodeText.isEmpty()) {
+                    if (studentID<=0 || name.isEmpty() || email.isEmpty() || num.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please fill in all required fields.");
-                    } else if (zipCode < 0) {
-                        JOptionPane.showMessageDialog(null, "Zip code should not be negative.");
-                    } else {
-                        address = new ShippingAddress();
-                        address.setStreetNumberAndName(street);
-                        address.setApartmentOrUnitNumber(apt);
-                        address.setCity(city);
-                        address.setState(state);
-                        address.setZipCode(zipCode);
+                    }  else {
+                        student = new Student(studentID, name, email, num);
+                        student.setStudentID(studentID);
+                        student.setStudentName(name);
+                        student.setEmailID(email);
+                        student.setStudentNumber(num);
 
                         // Save shipping address using DataAdapter
-                        if (dao.saveShippingAddress(address)) {
-                            orderBook.setShippingAddress(address);
+                        if (dao.saveStudentDetails(student)) {
+                            orderBook.setStudent(student);
 
                             // After processing, close the dialog
-                            addressDialog.dispose();
+                            studentDialog.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(null, "Error saving shipping address.");
+                            JOptionPane.showMessageDialog(null, "Error saving student details.");
                         }
                     }
                 } catch (NumberFormatException ex) {
@@ -311,14 +300,14 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             }
         });
 
-        addressDialog.add(addressPanel, BorderLayout.CENTER);
-        addressDialog.add(btnOK, BorderLayout.SOUTH);
+        studentDialog.add(studentPanel, BorderLayout.CENTER);
+        studentDialog.add(btnOK, BorderLayout.SOUTH);
 
-        addressDialog.pack();
-        addressDialog.setLocationRelativeTo(this);
-        addressDialog.setVisible(true);
+        studentDialog.pack();
+        studentDialog.setLocationRelativeTo(this);
+        studentDialog.setVisible(true);
 
-        return address;
+        return student;
     }
 
     private void showReceiptDialog(Receipt receipt) {
@@ -329,10 +318,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JPanel receiptPanel = new JPanel();
         receiptPanel.setLayout(new GridLayout(0, 1));
 
-        double totalCostWithTax = receipt.getTotalCost() * 1.08;
-        DecimalFormat df = new DecimalFormat("#.##");
-        String formattedTotalCost = df.format(totalCostWithTax);
-
         int orderCount = dao.getOrderCount();
         receipt.setReceiptNumber(orderCount);
         System.out.println("OrderCount"+orderCount);
@@ -342,18 +327,16 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JLabel lblOrderID = new JLabel("Order ID: " + orderCount);
         JLabel lblDateTime = new JLabel("Date and Time: " + receipt.getDateTime());
 
-        JLabel lblProducts = new JLabel("Products: " + receipt.getBooks());
+        JLabel lblProducts = new JLabel("Books: " + receipt.getBooks());
         receiptPanel.add(lblProducts);
 
-        JLabel lblShippingAddress = new JLabel("Shipping Address: " + receipt.getShippingAddress());
-        JLabel lblTotalCost = new JLabel("Total Cost(with 8% Tax): $" + formattedTotalCost);
+        JLabel lblShippingAddress = new JLabel("Student Details: " + receipt.getStudentDetails());
 
         receiptPanel.add(lblReceiptNumber);
         receiptPanel.add(lblOrderID);
         receiptPanel.add(lblDateTime);
         receiptPanel.add(lblProducts);
         receiptPanel.add(lblShippingAddress);
-        receiptPanel.add(lblTotalCost);
 
         receiptDialog.add(receiptPanel, BorderLayout.CENTER);
 

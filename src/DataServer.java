@@ -126,14 +126,11 @@ class ClientHandler extends Thread  {
                     case RequestModel.DELETE_USER_REQUEST:
                         handleDeleteUserRequest(req, res, dao, connection);
                         break;
-                    case RequestModel.SAVE_SHIPPING_ADDRESS_REQUEST:
-                        handleSaveShippingAddressRequest(req, res, dao, connection);
+                    case RequestModel.SAVE_STUDENT_REQUEST:
+                        handleSaveStudentRequest(req, res, dao, connection);
                         break;
-                    case RequestModel.UPDATE_SHIPPING_ADDRESS_REQUEST:
-                        handleUpdateShippingAddressRequest(req, res, dao, connection);
-                        break;
-                    case RequestModel.DELETE_SHIPPING_ADDRESS_REQUEST:
-                        handleDeleteShippingAddressRequest(req, res, dao, connection);
+                    case RequestModel.DELETE_STUDENT_REQUEST:
+                        handleDeleteStudentRequest(req, res, dao, connection);
                         break;
                     case RequestModel.SAVE_RECEIPT_REQUEST:
                         handleSaveReceiptRequest(req, res, dao, connection);
@@ -403,11 +400,12 @@ class ClientHandler extends Thread  {
                 }
             } else {
                 // Insert a new book with a starting BookID of 1
-                PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO Books (BookName, AuthorName, Quantity, Status) VALUES (?, ?, ?, ?)");
-                insertStmt.setString(1, book.getBookName());
-                insertStmt.setString(2, book.getAuthorName());
-                insertStmt.setInt(3, (int)book.getQuantity());
-                insertStmt.setString(4, book.getStatus());
+                PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO Books (BookID, BookName, AuthorName, Quantity, Status) VALUES (?, ?, ?, ?, ?)");
+                insertStmt.setInt(1, book.getBookID());
+                insertStmt.setString(2, book.getBookName());
+                insertStmt.setString(3, book.getAuthorName());
+                insertStmt.setInt(4, (int)book.getQuantity());
+                insertStmt.setString(5, book.getStatus());
 
                 int rowsInserted = insertStmt.executeUpdate();
 
@@ -427,9 +425,6 @@ class ClientHandler extends Thread  {
             res.body = "Error saving or updating the book in the database.";
         }
     }
-
-
-
 
     private static void handleLoadUserRequest(RequestModel req, ResponseModel res, Connection connection) {
         System.out.println("Handle Load UserRequest()");
@@ -589,36 +584,153 @@ class ClientHandler extends Thread  {
         }
     }
 
+//    private static void handleSaveShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+//        try {
+//            // Parse the JSON data from the request into a ShippingAddress object
+//            Gson gson = new Gson();
+//            ShippingAddress shippingAddress = gson.fromJson(req.body, ShippingAddress.class);
+//
+//            // Create a PreparedStatement for inserting a shipping address into the database
+//            PreparedStatement stmt = connection.prepareStatement("INSERT INTO ShippingAddress (StreetNumberAndName, ApartmentOrUnitNumber, City, State, ZipCode) VALUES (?, ?, ?, ?, ?)");
+//            stmt.setString(1, shippingAddress.getStreetNumberAndName());
+//            stmt.setString(2, shippingAddress.getApartmentOrUnitNumber());
+//            stmt.setString(3, shippingAddress.getCity());
+//            stmt.setString(4, shippingAddress.getState());
+//            stmt.setInt(5, shippingAddress.getZipCode());
+//
+//            int rowsInserted = stmt.executeUpdate();
+//
+//            if (rowsInserted > 0) {
+//                // Shipping address was successfully saved
+//                res.code = ResponseModel.OK;
+//                res.body = "Shipping address saved successfully.";
+//            } else {
+//                // Shipping address could not be saved
+//                res.code = ResponseModel.ERROR;
+//                res.body = "Error saving the shipping address to the database.";
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res.code = ResponseModel.ERROR;
+//            res.body = "Error saving the shipping address to the database.";
+//        }
+//    }
 
-    private static void handleSaveShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+    private static void handleSaveStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
-            // Parse the JSON data from the request into a ShippingAddress object
+            // Parse the JSON data from the request into a Student object
             Gson gson = new Gson();
-            ShippingAddress shippingAddress = gson.fromJson(req.body, ShippingAddress.class);
+            Student student = gson.fromJson(req.body, Student.class);
 
-            // Create a PreparedStatement for inserting a shipping address into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO ShippingAddress (StreetNumberAndName, ApartmentOrUnitNumber, City, State, ZipCode) VALUES (?, ?, ?, ?, ?)");
-            stmt.setString(1, shippingAddress.getStreetNumberAndName());
-            stmt.setString(2, shippingAddress.getApartmentOrUnitNumber());
-            stmt.setString(3, shippingAddress.getCity());
-            stmt.setString(4, shippingAddress.getState());
-            stmt.setInt(5, shippingAddress.getZipCode());
+            // Create a PreparedStatement for inserting a student into the database
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, Number) VALUES (?, ?, ?, ?)");
+            stmt.setInt(1, student.getStudentID());
+            stmt.setString(2, student.getStudentName());
+            stmt.setString(3, student.getEmailID());
+            stmt.setString(4, student.getStudentNumber());
 
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                // Shipping address was successfully saved
+                // Student record was successfully saved
                 res.code = ResponseModel.OK;
-                res.body = "Shipping address saved successfully.";
+                res.body = "Student record saved successfully.";
             } else {
-                // Shipping address could not be saved
+                // Student record could not be saved
                 res.code = ResponseModel.ERROR;
-                res.body = "Error saving the shipping address to the database.";
+                res.body = "Error saving the student record to the database.";
             }
         } catch (Exception e) {
             e.printStackTrace();
             res.code = ResponseModel.ERROR;
-            res.body = "Error saving the shipping address to the database.";
+            res.body = "Error saving the student record to the database.";
+        }
+    }
+
+    private static void handleLoadStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            // Create a PreparedStatement for loading a student from the database
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Student WHERE StudentID = ?");
+            int studentID = Integer.parseInt(req.body);
+            stmt.setInt(1, studentID);
+            Gson gson = new Gson();
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // Build a Student object from the result and set it in the response
+                int studentId = resultSet.getInt("StudentID");
+                String studentName = resultSet.getString("StudentName");
+                String emailID = resultSet.getString("EmailID");
+                String studentNumber = resultSet.getString("StudentNumber");
+
+                Student student = new Student(studentId, studentName, emailID, studentNumber);
+
+                res.code = ResponseModel.OK;
+                res.body = gson.toJson(student);
+            } else {
+                // Student not found
+                res.code = ResponseModel.DATA_NOT_FOUND;
+                res.body = "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error loading the student from the database.";
+        }
+    }
+
+    private static void handleDeleteStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            // Parse the JSON data from the request into a Student object
+            Gson gson = new Gson();
+            Student student = gson.fromJson(req.body, Student.class);
+
+            // Create a PreparedStatement for deleting a student from the database based on StudentID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Student WHERE StudentID = ?");
+            stmt.setInt(1, student.getStudentID());
+
+            int rowsDeleted = stmt.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                // Student record was successfully deleted
+                res.code = ResponseModel.OK;
+                res.body = "Student record deleted successfully.";
+            } else {
+                // Student record could not be deleted (Student with the given ID not found)
+                res.code = ResponseModel.ERROR;
+                res.body = "Error deleting the student record from the database. Student not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the student record from the database.";
+        }
+    }
+
+    private static void handleDeleteUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            // Parse the JSON data from the request into a User object
+            Gson gson = new Gson();
+            User user = gson.fromJson(req.body, User.class);
+
+            // Create a PreparedStatement for deleting a user from the database based on UserID
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM User WHERE UserID = ?");
+            stmt.setInt(1, user.getUserID());
+
+            int rowsDeleted = stmt.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                // User record was successfully deleted
+                res.code = ResponseModel.OK;
+                res.body = "User record deleted successfully.";
+            } else {
+                // User record could not be deleted (User with the given ID not found)
+                res.code = ResponseModel.ERROR;
+                res.body = "Error deleting the user record from the database. User not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error deleting the user record from the database.";
         }
     }
 
@@ -632,17 +744,16 @@ class ClientHandler extends Thread  {
             int receiptNumber = dao.getOrderCount();
 
             receipt.setReceiptNumber(receiptNumber);
-            receipt.setUserId(receiptNumber);
+            receipt.setStudentId(receiptNumber);
             receipt.setOrderId(receiptNumber);
 
             // Create a PreparedStatement for inserting receipt information into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, Books) VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, StudentID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?, ?)");
             stmt.setInt(1, receipt.getOrderId());
-            stmt.setInt(2, receipt.getUserId());
+            stmt.setInt(2, receipt.getStudentId());
             stmt.setString(3, receipt.getDateTime());
-            stmt.setDouble(4, receipt.getTotalCost());
-            stmt.setString(5, receipt.getShippingAddress());
-            stmt.setString(6, receipt.getBooks());
+            stmt.setString(4, receipt.getStudentDetails());
+            stmt.setString(5, receipt.getBooks());
 
             int rowsInserted = stmt.executeUpdate();
 
@@ -781,88 +892,127 @@ class ClientHandler extends Thread  {
         }
     }
 
-    // Handle Delete User Request
-    private static void handleDeleteUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+//
+//    // Handle Update Shipping Address Request
+//    private static void handleUpdateShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+//        try {
+//            Gson gson = new Gson();
+//            // Parse the JSON data from the request into a ShippingAddress object
+//            ShippingAddress shippingAddress = gson.fromJson(req.body, ShippingAddress.class);
+//
+//            // Create a PreparedStatement for updating a shipping address by ID
+//            PreparedStatement stmt = connection.prepareStatement("UPDATE ShippingAddresses SET UserID = ?, Address = ? WHERE AddressID = ?");
+//            stmt.setInt(1, shippingAddress.getAddressID());
+//            stmt.setString(2, shippingAddress.getStreetNumberAndName());
+//            stmt.setString(3, shippingAddress.getApartmentOrUnitNumber());
+//
+//            int rowsAffected = stmt.executeUpdate();
+//
+//            if (rowsAffected > 0) {
+//                // Shipping address updated successfully
+//                res.code = ResponseModel.OK;
+//                res.body = "Shipping address updated successfully.";
+//            } else {
+//                // Shipping address not found
+//                res.code = ResponseModel.DATA_NOT_FOUND;
+//                res.body = "Shipping address not found.";
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res.code = ResponseModel.ERROR;
+//            res.body = "Error updating the shipping address in the database.";
+//        }
+//    }
+
+//    private static void handleUpdateAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+//        try {
+//            // Parse the JSON data from the request into a  object
+//            Gson gson = new Gson();
+//            ShippingAddress updatedAddress = gson.fromJson(req.body, ShippingAddress.class);
+//
+//            // Create a PreparedStatement for updating a Shipping Address record in the database
+//            PreparedStatement stmt = connection.prepareStatement("UPDATE ShippingAddress SET StreetNumberAndName = ?, ApartmentOrUnitNumber = ?, City = ?, State = ?, ZipCode = ? WHERE AddressID = ?");
+//            stmt.setString(1, updatedAddress.getStreetNumberAndName());
+//            stmt.setString(2, updatedAddress.getApartmentOrUnitNumber());
+//            stmt.setString(3, updatedAddress.getCity());
+//            stmt.setString(4, updatedAddress.getState());
+//            stmt.setInt(5, updatedAddress.getZipCode());
+//            stmt.setInt(6, updatedAddress.getAddressID());
+//
+//            int rowsUpdated = stmt.executeUpdate();
+//
+//            if (rowsUpdated > 0) {
+//                // Shipping address record was successfully updated
+//                res.code = ResponseModel.OK;
+//                res.body = "Shipping address record updated successfully.";
+//            } else {
+//                // Shipping address record could not be updated (Address with the given ID not found)
+//                res.code = ResponseModel.ERROR;
+//                res.body = "Error updating the shipping address record in the database. Address not found.";
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res.code = ResponseModel.ERROR;
+//            res.body = "Error updating the shipping address record in the database.";
+//        }
+//    }
+
+    private static void handleUpdateStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
-            int id = Integer.parseInt(req.body);
-            // Create a PreparedStatement for deleting a user by ID
-            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Users WHERE UserID = ?");
-            stmt.setInt(1, id);
-
-            int rowsAffected = stmt.executeUpdate();
-
-            if (rowsAffected > 0) {
-                // User deleted successfully
-                res.code = ResponseModel.OK;
-                res.body = "User deleted successfully.";
-            } else {
-                // User not found
-                res.code = ResponseModel.DATA_NOT_FOUND;
-                res.body = "User not found.";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.code = ResponseModel.ERROR;
-            res.body = "Error deleting the user from the database.";
-        }
-    }
-
-    // Handle Update Shipping Address Request
-    private static void handleUpdateShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        try {
+            // Parse the JSON data from the request into a Student object
             Gson gson = new Gson();
-            // Parse the JSON data from the request into a ShippingAddress object
-            ShippingAddress shippingAddress = gson.fromJson(req.body, ShippingAddress.class);
+            Student updatedStudent = gson.fromJson(req.body, Student.class);
 
-            // Create a PreparedStatement for updating a shipping address by ID
-            PreparedStatement stmt = connection.prepareStatement("UPDATE ShippingAddresses SET UserID = ?, Address = ? WHERE AddressID = ?");
-            stmt.setInt(1, shippingAddress.getAddressID());
-            stmt.setString(2, shippingAddress.getStreetNumberAndName());
-            stmt.setString(3, shippingAddress.getApartmentOrUnitNumber());
+            // Create a PreparedStatement for updating a Student record in the database
+            PreparedStatement stmt = connection.prepareStatement("UPDATE Student SET StudentName = ?, EmailID = ?, Number = ? WHERE StudentID = ?");
+            stmt.setString(1, updatedStudent.getStudentName());
+            stmt.setString(2, updatedStudent.getEmailID());
+            stmt.setString(3, updatedStudent.getStudentNumber());
+            stmt.setInt(4, updatedStudent.getStudentID());
 
-            int rowsAffected = stmt.executeUpdate();
+            int rowsUpdated = stmt.executeUpdate();
 
-            if (rowsAffected > 0) {
-                // Shipping address updated successfully
+            if (rowsUpdated > 0) {
+                // Student record was successfully updated
                 res.code = ResponseModel.OK;
-                res.body = "Shipping address updated successfully.";
+                res.body = "Student record updated successfully.";
             } else {
-                // Shipping address not found
-                res.code = ResponseModel.DATA_NOT_FOUND;
-                res.body = "Shipping address not found.";
+                // Student record could not be updated (Student with the given ID not found)
+                res.code = ResponseModel.ERROR;
+                res.body = "Error updating the student record in the database. Student not found.";
             }
         } catch (Exception e) {
             e.printStackTrace();
             res.code = ResponseModel.ERROR;
-            res.body = "Error updating the shipping address in the database.";
+            res.body = "Error updating the student record in the database.";
         }
     }
 
-    // Handle Delete Shipping Address Request
-    private static void handleDeleteShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        try {
-            int id = Integer.parseInt(req.body);
-            // Create a PreparedStatement for deleting a shipping address by ID
-            PreparedStatement stmt = connection.prepareStatement("DELETE FROM ShippingAddresses WHERE AddressID = ?");
-            stmt.setInt(1, id);
-
-            int rowsAffected = stmt.executeUpdate();
-
-            if (rowsAffected > 0) {
-                // Shipping address deleted successfully
-                res.code = ResponseModel.OK;
-                res.body = "Shipping address deleted successfully.";
-            } else {
-                // Shipping address not found
-                res.code = ResponseModel.DATA_NOT_FOUND;
-                res.body = "Shipping address not found.";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.code = ResponseModel.ERROR;
-            res.body = "Error deleting the shipping address from the database.";
-        }
-    }
+//    // Handle Delete Shipping Address Request
+//    private static void handleDeleteShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+//        try {
+//            int id = Integer.parseInt(req.body);
+//            // Create a PreparedStatement for deleting a shipping address by ID
+//            PreparedStatement stmt = connection.prepareStatement("DELETE FROM ShippingAddresses WHERE AddressID = ?");
+//            stmt.setInt(1, id);
+//
+//            int rowsAffected = stmt.executeUpdate();
+//
+//            if (rowsAffected > 0) {
+//                // Shipping address deleted successfully
+//                res.code = ResponseModel.OK;
+//                res.body = "Shipping address deleted successfully.";
+//            } else {
+//                // Shipping address not found
+//                res.code = ResponseModel.DATA_NOT_FOUND;
+//                res.body = "Shipping address not found.";
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res.code = ResponseModel.ERROR;
+//            res.body = "Error deleting the shipping address from the database.";
+//        }
+//    }
 
     // Handle Update Receipt Request
     private static void handleUpdateReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
@@ -872,14 +1022,13 @@ class ClientHandler extends Thread  {
             Receipt receipt = gson.fromJson(req.body, Receipt.class);
 
             // PreparedStatement for updating a receipt by ID
-            PreparedStatement stmt = connection.prepareStatement("UPDATE Receipt SET OrderID = ?, UserID = ?, DateTime = ?, TotalCost = ?, ShippingAddress = ?, Products = ? WHERE ReceiptNumber = ?");
+            PreparedStatement stmt = connection.prepareStatement("UPDATE Receipt SET OrderID = ?, UserString.valueOf(orderDate)ID = ?, DateTime = ?, StudentDetails = ?, Books = ? WHERE ReceiptNumber = ?");
             stmt.setInt(1, receipt.getOrderId());
-            stmt.setInt(2, receipt.getUserId());
+            stmt.setInt(2, receipt.getStudentId());
             stmt.setString(3, receipt.getDateTime());
-            stmt.setDouble(4, receipt.getTotalCost());
-            stmt.setString(5, receipt.getShippingAddress());
-            stmt.setString(6, receipt.getBooks());
-            stmt.setInt(7, receipt.getReceiptNumber());
+            stmt.setString(4, receipt.getStudentDetails());
+            stmt.setString(5, receipt.getBooks());
+            stmt.setInt(6, receipt.getReceiptNumber());
 
             int rowsAffected = stmt.executeUpdate();
 
@@ -914,9 +1063,8 @@ class ClientHandler extends Thread  {
                 Receipt receipt = new Receipt(
                         id,
                         resultSet.getInt("OrderID"),
-                        resultSet.getInt("UserID"),
+                        resultSet.getInt("StudentID"),
                         resultSet.getString("DateTime"),
-                        resultSet.getDouble("TotalCost"),
                         resultSet.getString("ShippingAddress"),
                         resultSet.getString("Books")
                 );
