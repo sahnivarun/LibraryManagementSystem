@@ -1,4 +1,7 @@
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.sql.Date;
 
 public class SQLiteDataAdapter implements DataAccess {
     private Connection connection;
@@ -193,7 +196,7 @@ public class SQLiteDataAdapter implements DataAccess {
 
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM Orders");
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM OrderBook");
 
             if (resultSet.next()) {
                 orderCount = resultSet.getInt(1);
@@ -247,13 +250,24 @@ public class SQLiteDataAdapter implements DataAccess {
 
     public boolean saveOrderBook(OrderBook orderBook) {
         try {
-            int nextOrderID = getOrderCount() + 1; // You need to implement getOrderBookCount() to get the next order ID for OrderBook.
+            int nextOrderID = getOrderCount() + 1;
+
+            // Calculate the return date, which is 60 days from the order date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Define your date format
+            Date orderDate = new Date(System.currentTimeMillis());
+            Calendar calendar = Calendar.getInstance();
+            //calendar.setTime(orderDate);
+            calendar.add(Calendar.DATE, 60);
+            Date returnDate = (Date) calendar.getTime();
+
+            // Format the return date as a string
+            String returnDateString = dateFormat.format(returnDate);
 
             PreparedStatement statement = connection.prepareStatement("INSERT INTO OrderBook (OrderID, StudentID, OrderDate, ReturnDate) VALUES (?, ?, ?, ?)");
             statement.setInt(1, nextOrderID);
-            statement.setInt(2, orderBook.getStudentID());
-            statement.setString(3, String.valueOf(new Date(System.currentTimeMillis())));
-            statement.setString(4, orderBook.getReturnDate());
+            statement.setInt(2, nextOrderID);
+            statement.setString(3, String.valueOf(orderDate));
+            statement.setString(4, returnDateString);
 
             statement.execute();
             statement.close();
@@ -276,7 +290,6 @@ public class SQLiteDataAdapter implements DataAccess {
             return false;
         }
     }
-
 
     public User loadUser(String username, String password) {
         try {

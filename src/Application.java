@@ -7,7 +7,6 @@ public class Application {
     private String url = "jdbc:sqlite:store.db";
     private static Application instance;   // Singleton pattern
 
-
     public static Application getInstance() {
         if (instance == null) {
             instance = new Application();
@@ -48,7 +47,6 @@ public class Application {
         this.dao = dao;
     }
 
-
     private Connection setConnection() {
         if (connection == null) {
             try {
@@ -87,7 +85,6 @@ public class Application {
 
     public static void main(String[] args) {
         try {
-
             Application application = new Application();
 
             LoginScreenController login = new LoginScreenController(dao);
