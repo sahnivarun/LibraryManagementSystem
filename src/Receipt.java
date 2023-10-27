@@ -7,7 +7,8 @@ public class Receipt {
     private int studentId;
     private String dateTime;
 
-    private String studentDetails;
+    private String student;
+    private String books;
 
     public String getBooks() {
         return books;
@@ -17,17 +18,15 @@ public class Receipt {
         this.books = books;
     }
 
-    private String books;
-
     public Receipt() {
     }
 
-    public Receipt(int receiptNumber, int orderId, int studentId, String dateTime, String studentDetails, String books) {
+    public Receipt(int receiptNumber, int orderId, int studentId, String dateTime, String student, String books) {
         this.receiptNumber = receiptNumber;
         this.orderId = orderId;
         this.studentId = studentId;
         this.dateTime = dateTime;
-        this.studentDetails = studentDetails;
+        this.student = student;
         this.books= books;
     }
 
@@ -63,12 +62,12 @@ public class Receipt {
 
     public void setDateTime(String dateTime) { this.dateTime = dateTime; }
 
-    public String getStudentDetails() {
-        return studentDetails;
+    public String getStudent() {
+        return student;
     }
 
-    public void setStudentDetails(String studentDetails) {
-        this.studentDetails = studentDetails;
+    public void setStudent(String student) {
+        this.student = student;
     }
 
     @Override
@@ -82,7 +81,7 @@ public class Receipt {
                 ", orderId=" + orderId +
                 ", studentID=" + studentId +
                 ", timestamp=" + formattedDate +
-                ", studentDetails='" + studentDetails + '\'' +
+                ", studentDetails='" + student + '\'' +
                 '}';
     }
 }

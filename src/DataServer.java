@@ -7,6 +7,9 @@ import java.net.Socket;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static util.PortAddresses.MAIN_SERVER_PORT;
 
@@ -40,8 +43,7 @@ public class DataServer
             {       s = ss.accept();
                 nClients++;
 
-
-                System.out.println("A new client is connected : " + s);
+                System.out.println("A client is connected : " + s);
 
                 // obtaining input and out streams
                 DataInputStream dis = new DataInputStream(s.getInputStream());
@@ -62,7 +64,6 @@ public class DataServer
         }
     }
 }
-
 
 class ClientHandler extends Thread  {
     private final DataInputStream dis;
@@ -90,7 +91,6 @@ class ClientHandler extends Thread  {
         while (true) {
             try {
 
-
                 received = dis.readUTF();
                 System.out.println("Message from client: " + received);
 
@@ -110,11 +110,10 @@ class ClientHandler extends Thread  {
                     case RequestModel.DELETE_BOOK_REQUEST:
                         handleDeleteBookRequest(req, res, dao, connection);
                         break;
-                    case RequestModel.SAVE_ORDER_BOOK_REQUEST:
+                    case RequestModel.SAVE_ORDERBOOK_REQUEST:
                         handleSaveOrderBookRequest(req, res, dao, connection);
                         break;
                     case RequestModel.LOAD_USER_REQUEST:
-                        System.out.println("Switch Load User ");
                         handleLoadUserRequest(req, res, connection);
                         break;
                     case RequestModel.SAVE_USER_REQUEST:
@@ -165,115 +164,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-//    private static void handleLoadProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        // Create a PreparedStatement for loading a product from the database
-//        try {
-//            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Products WHERE productID = ?");
-//            int id = Integer.parseInt(req.body);
-//            stmt.setInt(1, id);
-//            Gson gson = new Gson();
-//            ResultSet resultSet = stmt.executeQuery();
-//            if (resultSet.next()) {
-//                // Build a Product object from the result and set it in the response
-//                Product product = new Product(id,resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3), resultSet.getInt(4));
-//                res.code = ResponseModel.OK;
-//                res.body = gson.toJson(product);
-//            } else {
-//                // Product not found
-//                res.code = ResponseModel.DATA_NOT_FOUND;
-//                res.body = "";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error loading the product from the database.";
-//        }
-//    }
-//
-//    private static void handleSaveProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            // Parse the JSON data from the request into a Product object
-//            Gson gson = new Gson();
-//            Product product = gson.fromJson(req.body, Product.class);
-//
-//            // Check if a product with the same ProductID already exists
-//            PreparedStatement checkStmt = connection.prepareStatement("SELECT COUNT(*) FROM Products WHERE ProductID = ?");
-//            checkStmt.setInt(1, product.getProductID());
-//            ResultSet checkResult = checkStmt.executeQuery();
-//            checkResult.next();
-//            int existingProductCount = checkResult.getInt(1);
-//
-//            if (existingProductCount > 0) {
-//                // Update the existing product
-//                PreparedStatement updateStmt = connection.prepareStatement("UPDATE Products SET Name = ?, Price = ?, Quantity = ? WHERE ProductID = ?");
-//                updateStmt.setString(1, product.getName());
-//                updateStmt.setDouble(2, product.getPrice());
-//                updateStmt.setInt(3, (int) product.getQuantity());
-//                updateStmt.setInt(4, product.getProductID());
-//
-//                int rowsUpdated = updateStmt.executeUpdate();
-//
-//                if (rowsUpdated > 0) {
-//                    // Product was successfully updated
-//                    res.code = ResponseModel.OK;
-//                    res.body = "Product updated successfully.";
-//                } else {
-//                    // Product update failed
-//                    res.code = ResponseModel.ERROR;
-//                    res.body = "Error updating the product in the database.";
-//                }
-//            } else {
-//                // Insert a new product
-//                PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO Products (ProductID, Name, Price, Quantity) VALUES (?, ?, ?, ?)");
-//                insertStmt.setInt(1, product.getProductID());
-//                insertStmt.setString(2, product.getName());
-//                insertStmt.setDouble(3, product.getPrice());
-//                insertStmt.setInt(4, (int) product.getQuantity());
-//
-//                int rowsInserted = insertStmt.executeUpdate();
-//
-//                if (rowsInserted > 0) {
-//                    // New product was successfully saved
-//                    res.code = ResponseModel.OK;
-//                    res.body = "New product saved successfully.";
-//                } else {
-//                    // Product insertion failed
-//                    res.code = ResponseModel.ERROR;
-//                    res.body = "Error saving the new product to the database.";
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error saving or updating the product in the database.";
-//        }
-//    }
-//
-//    private static void handleLoadProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        // Create a PreparedStatement for loading a product from the database
-//        try {
-//            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Products WHERE productID = ?");
-//            int id = Integer.parseInt(req.body);
-//            stmt.setInt(1, id);
-//            Gson gson = new Gson();
-//            ResultSet resultSet = stmt.executeQuery();
-//            if (resultSet.next()) {
-//                // Build a Product object from the result and set it in the response
-//                Product product = new Product(id,resultSet.getInt(1), resultSet.getString(2), resultSet.getDouble(3), resultSet.getInt(4));
-//                res.code = ResponseModel.OK;
-//                res.body = gson.toJson(product);
-//            } else {
-//                // Product not found
-//                res.code = ResponseModel.DATA_NOT_FOUND;
-//                res.body = "";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error loading the product from the database.";
-//        }
-//    }
-
     private static void handleLoadBookRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             // Create a PreparedStatement for loading a book from the database
@@ -305,65 +195,6 @@ class ClientHandler extends Thread  {
             res.body = "Error loading the book from the database.";
         }
     }
-
-//    private static void handleSaveProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            // Parse the JSON data from the request into a Product object
-//            Gson gson = new Gson();
-//            Product product = gson.fromJson(req.body, Product.class);
-//
-//            // Check if a product with the same ProductID already exists
-//            PreparedStatement checkStmt = connection.prepareStatement("SELECT COUNT(*) FROM Products WHERE ProductID = ?");
-//            checkStmt.setInt(1, product.getProductID());
-//            ResultSet checkResult = checkStmt.executeQuery();
-//            checkResult.next();
-//            int existingProductCount = checkResult.getInt(1);
-//
-//            if (existingProductCount > 0) {
-//                // Update the existing product
-//                PreparedStatement updateStmt = connection.prepareStatement("UPDATE Products SET Name = ?, Price = ?, Quantity = ? WHERE ProductID = ?");
-//                updateStmt.setString(1, product.getName());
-//                updateStmt.setDouble(2, product.getPrice());
-//                updateStmt.setInt(3, (int) product.getQuantity());
-//                updateStmt.setInt(4, product.getProductID());
-//
-//                int rowsUpdated = updateStmt.executeUpdate();
-//
-//                if (rowsUpdated > 0) {
-//                    // Product was successfully updated
-//                    res.code = ResponseModel.OK;
-//                    res.body = "Product updated successfully.";
-//                } else {
-//                    // Product update failed
-//                    res.code = ResponseModel.ERROR;
-//                    res.body = "Error updating the product in the database.";
-//                }
-//            } else {
-//                // Insert a new product
-//                PreparedStatement insertStmt = connection.prepareStatement("INSERT INTO Products (ProductID, Name, Price, Quantity) VALUES (?, ?, ?, ?)");
-//                insertStmt.setInt(1, product.getProductID());
-//                insertStmt.setString(2, product.getName());
-//                insertStmt.setDouble(3, product.getPrice());
-//                insertStmt.setInt(4, (int) product.getQuantity());
-//
-//                int rowsInserted = insertStmt.executeUpdate();
-//
-//                if (rowsInserted > 0) {
-//                    // New product was successfully saved
-//                    res.code = ResponseModel.OK;
-//                    res.body = "New product saved successfully.";
-//                } else {
-//                    // Product insertion failed
-//                    res.code = ResponseModel.ERROR;
-//                    res.body = "Error saving the new product to the database.";
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error saving or updating the product in the database.";
-//        }
-//    }
 
     private static void handleSaveBookRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
@@ -426,6 +257,146 @@ class ClientHandler extends Thread  {
         }
     }
 
+    private static void handleSaveOrderBookRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            // Parse the JSON data from the request into an OrderBook object
+            Gson gson = new Gson();
+            OrderBook orderBook = gson.fromJson(req.body, OrderBook.class);
+
+            Calendar calendar = Calendar.getInstance();
+
+            // Print the current date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+            //  String formattedDate = dateFormat.format(calendar.getTime());
+
+            // Add 30 days to the current date
+            calendar.add(Calendar.DAY_OF_MONTH, 60);
+
+            // Print the date after 30 days
+            String futureDate = dateFormat.format(calendar.getTime());
+
+            orderBook.setReturnDate(futureDate);
+
+            // Insert order
+            PreparedStatement orderStmt = connection.prepareStatement("INSERT INTO OrderBook (OrderDate, StudentID, ReturnDate) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            orderStmt.setString(1, String.valueOf(new Date(System.currentTimeMillis())));
+            orderStmt.setInt(2, orderBook.getStudentID());
+            orderStmt.setString(3, futureDate);
+
+            int rowsInserted = orderStmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Retrieve the ID of the inserted order
+                ResultSet rs = orderStmt.getGeneratedKeys();
+                if (rs.next()) {
+                    int lastOrderID = rs.getInt(1);
+
+                    // Insert order lines
+                    PreparedStatement lineStmt = connection.prepareStatement("INSERT INTO OrderLineBook (OrderID, BookID, Quantity, BookName) VALUES (?, ?, ?, ?)");
+
+                    for (OrderLineBook line : orderBook.getLines()) {
+                        lineStmt.setInt(1, lastOrderID);
+                        lineStmt.setInt(2, line.getBookID());
+                        lineStmt.setDouble(3, line.getQuantity());
+                        lineStmt.setString(4, line.getBookName());
+                        lineStmt.addBatch();
+                    }
+                    lineStmt.executeBatch();
+                    lineStmt.close();
+
+                    res.code = ResponseModel.OK;
+                    res.body = "Order and order lines saved successfully.";
+                } else {
+                    // Handle not being able to get the inserted order's ID
+                    res.code = ResponseModel.ERROR;
+                    res.body = "Error retrieving the order ID.";
+                }
+
+                rs.close();
+                orderStmt.close();
+            } else {
+                // Handle not being able to save the order
+                res.code = ResponseModel.ERROR;
+                res.body = "Error saving the order to the database.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error saving the order to the database.";
+        }
+    }
+
+    private static void handleSaveStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            // Parse the JSON data from the request into a Student object
+            Gson gson = new Gson();
+            Student student = gson.fromJson(req.body, Student.class);
+
+            // Create a PreparedStatement for inserting a student into the database
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
+            stmt.setInt(1, student.getStudentID());
+            stmt.setString(2, student.getStudentName());
+            stmt.setString(3, student.getEmailID());
+            stmt.setString(4, student.getStudentNumber());
+
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Student record was successfully saved
+                res.code = ResponseModel.OK;
+                res.body = "Student record saved successfully.";
+            } else {
+                // Student record could not be saved
+                res.code = ResponseModel.ERROR;
+                res.body = "Error saving the student record to the database.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error saving the student record to the database.";
+        }
+    }
+
+    private static void handleSaveReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
+        try {
+            // Parse the JSON data from the request into a Receipt object
+            Gson gson = new Gson();
+            Receipt receipt = gson.fromJson(req.body, Receipt.class);
+
+            // Get the next available receipt number
+            int receiptNumber = dao.getOrderCount();
+
+            receipt.setReceiptNumber(receiptNumber);
+            receipt.setStudentId(receiptNumber);
+            receipt.setOrderId(receiptNumber);
+
+            // Create a PreparedStatement for inserting receipt information into the database
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, StudentID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?, ?)");
+            stmt.setInt(1, receipt.getOrderId());
+            stmt.setInt(2, receipt.getStudentId());
+            stmt.setString(3, receipt.getDateTime());
+            stmt.setString(4, receipt.getStudent());
+            stmt.setString(5, receipt.getBooks());
+
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Receipt information was successfully saved
+                res.code = ResponseModel.OK;
+                res.body = "Receipt information saved successfully.";
+            } else {
+                // Receipt information could not be saved
+                res.code = ResponseModel.ERROR;
+                res.body = "Error saving the receipt information to the database.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = ResponseModel.ERROR;
+            res.body = "Error saving the receipt information to the database.";
+        }
+    }
+
     private static void handleLoadUserRequest(RequestModel req, ResponseModel res, Connection connection) {
         System.out.println("Handle Load UserRequest()");
         try {
@@ -468,182 +439,6 @@ class ClientHandler extends Thread  {
             e.printStackTrace();
             res.code = ResponseModel.ERROR;
             res.body = "Error loading the user from the database.";
-        }
-    }
-
-//    private static void handleSaveOrderRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        System.out.println("handleSaveOrderRequest");
-//        try {
-//            // Parse the JSON data from the request into an Order object
-//            Gson gson = new Gson();
-//            Order order = gson.fromJson(req.body, Order.class);
-//
-//            // Insert order
-//            PreparedStatement orderStmt = connection.prepareStatement("INSERT INTO Orders (OrderDate, CustomerID, TotalCost, TotalTax) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-//            orderStmt.setString(1, String.valueOf(new Date(System.currentTimeMillis())));
-//            orderStmt.setInt(2, order.getBuyerID());
-//            orderStmt.setDouble(3, order.getTotalCost());
-//            orderStmt.setDouble(4, order.getTotalTax());
-//
-//            int rowsInserted = orderStmt.executeUpdate();
-//
-//            if (rowsInserted > 0) {
-//                // Retrieve the ID of the inserted order
-//                ResultSet rs = orderStmt.getGeneratedKeys();
-//                if (rs.next()) {
-//                    int lastOrderId = rs.getInt(1);
-//
-//                    // Insert order lines
-//                    PreparedStatement lineStmt = connection.prepareStatement("INSERT INTO OrderLine VALUES (?, ?, ?, ?)");
-//
-//                    for (OrderLine line : order.getLines()) {
-//                        lineStmt.setInt(1, lastOrderId);
-//                        lineStmt.setInt(2, line.getProductID());
-//                        lineStmt.setDouble(3, line.getQuantity());
-//                        lineStmt.setDouble(4, line.getCost());
-//                        lineStmt.addBatch();
-//                    }
-//                    lineStmt.executeBatch();
-//                    lineStmt.close();
-//
-//                    res.code = ResponseModel.OK;
-//                    res.body = "Order and order lines saved successfully.";
-//                } else {
-//                    // Handle not being able to get the inserted order's ID
-//                    res.code = ResponseModel.ERROR;
-//                    res.body = "Error retrieving the order ID.";
-//                }
-//
-//                rs.close();
-//                orderStmt.close();
-//
-//            } else {
-//                // Handle not being able to save the order
-//                res.code = ResponseModel.ERROR;
-//                res.body = "Error saving the order to the database.";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error saving the order to the database.";
-//        }
-//    }
-
-    private static void handleSaveOrderBookRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        try {
-            // Parse the JSON data from the request into an OrderBook object
-            Gson gson = new Gson();
-            OrderBook orderBook = gson.fromJson(req.body, OrderBook.class);
-
-            // Insert order
-            PreparedStatement orderStmt = connection.prepareStatement("INSERT INTO OrderBook (OrderDate, StudentID, ReturnDate) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            orderStmt.setString(1, String.valueOf(new Date(System.currentTimeMillis())));
-            orderStmt.setInt(2, orderBook.getStudentID());
-            orderStmt.setString(3, orderBook.getReturnDate());
-
-            int rowsInserted = orderStmt.executeUpdate();
-
-            if (rowsInserted > 0) {
-                // Retrieve the ID of the inserted order
-                ResultSet rs = orderStmt.getGeneratedKeys();
-                if (rs.next()) {
-                    int lastOrderID = rs.getInt(1);
-
-                    // Insert order lines
-                    PreparedStatement lineStmt = connection.prepareStatement("INSERT INTO OrderLineBook (OrderID, BookID, Quantity, BookName) VALUES (?, ?, ?, ?)");
-
-                    for (OrderLineBook line : orderBook.getLines()) {
-                        lineStmt.setInt(1, lastOrderID);
-                        lineStmt.setInt(2, line.getBookID());
-                        lineStmt.setInt(3, (int)line.getQuantity());
-                        lineStmt.setString(4, line.getBookName());
-                        lineStmt.addBatch();
-                    }
-                    lineStmt.executeBatch();
-                    lineStmt.close();
-
-                    res.code = ResponseModel.OK;
-                    res.body = "Order and order lines saved successfully.";
-                } else {
-                    // Handle not being able to get the inserted order's ID
-                    res.code = ResponseModel.ERROR;
-                    res.body = "Error retrieving the order ID.";
-                }
-
-                rs.close();
-                orderStmt.close();
-            } else {
-                // Handle not being able to save the order
-                res.code = ResponseModel.ERROR;
-                res.body = "Error saving the order to the database.";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.code = ResponseModel.ERROR;
-            res.body = "Error saving the order to the database.";
-        }
-    }
-
-//    private static void handleSaveShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            // Parse the JSON data from the request into a ShippingAddress object
-//            Gson gson = new Gson();
-//            ShippingAddress shippingAddress = gson.fromJson(req.body, ShippingAddress.class);
-//
-//            // Create a PreparedStatement for inserting a shipping address into the database
-//            PreparedStatement stmt = connection.prepareStatement("INSERT INTO ShippingAddress (StreetNumberAndName, ApartmentOrUnitNumber, City, State, ZipCode) VALUES (?, ?, ?, ?, ?)");
-//            stmt.setString(1, shippingAddress.getStreetNumberAndName());
-//            stmt.setString(2, shippingAddress.getApartmentOrUnitNumber());
-//            stmt.setString(3, shippingAddress.getCity());
-//            stmt.setString(4, shippingAddress.getState());
-//            stmt.setInt(5, shippingAddress.getZipCode());
-//
-//            int rowsInserted = stmt.executeUpdate();
-//
-//            if (rowsInserted > 0) {
-//                // Shipping address was successfully saved
-//                res.code = ResponseModel.OK;
-//                res.body = "Shipping address saved successfully.";
-//            } else {
-//                // Shipping address could not be saved
-//                res.code = ResponseModel.ERROR;
-//                res.body = "Error saving the shipping address to the database.";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error saving the shipping address to the database.";
-//        }
-//    }
-
-    private static void handleSaveStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        try {
-            // Parse the JSON data from the request into a Student object
-            Gson gson = new Gson();
-            Student student = gson.fromJson(req.body, Student.class);
-
-            // Create a PreparedStatement for inserting a student into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, Number) VALUES (?, ?, ?, ?)");
-            stmt.setInt(1, student.getStudentID());
-            stmt.setString(2, student.getStudentName());
-            stmt.setString(3, student.getEmailID());
-            stmt.setString(4, student.getStudentNumber());
-
-            int rowsInserted = stmt.executeUpdate();
-
-            if (rowsInserted > 0) {
-                // Student record was successfully saved
-                res.code = ResponseModel.OK;
-                res.body = "Student record saved successfully.";
-            } else {
-                // Student record could not be saved
-                res.code = ResponseModel.ERROR;
-                res.body = "Error saving the student record to the database.";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.code = ResponseModel.ERROR;
-            res.body = "Error saving the student record to the database.";
         }
     }
 
@@ -734,45 +529,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-    private static void handleSaveReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        try {
-            // Parse the JSON data from the request into a Receipt object
-            Gson gson = new Gson();
-            Receipt receipt = gson.fromJson(req.body, Receipt.class);
-
-            // Get the next available receipt number
-            int receiptNumber = dao.getOrderCount();
-
-            receipt.setReceiptNumber(receiptNumber);
-            receipt.setStudentId(receiptNumber);
-            receipt.setOrderId(receiptNumber);
-
-            // Create a PreparedStatement for inserting receipt information into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, StudentID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?, ?)");
-            stmt.setInt(1, receipt.getOrderId());
-            stmt.setInt(2, receipt.getStudentId());
-            stmt.setString(3, receipt.getDateTime());
-            stmt.setString(4, receipt.getStudentDetails());
-            stmt.setString(5, receipt.getBooks());
-
-            int rowsInserted = stmt.executeUpdate();
-
-            if (rowsInserted > 0) {
-                // Receipt information was successfully saved
-                res.code = ResponseModel.OK;
-                res.body = "Receipt information saved successfully.";
-            } else {
-                // Receipt information could not be saved
-                res.code = ResponseModel.ERROR;
-                res.body = "Error saving the receipt information to the database.";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.code = ResponseModel.ERROR;
-            res.body = "Error saving the receipt information to the database.";
-        }
-    }
-
     private static void handleGetOrderCountRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             int orderCount = dao.getOrderCount();
@@ -829,7 +585,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-    // Handle Save User Request
     private static void handleSaveUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             Gson gson = new Gson();
@@ -860,7 +615,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-    // Handle Update User Request
     private static void handleUpdateUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             Gson gson = new Gson();
@@ -891,71 +645,6 @@ class ClientHandler extends Thread  {
             res.body = "Error updating the user information in the database.";
         }
     }
-
-//
-//    // Handle Update Shipping Address Request
-//    private static void handleUpdateShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            Gson gson = new Gson();
-//            // Parse the JSON data from the request into a ShippingAddress object
-//            ShippingAddress shippingAddress = gson.fromJson(req.body, ShippingAddress.class);
-//
-//            // Create a PreparedStatement for updating a shipping address by ID
-//            PreparedStatement stmt = connection.prepareStatement("UPDATE ShippingAddresses SET UserID = ?, Address = ? WHERE AddressID = ?");
-//            stmt.setInt(1, shippingAddress.getAddressID());
-//            stmt.setString(2, shippingAddress.getStreetNumberAndName());
-//            stmt.setString(3, shippingAddress.getApartmentOrUnitNumber());
-//
-//            int rowsAffected = stmt.executeUpdate();
-//
-//            if (rowsAffected > 0) {
-//                // Shipping address updated successfully
-//                res.code = ResponseModel.OK;
-//                res.body = "Shipping address updated successfully.";
-//            } else {
-//                // Shipping address not found
-//                res.code = ResponseModel.DATA_NOT_FOUND;
-//                res.body = "Shipping address not found.";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error updating the shipping address in the database.";
-//        }
-//    }
-
-//    private static void handleUpdateAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            // Parse the JSON data from the request into a  object
-//            Gson gson = new Gson();
-//            ShippingAddress updatedAddress = gson.fromJson(req.body, ShippingAddress.class);
-//
-//            // Create a PreparedStatement for updating a Shipping Address record in the database
-//            PreparedStatement stmt = connection.prepareStatement("UPDATE ShippingAddress SET StreetNumberAndName = ?, ApartmentOrUnitNumber = ?, City = ?, State = ?, ZipCode = ? WHERE AddressID = ?");
-//            stmt.setString(1, updatedAddress.getStreetNumberAndName());
-//            stmt.setString(2, updatedAddress.getApartmentOrUnitNumber());
-//            stmt.setString(3, updatedAddress.getCity());
-//            stmt.setString(4, updatedAddress.getState());
-//            stmt.setInt(5, updatedAddress.getZipCode());
-//            stmt.setInt(6, updatedAddress.getAddressID());
-//
-//            int rowsUpdated = stmt.executeUpdate();
-//
-//            if (rowsUpdated > 0) {
-//                // Shipping address record was successfully updated
-//                res.code = ResponseModel.OK;
-//                res.body = "Shipping address record updated successfully.";
-//            } else {
-//                // Shipping address record could not be updated (Address with the given ID not found)
-//                res.code = ResponseModel.ERROR;
-//                res.body = "Error updating the shipping address record in the database. Address not found.";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error updating the shipping address record in the database.";
-//        }
-//    }
 
     private static void handleUpdateStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
@@ -988,33 +677,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-//    // Handle Delete Shipping Address Request
-//    private static void handleDeleteShippingAddressRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            int id = Integer.parseInt(req.body);
-//            // Create a PreparedStatement for deleting a shipping address by ID
-//            PreparedStatement stmt = connection.prepareStatement("DELETE FROM ShippingAddresses WHERE AddressID = ?");
-//            stmt.setInt(1, id);
-//
-//            int rowsAffected = stmt.executeUpdate();
-//
-//            if (rowsAffected > 0) {
-//                // Shipping address deleted successfully
-//                res.code = ResponseModel.OK;
-//                res.body = "Shipping address deleted successfully.";
-//            } else {
-//                // Shipping address not found
-//                res.code = ResponseModel.DATA_NOT_FOUND;
-//                res.body = "Shipping address not found.";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error deleting the shipping address from the database.";
-//        }
-//    }
-
-    // Handle Update Receipt Request
     private static void handleUpdateReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             Gson gson = new Gson();
@@ -1026,7 +688,7 @@ class ClientHandler extends Thread  {
             stmt.setInt(1, receipt.getOrderId());
             stmt.setInt(2, receipt.getStudentId());
             stmt.setString(3, receipt.getDateTime());
-            stmt.setString(4, receipt.getStudentDetails());
+            stmt.setString(4, receipt.getStudent());
             stmt.setString(5, receipt.getBooks());
             stmt.setInt(6, receipt.getReceiptNumber());
 
@@ -1048,7 +710,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-    // Handle Load Receipt Request
     private static void handleLoadReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             int id = Integer.parseInt(req.body);
@@ -1082,7 +743,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-    // Handle Delete Receipt Request
     private static void handleDeleteReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             int id = Integer.parseInt(req.body);

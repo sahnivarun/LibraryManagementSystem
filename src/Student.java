@@ -49,7 +49,7 @@ public class Student {
         }
 
         // Special function to get the full student information
-        public String getStudentDetails() {
+        public String getFullStudent() {
                 return "Student ID: " + studentID +
                         "\nStudent Name: " + studentName +
                         "\nEmail ID: " + emailID +

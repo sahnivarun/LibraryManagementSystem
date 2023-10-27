@@ -42,35 +42,6 @@ public class RemoteDataAdapter implements DataAccess {
         }
     }
 
-//    @Override
-//    public boolean saveProduct(Product product) {
-//        //connect(); // Establish the connection before sending data
-//        RequestModel req = new RequestModel();
-//        req.code = RequestModel.SAVE_PRODUCT_REQUEST;
-//        req.body = gson.toJson(product);
-//
-//        String json = gson.toJson(req);
-//        try {
-//            dos.writeUTF(json);
-//
-//            String received = dis.readUTF();
-//
-//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-//
-//            if (res.code == ResponseModel.OK) {
-//                System.out.println("Product saved on the server successfully.");
-//                return true;
-//            } else {
-//                System.out.println("Failed to save the product on the server.");
-//            }
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//            System.out.println("Error while saving the product on the server.");
-//        }
-//
-//        return false;
-//    }
-
     @Override
     public boolean saveBook(Book book) {
         //connect(); // Establish the connection before sending data
@@ -120,7 +91,7 @@ public class RemoteDataAdapter implements DataAccess {
                 System.out.println("The request is not recognized by the Server");
                 return null;
             } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
-                System.out.println("The Server could not find a book with that ID!");
+                System.out.println("The Server could not find a book with this ID!");
                 return null;
             } else {
                 Book model = gson.fromJson(res.body, Book.class);
@@ -141,7 +112,7 @@ public class RemoteDataAdapter implements DataAccess {
     public boolean saveOrderBook(OrderBook orderBook) {
         //connect();
         RequestModel req = new RequestModel();
-        req.code = RequestModel.SAVE_ORDER_BOOK_REQUEST;
+        req.code = RequestModel.SAVE_ORDERBOOK_REQUEST;
         req.body = gson.toJson(orderBook);
 
         String json = gson.toJson(req);
@@ -166,39 +137,9 @@ public class RemoteDataAdapter implements DataAccess {
         return false;
     }
 
-//    @Override
-//    public boolean saveShippingAddress(ShippingAddress address) {
-//        //connect();
-//        RequestModel req = new RequestModel();
-//        req.code = RequestModel.SAVE_SHIPPING_ADDRESS_REQUEST;
-//        req.body = gson.toJson(address);
-//
-//        String json = gson.toJson(req);
-//        try {
-//            dos.writeUTF(json);
-//
-//            String received = dis.readUTF();
-//
-//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-//
-//            if (res.code == ResponseModel.OK) {
-//                System.out.println("Shipping address saved on the server successfully.");
-//                return true;
-//            } else {
-//                System.out.println("Failed to save the shipping address on the server.");
-//            }
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//            System.out.println("Error while saving the shipping address on the server.");
-//        }
-//
-//        return false;
-//    }
-
     @Override
-    public boolean saveStudentDetails(Student student) {
+    public boolean saveStudent(Student student) {
         // Connect to the server (establish communication with the server)
-        // This may involve setting up a socket or making an HTTP request.
 
         RequestModel req = new RequestModel();
         req.code = RequestModel.SAVE_STUDENT_REQUEST;
@@ -206,13 +147,10 @@ public class RemoteDataAdapter implements DataAccess {
 
         String json = gson.toJson(req);
         try {
-            // Send the JSON request to the server
             dos.writeUTF(json);
 
-            // Receive the response from the server
             String received = dis.readUTF();
 
-            // Parse the response into a ResponseModel
             ResponseModel res = gson.fromJson(received, ResponseModel.class);
 
             if (res.code == ResponseModel.OK) {
@@ -298,56 +236,8 @@ public class RemoteDataAdapter implements DataAccess {
             ex.printStackTrace();
         }
 
-
         return null;
     }
-
-//    @Override
-//    public Product loadProduct(int productID) {
-//        //connect();
-//        RequestModel req = new RequestModel();
-//        req.code = RequestModel.LOAD_PRODUCT_REQUEST;
-//        req.body = String.valueOf(productID);
-//
-//        String json = gson.toJson(req);
-//        try {
-//            dos.writeUTF(json);
-//            String received = dis.readUTF();
-//
-//            System.out.println("Server response:" + received);
-//
-//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-//
-//            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
-//                System.out.println("The request is not recognized by the Server");
-//                return null;
-//            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
-//                System.out.println("The Server could not find a product with that ID!");
-//                return null;
-//            } else {
-//                Product model = gson.fromJson(res.body, Product.class);
-//                System.out.println("Receiving a Product object");
-//                System.out.println("ProductID = " + model.getProductID());
-//                System.out.println("Product name = " + model.getName());
-//                return model;
-//            }
-//
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
-//    @Override
-//    public boolean saveProduct(Product product) {
-//        return false;
-//    }
-
-//    @Override
-//    public Product loadProduct(int id) {
-//        return null;
-//    }
 
     @Override
     public int getOrderCount() {
@@ -372,7 +262,6 @@ public class RemoteDataAdapter implements DataAccess {
                 return -1; // Return an error value
             } else {
                 int orderCount = Integer.parseInt(res.body); // Fetch and return the order count
-               // System.out.println("Order count received from the server: " + orderCount);
                 return orderCount;
             }
         } catch (IOException ex) {
