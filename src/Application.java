@@ -1,7 +1,10 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Application {
 
+    private String url = "jdbc:sqlite:store.db";
     private static Application instance;   // Singleton pattern
 
     public static Application getInstance() {
@@ -10,6 +13,7 @@ public class Application {
         }
         return instance;
     }
+
     // Main components of this application
     private Connection connection;
 
@@ -17,88 +21,79 @@ public class Application {
         return connection;
     }
 
-    private DataAdapter dataAdapter;
+    private static RemoteDataAdapter dao;
 
     private User currentUser = null;
 
-    public User getCurrentUser() { return currentUser; }
+//    public User getCurrentUser() {
+//        return currentUser;
+//    }
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
 
-    private ProductView productView = new ProductView();
+//    public LoginScreenController loginScreenController = new LoginScreenController(dao);
 
-    private OrderView orderView = new OrderView();
-
-    private MainScreen mainScreen = new MainScreen();
-
-    public MainScreen getMainScreen() {
-        return mainScreen;
-    }
-
-    public ProductView getProductView() {
-        return productView;
-    }
-
-    public OrderView getOrderView() {
-        return orderView;
-    }
-
-    public LoginScreenController loginScreenController = new LoginScreenController();
-
-    public LoginScreenController getLoginScreenController() {
-        return loginScreenController;
-    }
-
-    private ProductController productController;
-
-    public ProductController getProductController() {
-        return productController;
-    }
-
-    private OrderController orderController;
-
-    public OrderController getOrderController() {
-        return orderController;
-    }
-
-    public DataAdapter getDataAdapter() {
-        return dataAdapter;
-    }
-
+//    public LoginScreenController getLoginScreenController() {
+//        return loginScreenController;
+//    }
+//
+//    public RemoteDataAdapter getDao() {
+//        return dao;
+//    }
+//
+//    public void setDao(RemoteDataAdapter dao) {
+//        this.dao = dao;
+//    }
+//
+//    private Connection setConnection() {
+//        if (connection == null) {
+//            try {
+//                Class.forName("org.sqlite.JDBC");
+//                connection = DriverManager.getConnection(url);
+//
+//                return connection;
+//            } catch (Exception e) {
+//                return null;
+//            }
+//        } else {
+//            return connection;
+//        }
+//
+//    }
 
     private Application() {
         // create SQLite database connection here!
         try {
             Class.forName("org.sqlite.JDBC");
-
-            String url = "jdbc:sqlite:store.db";
-
             connection = DriverManager.getConnection(url);
-            dataAdapter = new DataAdapter(connection);
 
-        }
-        catch (ClassNotFoundException ex) {
+            dao = new RemoteDataAdapter();
+            dao.connect();
+
+        } catch (ClassNotFoundException ex) {
             System.out.println("SQLite is not installed. System exits with error!");
             ex.printStackTrace();
             System.exit(1);
-        }
-
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("SQLite database is not ready. System exits with error!" + ex.getMessage());
-
             System.exit(2);
         }
-
-        productController = new ProductController(productView);
-
-        orderController = new OrderController(orderView);
-
     }
-
 
     public static void main(String[] args) {
-        Application.getInstance().getLoginScreenController().setVisible(true);
+        try {
+            Application application = new Application();
+
+            LoginScreenController login = new LoginScreenController(dao);
+            login.setVisible(true);
+
+        } catch (Exception e) {
+            System.out.println("e2: "+e.toString());
+            e.printStackTrace();
+        }
+
     }
+
 }

@@ -5,6 +5,16 @@ public class User {
     private String fullName;
     private boolean isManager;
 
+    public User(){
+
+    }
+
+    public User(String username, String password) {
+
+        this.username = username;
+        this.password = password;
+    }
+
     public int getUserID() {
         return userID;
     }
