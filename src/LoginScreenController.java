@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class LoginScreenController extends JFrame implements ActionListener {
     private JTextField txtUserName = new JTextField(10);
@@ -19,11 +21,25 @@ public class LoginScreenController extends JFrame implements ActionListener {
         return txtUserName;
     }
 
-    public LoginScreenController() {
+    RemoteDataAdapter dao;
+
+    public LoginScreenController(RemoteDataAdapter dao) {
+
+        this.dao = dao;
+
+        setTitle("Login Window");
         this.setSize(300, 150);
+
+        // Center the application window on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - getWidth()) / 2;
+        int y = (screenSize.height - getHeight()) / 2;
+        this.setLocation(x, y);
+
+
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-        this.getContentPane().add(new JLabel ("Store Management System"));
+        this.getContentPane().add(new JLabel ("Library Management System"));
 
         JPanel main = new JPanel(new SpringLayout());
         main.add(new JLabel("Username:"));
@@ -39,6 +55,8 @@ public class LoginScreenController extends JFrame implements ActionListener {
         this.getContentPane().add(main);
         this.getContentPane().add(btnLogin);
 
+        btnLogin.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
         btnLogin.addActionListener(this);
     }
 
@@ -49,10 +67,7 @@ public class LoginScreenController extends JFrame implements ActionListener {
             String password = txtPassword.getText().trim();
 
             System.out.println("Login with username = " + username + " and password = " + password);
-            System.out.println("Loading Dao");
-            User user = Application.getInstance().getDao().loadUser(username, password);
-
-            System.out.println("User: " + user);
+            User user = dao.loadUser(username, password);
 
             if (user == null) {
                 JOptionPane.showMessageDialog(null, "This user does not exist!");
@@ -61,10 +76,12 @@ public class LoginScreenController extends JFrame implements ActionListener {
                 Application.getInstance().setCurrentUser(user);
 
                 // Set user information in the MainScreen
-                Application.getInstance().getMainScreen().setUserInfo(user);
+                MainScreen main = new MainScreen(dao);
+                main.setUserInfo(user);;
 
                 this.setVisible(false);
-                Application.getInstance().getMainScreen().setVisible(true);
+                main.setVisible(true);
+
             }
         }
     }

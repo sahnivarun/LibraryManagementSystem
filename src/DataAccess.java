@@ -2,11 +2,15 @@ public interface DataAccess {
 
     void connect();
 
-    Product loadProduct(int id);
+   // Product loadProduct(int id);
 
-    boolean saveProduct(Product product);
+    Book loadBook(int id);
 
-    boolean saveOrder(Order order);
+  //  boolean saveProduct(Product product);
+
+    boolean saveBook(Book book);
+
+    boolean saveOrderBook(OrderBook orderBook);
 
     boolean saveShippingAddress(ShippingAddress address);
 
@@ -16,6 +20,7 @@ public interface DataAccess {
 
     User loadUser(String username, String password);
 
+    int getOrderCount();
 }
 
 

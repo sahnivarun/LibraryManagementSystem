@@ -7,6 +7,7 @@ public class Application {
     private String url = "jdbc:sqlite:store.db";
     private static Application instance;   // Singleton pattern
 
+
     public static Application getInstance() {
         if (instance == null) {
             instance = new Application();
@@ -21,9 +22,7 @@ public class Application {
         return connection;
     }
 
-   // private DataAdapter dataAdapter;
-
-    private RemoteDataAdapter dao;
+    private static RemoteDataAdapter dao;
 
     private User currentUser = null;
 
@@ -35,33 +34,12 @@ public class Application {
         this.currentUser = user;
     }
 
-    private ProductViewController productViewController = new ProductViewController();
-
-    public ProductViewController getProductViewController() {
-        return productViewController;
-    }
-
-    private OrderViewController orderViewController = new OrderViewController(setConnection());
-
-    public OrderViewController getOrderViewController() {
-        return orderViewController;
-    }
-
-    private MainScreen mainScreen = new MainScreen();
-
-    public MainScreen getMainScreen() {
-        return mainScreen;
-    }
-
-    public LoginScreenController loginScreenController = new LoginScreenController();
+    public LoginScreenController loginScreenController = new LoginScreenController(dao);
 
     public LoginScreenController getLoginScreenController() {
         return loginScreenController;
     }
 
-  //  public DataAdapter getDataAdapter() {
-   //     return dataAdapter;
-  //  }
     public RemoteDataAdapter getDao() {
         return dao;
     }
@@ -92,7 +70,6 @@ public class Application {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection(url);
-          //  dataAdapter = new DataAdapter(connection);
 
             dao = new RemoteDataAdapter();
             dao.connect();
@@ -106,24 +83,15 @@ public class Application {
             System.exit(2);
         }
 
-
     }
 
     public static void main(String[] args) {
         try {
-            Application.getInstance().getLoginScreenController().setVisible(true); // Show Login Screen
-//            Thread thread = new Thread(() -> {
-//                System.out.println("Thread Started");
-//                try {
-//                    Thread.sleep(2000);
-////                    MainClient.main(null);
-//                } catch (Exception e) {
-//                    System.out.println(e.toString());
-//                    e.printStackTrace();
-//                }
-//            });
-//            thread.start();
-//            DataServer.main(null);
+
+            Application application = new Application();
+
+            LoginScreenController login = new LoginScreenController(dao);
+            login.setVisible(true);
 
         } catch (Exception e) {
             System.out.println("e2: "+e.toString());

@@ -4,34 +4,34 @@ import java.text.SimpleDateFormat;
 public class Receipt {
     private int receiptNumber;
     private int orderId;
-    private int userId;
+    private int studentId;
     private String dateTime;
     private double totalCost;
     private String shippingAddress;
     private String creditCardNumber;
 
-    public String getProducts() {
-        return products;
+    public String getBooks() {
+        return books;
     }
 
-    public void setProducts(String products) {
-        this.products = products;
+    public void setBooks(String books) {
+        this.books = books;
     }
 
-    private String products;
+    private String books;
 
     public Receipt() {
     }
 
-    public Receipt(int receiptNumber, int orderId, int userId, String dateTime, double totalCost, String shippingAddress, String creditCardNumber, String products) {
+    public Receipt(int receiptNumber, int orderId, int userId, String dateTime, double totalCost, String shippingAddress, String creditCardNumber, String books) {
         this.receiptNumber = receiptNumber;
         this.orderId = orderId;
-        this.userId = userId;
+        this.studentId = userId;
         this.dateTime = dateTime;
         this.totalCost = totalCost;
         this.shippingAddress = shippingAddress;
         this.creditCardNumber = creditCardNumber;
-        this.products= products;
+        this.books= books;
     }
 
     // Getters and setters for all fields
@@ -53,11 +53,11 @@ public class Receipt {
     }
 
     public int getUserId() {
-        return userId;
+        return studentId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserId(int studentId) {
+        this.studentId = studentId;
     }
 
     public String getDateTime() {
@@ -118,7 +118,7 @@ public class Receipt {
         return "Receipt{" +
                 "receiptNumber=" + receiptNumber +
                 ", orderId=" + orderId +
-                ", userId=" + userId +
+                ", studentID=" + studentId +
                 ", timestamp=" + formattedDate +
                 ", totalCost=" + totalCost +
                 ", shippingAddress='" + shippingAddress + '\'' +
