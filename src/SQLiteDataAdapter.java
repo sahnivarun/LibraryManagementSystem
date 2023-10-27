@@ -336,26 +336,6 @@ public class SQLiteDataAdapter implements DataAccess {
         }
     }
 
-    public boolean saveCreditCard(CreditCard card) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO CreditCard (CardNumber, Name, ExpiryMonth, ExpiryYear, CVV, BillingAddress) VALUES (?, ?, ?, ?, ?, ?)");
-            statement.setInt(1, card.getCardNumber());
-            statement.setString(2, card.getName());
-            statement.setInt(3, card.getExpiryMonth());
-            statement.setInt(4, card.getExpiryYear());
-            statement.setInt(5, card.getCvv());
-            statement.setString(6, card.getBillingAddress());
-
-            int rowsAffected = statement.executeUpdate();
-            statement.close();
-
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public ShippingAddress loadShippingAddress(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM ShippingAddress WHERE AddressID = ?");
@@ -385,35 +365,6 @@ public class SQLiteDataAdapter implements DataAccess {
         }
     }
 
-    public CreditCard loadCreditCard(int id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM CreditCard WHERE CardNumber = ?");
-            statement.setInt(1, id);
-
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                CreditCard card = new CreditCard();
-                card.setCardNumber(result.getInt("CardNumber"));
-                card.setName(result.getString("Name"));
-                card.setExpiryMonth(result.getInt("ExpiryMonth"));
-                card.setExpiryYear(result.getInt("ExpiryYear"));
-                card.setCvv(result.getInt("CVV"));
-                card.setBillingAddress(result.getString("BillingAddress"));
-
-                result.close();
-                statement.close();
-                return card;
-            } else {
-                result.close();
-                statement.close();
-                return null;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public boolean saveReceipt(Receipt receipt) {
         try {
             int receiptID = getOrderCount();
@@ -422,14 +373,13 @@ public class SQLiteDataAdapter implements DataAccess {
             receipt.setUserId(receiptID);
             receipt.setReceiptNumber(receiptID);
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, CreditCardNumber, Products) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, Products) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setInt(1, receipt.getOrderId());
             statement.setInt(2, receipt.getUserId());
             statement.setString(3, receipt.getDateTime());
             statement.setDouble(4, receipt.getTotalCost());
             statement.setString(5, receipt.getShippingAddress());
-            statement.setString(6, receipt.getCreditCardNumber());
-            statement.setString(7, receipt.getBooks());
+            statement.setString(6, receipt.getBooks());
 
             int rowsAffected = statement.executeUpdate();
             statement.close();

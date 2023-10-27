@@ -25,7 +25,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
     private double quantity; // Store the selected quantity
     private Receipt receipt;
     private ShippingAddress address;
-    private CreditCard card;
 
     public OrderBookViewController(RemoteDataAdapter dao) {
 
@@ -78,7 +77,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
         // Capture Shipping Address and Credit Card information
         ShippingAddress shippingAddress = getShippingAddressFromUI();
-        CreditCard creditCard = getCreditCardFromUI();
 
         // Use the DataAdapter to save the order to the database
         if (dao.saveOrderBook(orderBook)) {
@@ -108,7 +106,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             receipt.setDateTime(formattedDate);
            // receipt.setTotalCost(orderBook.getTotalCost());
             receipt.setShippingAddress(orderBook.getShippingAddress().getFullAddress());
-            receipt.setCreditCardNumber(String.valueOf(orderBook.getCreditCard().getCardNumber()));
 
             // Build the product details string from the order lines
             StringBuilder bookDetails = new StringBuilder();
@@ -234,13 +231,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         }
     }
 
-    private void addCreditCard() {
-        CreditCard creditCard = getCreditCardFromUI();
-        if (creditCard != null) {
-            orderBook.setCreditCard(creditCard);
-        }
-    }
-
     private ShippingAddress getShippingAddressFromUI() {
         // Create a new dialog to enter payment information
         JDialog addressDialog = new JDialog(this, "Shipping Address Information", true);
@@ -331,100 +321,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         return address;
     }
 
-    private CreditCard getCreditCardFromUI() {
-
-        JDialog paymentDialog = new JDialog(this, "Payment Information", true);
-        paymentDialog.setLayout(new BorderLayout());
-
-        JPanel paymentPanel = new JPanel();
-        paymentPanel.setLayout(new GridLayout(0, 2));
-
-        JLabel lblCardNumber = new JLabel("Card Number:");
-        JTextField txtCardNumber = new JTextField(20);
-
-        JLabel lblCardName = new JLabel("Cardholder Name:");
-        JTextField txtCardName = new JTextField(20);
-
-        JLabel lblExpiryMonth = new JLabel("Expiry Month:");
-        JTextField txtExpiryMonth = new JTextField(20);
-
-        JLabel lblExpiryYear = new JLabel("Expiry Year:");
-        JTextField txtExpiryYear = new JTextField(20);
-
-        JLabel lblCvv = new JLabel("CVV:");
-        JTextField txtCvv = new JTextField(20);
-
-        JLabel lblBillingAddress = new JLabel("Billing Address:");
-        JTextField txtBillingAddress = new JTextField(20);
-
-        paymentPanel.add(lblCardNumber);
-        paymentPanel.add(txtCardNumber);
-        paymentPanel.add(lblCardName);
-        paymentPanel.add(txtCardName);
-        paymentPanel.add(lblExpiryMonth);
-        paymentPanel.add(txtExpiryMonth);
-        paymentPanel.add(lblExpiryYear);
-        paymentPanel.add(txtExpiryYear);
-        paymentPanel.add(lblCvv);
-        paymentPanel.add(txtCvv);
-        paymentPanel.add(lblBillingAddress);
-        paymentPanel.add(txtBillingAddress);
-
-        // Create a single OK button to save payment information and close the dialog
-        JButton btnOK = new JButton("OK");
-
-        btnOK.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // Retrieve and process the input values for credit card
-                    int cardNumber = Integer.parseInt(txtCardNumber.getText());
-                    String name = txtCardName.getText();
-                    int expiryMonth = Integer.parseInt(txtExpiryMonth.getText());
-                    int expiryYear = Integer.parseInt(txtExpiryYear.getText());
-                    int cvv = Integer.parseInt(txtCvv.getText());
-                    String billingAddress = txtBillingAddress.getText();
-
-                    // Add validations
-                    if (cardNumber < 0 || name.isEmpty() || name.matches(".*\\d.*") ||
-                            expiryMonth < 1 || expiryMonth > 12 || expiryYear < 2022 ||
-                            cvv < 0 || billingAddress.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Invalid details received. Please check the input.");
-                    } else {
-                        card = new CreditCard();
-                        card.setCardNumber(cardNumber);
-                        card.setName(name);
-                        card.setExpiryMonth(expiryMonth);
-                        card.setExpiryYear(expiryYear);
-                        card.setCvv(cvv);
-                        card.setBillingAddress(billingAddress);
-
-                        // Save credit card using DataAdapter
-                        if (dao.saveCreditCard(card)) {
-                            orderBook.setCreditCard(card);
-
-                            // After processing, close the dialog
-                            paymentDialog.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error saving credit card.");
-                        }
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Invalid input format. Please enter valid numbers.");
-                }
-            }
-        });
-
-        paymentDialog.add(paymentPanel, BorderLayout.CENTER);
-        paymentDialog.add(btnOK, BorderLayout.SOUTH);
-
-        paymentDialog.pack();
-        paymentDialog.setLocationRelativeTo(this);
-        paymentDialog.setVisible(true);
-
-        return card;
-    }
-
     private void showReceiptDialog(Receipt receipt) {
         // Create a dialog to display the receipt information
         JDialog receiptDialog = new JDialog(this, "Receipt", true);
@@ -451,7 +347,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
         JLabel lblShippingAddress = new JLabel("Shipping Address: " + receipt.getShippingAddress());
         JLabel lblTotalCost = new JLabel("Total Cost(with 8% Tax): $" + formattedTotalCost);
-        JLabel lblCreditCardNumber = new JLabel("Credit Card Number: " + receipt.getCreditCardNumber());
 
         receiptPanel.add(lblReceiptNumber);
         receiptPanel.add(lblOrderID);
@@ -459,7 +354,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         receiptPanel.add(lblProducts);
         receiptPanel.add(lblShippingAddress);
         receiptPanel.add(lblTotalCost);
-        receiptPanel.add(lblCreditCardNumber);
 
         receiptDialog.add(receiptPanel, BorderLayout.CENTER);
 

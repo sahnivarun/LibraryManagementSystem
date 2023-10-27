@@ -18,10 +18,6 @@ public class RequestModel {
     public static final int UPDATE_SHIPPING_ADDRESS_REQUEST = 55;
     public static final int LOAD_SHIPPING_ADDRESS_REQUEST = 555;
     public static final int DELETE_SHIPPING_ADDRESS_REQUEST = 5555;
-    public static final int SAVE_CREDIT_CARD_REQUEST = 6;
-    public static final int UPDATE_CREDIT_CARD_REQUEST = 66;
-    public static final int LOAD_CREDIT_CARD_REQUEST = 666;
-    public static final int DELETE_CREDIT_CARD_REQUEST = 6666;
     public static final int SAVE_RECEIPT_REQUEST = 7;
     public static final int UPDATE_RECEIPT_REQUEST = 77;
     public static final int LOAD_RECEIPT_REQUEST = 777;

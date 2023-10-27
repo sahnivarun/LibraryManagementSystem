@@ -135,12 +135,6 @@ class ClientHandler extends Thread  {
                     case RequestModel.DELETE_SHIPPING_ADDRESS_REQUEST:
                         handleDeleteShippingAddressRequest(req, res, dao, connection);
                         break;
-                    case RequestModel.SAVE_CREDIT_CARD_REQUEST:
-                        handleSaveCreditCardRequest(req, res, dao, connection);
-                        break;
-                    case RequestModel.DELETE_CREDIT_CARD_REQUEST:
-                        handleDeleteCreditCardRequest(req, res, dao, connection);
-                        break;
                     case RequestModel.SAVE_RECEIPT_REQUEST:
                         handleSaveReceiptRequest(req, res, dao, connection);
                         break;
@@ -628,39 +622,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-    private static void handleSaveCreditCardRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        try {
-            // Parse the JSON data from the request into a CreditCard object
-            Gson gson = new Gson();
-            CreditCard creditCard = gson.fromJson(req.body, CreditCard.class);
-
-            // Create a PreparedStatement for inserting credit card information into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO CreditCard (CardNumber, Name, ExpiryMonth, ExpiryYear, CVV, BillingAddress) VALUES (?, ?, ?, ?, ?, ?)");
-            stmt.setInt(1, creditCard.getCardNumber());
-            stmt.setString(2, creditCard.getName());
-            stmt.setInt(3, creditCard.getExpiryMonth());
-            stmt.setInt(4, creditCard.getExpiryYear());
-            stmt.setInt(5, creditCard.getCvv());
-            stmt.setString(6, creditCard.getBillingAddress());
-
-            int rowsInserted = stmt.executeUpdate();
-
-            if (rowsInserted > 0) {
-                // Credit card information was successfully saved
-                res.code = ResponseModel.OK;
-                res.body = "Credit card information saved successfully.";
-            } else {
-                // Credit card information could not be saved
-                res.code = ResponseModel.ERROR;
-                res.body = "Error saving the credit card information to the database.";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.code = ResponseModel.ERROR;
-            res.body = "Error saving the credit card information to the database.";
-        }
-    }
-
     private static void handleSaveReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             // Parse the JSON data from the request into a Receipt object
@@ -675,14 +636,13 @@ class ClientHandler extends Thread  {
             receipt.setOrderId(receiptNumber);
 
             // Create a PreparedStatement for inserting receipt information into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, CreditCardNumber, Products) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, UserID, DateTime, TotalCost, ShippingAddress, Books) VALUES (?, ?, ?, ?, ?, ?)");
             stmt.setInt(1, receipt.getOrderId());
             stmt.setInt(2, receipt.getUserId());
             stmt.setString(3, receipt.getDateTime());
             stmt.setDouble(4, receipt.getTotalCost());
             stmt.setString(5, receipt.getShippingAddress());
-            stmt.setString(6, receipt.getCreditCardNumber());
-            stmt.setString(7, receipt.getBooks());
+            stmt.setString(6, receipt.getBooks());
 
             int rowsInserted = stmt.executeUpdate();
 
@@ -717,31 +677,6 @@ class ClientHandler extends Thread  {
             res.body = "Error getting the order count from the database.";
         }
     }
-
-//    private static void handleDeleteProductRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            int id = Integer.parseInt(req.body);
-//            // Create a PreparedStatement for deleting a product by ID
-//            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Products WHERE ProductID = ?");
-//            stmt.setInt(1, id);
-//
-//            int rowsAffected = stmt.executeUpdate();
-//
-//            if (rowsAffected > 0) {
-//                // Product deleted successfully
-//                res.code = ResponseModel.OK;
-//                res.body = "Product deleted successfully.";
-//            } else {
-//                // Product not found
-//                res.code = ResponseModel.DATA_NOT_FOUND;
-//                res.body = "Product not found.";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error deleting the product from the database.";
-//        }
-//    }
 
     private static void handleDeleteBookRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
@@ -782,32 +717,6 @@ class ClientHandler extends Thread  {
             res.body = "Error deleting the book from the database.";
         }
     }
-
-//    // Handle Delete Order Request
-//    private static void handleDeleteOrderRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-//        try {
-//            int id = Integer.parseInt(req.body);
-//            // Create a PreparedStatement for deleting an order by ID
-//            PreparedStatement stmt = connection.prepareStatement("DELETE FROM Orders WHERE OrderID = ?");
-//            stmt.setInt(1, id);
-//
-//            int rowsAffected = stmt.executeUpdate();
-//
-//            if (rowsAffected > 0) {
-//                // Order deleted successfully
-//                res.code = ResponseModel.OK;
-//                res.body = "Order deleted successfully.";
-//            } else {
-//                // Order not found
-//                res.code = ResponseModel.DATA_NOT_FOUND;
-//                res.body = "Order not found.";
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            res.code = ResponseModel.ERROR;
-//            res.body = "Error deleting the order from the database.";
-//        }
-//    }
 
     // Handle Save User Request
     private static void handleSaveUserRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
@@ -955,32 +864,6 @@ class ClientHandler extends Thread  {
         }
     }
 
-    // Handle Delete Credit Card Request
-    private static void handleDeleteCreditCardRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
-        try {
-            int id = Integer.parseInt(req.body);
-            // Create a PreparedStatement for deleting a credit card by ID
-            PreparedStatement stmt = connection.prepareStatement("DELETE FROM CreditCards WHERE CardID = ?");
-            stmt.setInt(1, id);
-
-            int rowsAffected = stmt.executeUpdate();
-
-            if (rowsAffected > 0) {
-                // Credit card deleted successfully
-                res.code = ResponseModel.OK;
-                res.body = "Credit card deleted successfully.";
-            } else {
-                // Credit card not found
-                res.code = ResponseModel.DATA_NOT_FOUND;
-                res.body = "Credit card not found.";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.code = ResponseModel.ERROR;
-            res.body = "Error deleting the credit card from the database.";
-        }
-    }
-
     // Handle Update Receipt Request
     private static void handleUpdateReceiptRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
@@ -989,15 +872,14 @@ class ClientHandler extends Thread  {
             Receipt receipt = gson.fromJson(req.body, Receipt.class);
 
             // PreparedStatement for updating a receipt by ID
-            PreparedStatement stmt = connection.prepareStatement("UPDATE Receipt SET OrderID = ?, UserID = ?, DateTime = ?, TotalCost = ?, ShippingAddress = ?, CreditCardNumber = ?, Products = ? WHERE ReceiptNumber = ?");
+            PreparedStatement stmt = connection.prepareStatement("UPDATE Receipt SET OrderID = ?, UserID = ?, DateTime = ?, TotalCost = ?, ShippingAddress = ?, Products = ? WHERE ReceiptNumber = ?");
             stmt.setInt(1, receipt.getOrderId());
             stmt.setInt(2, receipt.getUserId());
             stmt.setString(3, receipt.getDateTime());
             stmt.setDouble(4, receipt.getTotalCost());
             stmt.setString(5, receipt.getShippingAddress());
-            stmt.setString(6, receipt.getCreditCardNumber());
-            stmt.setString(7, receipt.getBooks());
-            stmt.setInt(8, receipt.getReceiptNumber());
+            stmt.setString(6, receipt.getBooks());
+            stmt.setInt(7, receipt.getReceiptNumber());
 
             int rowsAffected = stmt.executeUpdate();
 
@@ -1036,8 +918,7 @@ class ClientHandler extends Thread  {
                         resultSet.getString("DateTime"),
                         resultSet.getDouble("TotalCost"),
                         resultSet.getString("ShippingAddress"),
-                        resultSet.getString("CreditCardNumber"),
-                        resultSet.getString("Products")
+                        resultSet.getString("Books")
                 );
                 res.code = ResponseModel.OK;
                 res.body = gson.toJson(receipt);

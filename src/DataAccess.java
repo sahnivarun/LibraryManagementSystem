@@ -2,11 +2,7 @@ public interface DataAccess {
 
     void connect();
 
-   // Product loadProduct(int id);
-
     Book loadBook(int id);
-
-  //  boolean saveProduct(Product product);
 
     boolean saveBook(Book book);
 
@@ -14,7 +10,7 @@ public interface DataAccess {
 
     boolean saveShippingAddress(ShippingAddress address);
 
-    boolean saveCreditCard(CreditCard card);
+    //boolean saveCreditCard(CreditCard card);
 
     boolean saveReceipt(Receipt receipt);
 

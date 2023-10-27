@@ -10,7 +10,7 @@ public class OrderBook {
     private String returnDate;
 
     private ShippingAddress shippingAddress;
-    private CreditCard creditCard;
+
     private List<OrderLineBook> lines;
 
     public OrderBook() {
@@ -55,14 +55,6 @@ public class OrderBook {
 
     public void setShippingAddress(ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
-    }
-
-    public CreditCard getCreditCard() {
-        return creditCard;
-    }
-
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
     }
 
     public List<OrderLineBook> getLines() {

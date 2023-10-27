@@ -196,35 +196,6 @@ public class RemoteDataAdapter implements DataAccess {
     }
 
     @Override
-    public boolean saveCreditCard(CreditCard card) {
-        //connect();
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.SAVE_CREDIT_CARD_REQUEST;
-        req.body = gson.toJson(card);
-
-        String json = gson.toJson(req);
-        try {
-            dos.writeUTF(json);
-
-            String received = dis.readUTF();
-
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-
-            if (res.code == ResponseModel.OK) {
-                System.out.println("Credit card saved on the server successfully.");
-                return true;
-            } else {
-                System.out.println("Failed to save the credit card on the server.");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("Error while saving the credit card on the server.");
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean saveReceipt(Receipt receipt) {
         //connect();
         RequestModel req = new RequestModel();
@@ -274,8 +245,6 @@ public class RemoteDataAdapter implements DataAccess {
             ResponseModel res = gson.fromJson(received, ResponseModel.class);
 
             System.out.println("res: " + res.toString() + "  code: " + res.code + " body: "+ res.body);
-
-
 
             if (res.code == ResponseModel.UNKNOWN_REQUEST) {
                 System.out.println("The request is not recognized by the Server");
