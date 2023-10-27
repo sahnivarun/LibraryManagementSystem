@@ -253,6 +253,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                         student.setStudentName(name);
                         student.setEmailID(email);
                         student.setStudentNumber(num);
+                        orderBook.setStudentID(studentID);
 
                         // Save shipping address using DataAdapter
                         if (dao.saveStudent(student)) {
