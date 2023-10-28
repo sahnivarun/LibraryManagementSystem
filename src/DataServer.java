@@ -368,16 +368,16 @@ class ClientHandler extends Thread  {
             int receiptNumber = dao.getOrderCount();
 
             receipt.setReceiptNumber(receiptNumber);
-            receipt.setStudentId(receiptNumber);
+           // receipt.setStudentId(receiptNumber);
             receipt.setOrderId(receiptNumber);
 
             // Create a PreparedStatement for inserting receipt information into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, StudentID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?)");
             stmt.setInt(1, receipt.getOrderId());
-            stmt.setInt(2, receipt.getStudentId());
-            stmt.setString(3, receipt.getDateTime());
-            stmt.setString(4, receipt.getStudent());
-            stmt.setString(5, receipt.getBooks());
+         //   stmt.setInt(2, receipt.getStudentId());
+            stmt.setString(2, receipt.getDateTime());
+            stmt.setString(3, receipt.getStudent());
+            stmt.setString(4, receipt.getBooks());
 
             int rowsInserted = stmt.executeUpdate();
 
@@ -684,13 +684,13 @@ class ClientHandler extends Thread  {
             Receipt receipt = gson.fromJson(req.body, Receipt.class);
 
             // PreparedStatement for updating a receipt by ID
-            PreparedStatement stmt = connection.prepareStatement("UPDATE Receipt SET OrderID = ?, UserString.valueOf(orderDate)ID = ?, DateTime = ?, StudentDetails = ?, Books = ? WHERE ReceiptNumber = ?");
+            PreparedStatement stmt = connection.prepareStatement("UPDATE Receipt SET OrderID = ?, DateTime = ?, StudentDetails = ?, Books = ? WHERE ReceiptNumber = ?");
             stmt.setInt(1, receipt.getOrderId());
-            stmt.setInt(2, receipt.getStudentId());
-            stmt.setString(3, receipt.getDateTime());
-            stmt.setString(4, receipt.getStudent());
-            stmt.setString(5, receipt.getBooks());
-            stmt.setInt(6, receipt.getReceiptNumber());
+         //   stmt.setInt(2, receipt.getStudentId());
+            stmt.setString(2, receipt.getDateTime());
+            stmt.setString(3, receipt.getStudent());
+            stmt.setString(4, receipt.getBooks());
+            stmt.setInt(5, receipt.getReceiptNumber());
 
             int rowsAffected = stmt.executeUpdate();
 

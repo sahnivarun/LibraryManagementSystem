@@ -185,12 +185,12 @@ public class SQLiteDataAdapter implements DataAccess {
            // receipt.setStudentId(receiptID);
             receipt.setReceiptNumber(receiptID);
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, StudentID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?)");
             statement.setInt(1, receipt.getOrderId());
-            statement.setInt(2, receipt.getStudentId());
-            statement.setString(3, receipt.getDateTime());
-            statement.setString(4, receipt.getStudent());
-            statement.setString(5, receipt.getBooks());
+         //   statement.setInt(2, receipt.getStudentId());
+            statement.setString(2, receipt.getDateTime());
+            statement.setString(3, receipt.getStudent());
+            statement.setString(4, receipt.getBooks());
 
             int rowsAffected = statement.executeUpdate();
             statement.close();
