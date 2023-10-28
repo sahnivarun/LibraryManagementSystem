@@ -8,6 +8,8 @@ public interface DataAccess {
 
     boolean saveOrderBook(OrderBook orderBook);
 
+    Student loadStudent(int id);
+
     boolean saveStudent(Student student);
 
     boolean saveReceipt(Receipt receipt);

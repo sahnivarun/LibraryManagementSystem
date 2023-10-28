@@ -192,8 +192,8 @@ public class BookViewController extends JFrame implements ActionListener {
 
         txtBookName.setText(book.getBookName());
         txtBookQuantity.setText(String.valueOf(book.getQuantity()));
-        getTxtAuthorName().setText(book.getAuthorName());
-        getTxtStatus().setText(book.getStatus());
+        txtAuthorName.setText(book.getAuthorName());
+        txtStatus.setText(book.getStatus());
     }
 
 }

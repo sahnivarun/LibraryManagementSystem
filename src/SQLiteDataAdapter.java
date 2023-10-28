@@ -228,31 +228,30 @@ public class SQLiteDataAdapter implements DataAccess {
         return null;
     }
 
-    public Student loadStudentDetails(int studentID) {
+    public Student loadStudent(int studentID) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Student WHERE StudentID = ?");
-            statement.setInt(1, studentID);
+            String query = "SELECT * FROM Student WHERE StudentID = " + studentID;
 
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                Student student = new Student(
-                        result.getInt("StudentID"),
-                        result.getString("StudentName"),
-                        result.getString("EmailID"),
-                        result.getString("StudentNumber")
-                );
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                Student student = new Student();
+                student.setStudentID(resultSet.getInt(1));
+                student.setStudentName(resultSet.getString(2));
+                student.setEmailID(resultSet.getString(3));
+                student.setStudentNumber(resultSet.getString(4));
 
-                result.close();
+                resultSet.close();
                 statement.close();
+
                 return student;
-            } else {
-                result.close();
-                statement.close();
-                return null;
             }
+
         } catch (SQLException e) {
+            System.out.println("Database access error!");
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
+
 }

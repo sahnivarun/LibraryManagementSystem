@@ -138,6 +138,43 @@ public class RemoteDataAdapter implements DataAccess {
     }
 
     @Override
+    public Student loadStudent(int studentID) {
+        //connect();
+        RequestModel req = new RequestModel();
+        req.code = RequestModel.LOAD_STUDENT_REQUEST;
+        req.body = String.valueOf(studentID);
+
+        String json = gson.toJson(req);
+        try {
+            dos.writeUTF(json);
+            String received = dis.readUTF();
+
+            System.out.println("Server response:" + received);
+
+            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+
+            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
+                System.out.println("The request is not recognized by the Server");
+                return null;
+            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
+                System.out.println("The Server could not find a student with this ID!");
+                return null;
+            } else {
+                Student model = gson.fromJson(res.body, Student.class);
+                System.out.println("Receiving a Student object");
+                System.out.println("StudentID = " + model.getStudentID());
+                System.out.println("Student name = " + model.getStudentName());
+                return model;
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean saveStudent(Student student) {
         // Connect to the server (establish communication with the server)
 

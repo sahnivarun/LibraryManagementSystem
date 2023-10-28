@@ -125,6 +125,9 @@ class ClientHandler extends Thread  {
                     case RequestModel.DELETE_USER_REQUEST:
                         handleDeleteUserRequest(req, res, dao, connection);
                         break;
+                    case RequestModel.LOAD_STUDENT_REQUEST:
+                        handleLoadStudentRequest(req, res, dao, connection);
+                        break;
                     case RequestModel.SAVE_STUDENT_REQUEST:
                         handleSaveStudentRequest(req, res, dao, connection);
                         break;
@@ -454,15 +457,15 @@ class ClientHandler extends Thread  {
                 // Build a Student object from the result and set it in the response
                 int studentId = resultSet.getInt("StudentID");
                 String studentName = resultSet.getString("StudentName");
-                String emailID = resultSet.getString("EmailID");
+                String emailId = resultSet.getString("EmailID");
                 String studentNumber = resultSet.getString("StudentNumber");
 
-                Student student = new Student(studentId, studentName, emailID, studentNumber);
+                Student student = new Student(studentId, studentName, emailId, studentNumber);
 
                 res.code = ResponseModel.OK;
                 res.body = gson.toJson(student);
             } else {
-                // Student not found
+                // Book not found
                 res.code = ResponseModel.DATA_NOT_FOUND;
                 res.body = "";
             }

@@ -67,6 +67,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             addBook();
         else if (e.getSource() == btnOrderBook)
             makeOrder();
+
     }
 
     private void makeOrder() {
@@ -200,6 +201,34 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         }
     }
 
+    private void loadStudent(JTextField txtStudentID, JTextField txtName, JTextField txtEmail, JTextField txtNum) {
+        int studentID = 0;
+        try {
+            studentID = Integer.parseInt(txtStudentID.getText());
+        }
+        catch (NumberFormatException e) {
+           // JOptionPane.showMessageDialog(null, "Invalid student ID! Please provide a valid book ID!");
+            return;
+        }
+
+        if(studentID<=0) {
+            JOptionPane.showMessageDialog(null, "Invalid student ID! Please provide a non negative student ID");
+            return;
+        }
+
+        Student student = dao.loadStudent(studentID);
+
+        if (student == null) {
+           // JOptionPane.showMessageDialog(null, "This student ID does not exist in the database!");
+            return;
+        }
+
+        txtName.setText(student.getStudentName());
+        txtEmail.setText(student.getEmailID());
+        txtNum.setText(student.getStudentNumber());
+
+    }
+
     private Student getStudentFromUI() {
         // Create a new dialog to enter payment information
         JDialog studentDialog = new JDialog(this, "Student Information", true);
@@ -208,9 +237,14 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JPanel studentPanel = new JPanel();
         studentPanel.setLayout(new GridLayout(0, 2));
 
-        // Create labels and input fields for shipping address
+        // Create labels and input fields for student information
         JLabel lblStudentID = new JLabel("Student ID:");
         JTextField txtStudentID = new JTextField(20);
+        JButton loadStudentButton = new JButton("Load Student Details");
+
+        studentPanel.add(lblStudentID);
+        studentPanel.add(txtStudentID);
+        studentPanel.add(loadStudentButton);
 
         JLabel lblName = new JLabel("Student Name:");
         JTextField txtName = new JTextField(20);
@@ -221,8 +255,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JLabel lblNum = new JLabel("Mobile Number:");
         JTextField txtNum = new JTextField(20);
 
-        studentPanel.add(lblStudentID);
-        studentPanel.add(txtStudentID);
         studentPanel.add(lblName);
         studentPanel.add(txtName);
         studentPanel.add(lblEmail);
@@ -232,6 +264,30 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
         // Create a single OK button to save student information and close the dialog
         JButton btnOK = new JButton("OK");
+
+        // ActionListener for the "Load Student Details" button
+        loadStudentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int studentID = Integer.parseInt(txtStudentID.getText());
+
+                // Attempt to load student details
+                Student student = dao.loadStudent(studentID);
+
+                if (student != null) {
+                    // Student exists, populate the fields
+                    txtName.setText(student.getStudentName());
+                    txtEmail.setText(student.getEmailID());
+                    txtNum.setText(student.getStudentNumber());
+                } else {
+                    // Student doesn't exist, allow the user to fill in the details
+                    txtName.setText("");
+                    txtEmail.setText("");
+                    txtNum.setText("");
+                    JOptionPane.showMessageDialog(null, "This student ID does not exist in our records. Please fill in the details.");
+                }
+            }
+        });
 
         btnOK.addActionListener(new ActionListener() {
             @Override

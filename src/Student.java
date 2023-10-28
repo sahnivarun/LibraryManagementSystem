@@ -12,6 +12,9 @@ public class Student {
                 this.studentNumber = studentNumber;
         }
 
+        public Student() {
+        }
+
         // Getter and Setter methods for studentID
         public int getStudentID() {
                 return studentID;
