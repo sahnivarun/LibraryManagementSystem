@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="Almost completed. Minor Fixes.">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="loadstudent raw">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BookViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SQLiteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SQLiteDataAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Student.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/store.db" beforeDir="false" afterPath="$PROJECT_DIR$/store.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -153,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698516132136</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="loadstudent raw">
+      <created>1698529020493</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1698529020493</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -188,6 +189,7 @@
     <MESSAGE value="order saving" />
     <MESSAGE value="receipt details fix" />
     <MESSAGE value="Almost completed. Minor Fixes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Almost completed. Minor Fixes." />
+    <MESSAGE value="loadstudent raw" />
+    <option name="LAST_COMMIT_MESSAGE" value="loadstudent raw" />
   </component>
 </project>

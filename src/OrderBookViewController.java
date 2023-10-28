@@ -240,11 +240,11 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         // Create labels and input fields for student information
         JLabel lblStudentID = new JLabel("Student ID:");
         JTextField txtStudentID = new JTextField(20);
-        JButton loadStudentButton = new JButton("Load Student Details");
+        JButton btnloadStudent = new JButton("Load Student Details");
 
         studentPanel.add(lblStudentID);
         studentPanel.add(txtStudentID);
-        studentPanel.add(loadStudentButton);
+        studentPanel.add(btnloadStudent);
 
         JLabel lblName = new JLabel("Student Name:");
         JTextField txtName = new JTextField(20);
@@ -266,7 +266,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JButton btnOK = new JButton("OK");
 
         // ActionListener for the "Load Student Details" button
-        loadStudentButton.addActionListener(new ActionListener() {
+        btnloadStudent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int studentID = Integer.parseInt(txtStudentID.getText());
@@ -312,7 +312,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                         orderBook.setStudentID(studentID);
 
 
-                        // Save shipping address using DataAdapter
+                        // Save student using DataAdapter
                         if (dao.saveStudent(student)) {
                             orderBook.setStudent(student);
 
@@ -322,8 +322,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                             JOptionPane.showMessageDialog(null, "Error saving student details.");
                         }
                     }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Invalid zip code format. Please enter a valid number.");
+                } catch (Exception ex) {
                 }
             }
         });
