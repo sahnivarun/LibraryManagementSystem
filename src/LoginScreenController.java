@@ -7,7 +7,7 @@ import java.awt.Toolkit;
 
 public class LoginScreenController extends JFrame implements ActionListener {
     private JTextField txtUserName = new JTextField(20);
-    private JTextField txtPassword = new JTextField(20);
+    private JPasswordField txtPassword = new JPasswordField(20);
     private JButton    btnLogin    = new JButton("Login");
 
     RemoteDataAdapter dao;

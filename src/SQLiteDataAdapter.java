@@ -182,7 +182,7 @@ public class SQLiteDataAdapter implements DataAccess {
             int receiptID = getOrderCount();
 
             receipt.setOrderId(receiptID);
-            receipt.setStudentId(receiptID);
+           // receipt.setStudentId(receiptID);
             receipt.setReceiptNumber(receiptID);
 
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, StudentID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?, ?)");
@@ -227,54 +227,6 @@ public class SQLiteDataAdapter implements DataAccess {
         }
         return null;
     }
-
-//    public boolean saveShippingAddress(ShippingAddress address) {
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("INSERT INTO ShippingAddress (StreetNumberAndName, ApartmentOrUnitNumber, City, State, ZipCode) VALUES (?, ?, ?, ?, ?)");
-//            statement.setString(1, address.getStreetNumberAndName());
-//            statement.setString(2, address.getApartmentOrUnitNumber());
-//            statement.setString(3, address.getCity());
-//            statement.setString(4, address.getState());
-//            statement.setInt(5, address.getZipCode());
-//
-//            int rowsAffected = statement.executeUpdate();
-//            statement.close();
-//
-//            return rowsAffected > 0;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-
-//    public ShippingAddress loadShippingAddress(int id) {
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ShippingAddress WHERE AddressID = ?");
-//            statement.setInt(1, id);
-//
-//            ResultSet result = statement.executeQuery();
-//            if (result.next()) {
-//                ShippingAddress address = new ShippingAddress();
-//                address.setAddressID(result.getInt("AddressID"));
-//                address.setStreetNumberAndName(result.getString("StreetNumberAndName"));
-//                address.setApartmentOrUnitNumber(result.getString("ApartmentOrUnitNumber"));
-//                address.setCity(result.getString("City"));
-//                address.setState(result.getString("State"));
-//                address.setZipCode(result.getInt("ZipCode"));
-//
-//                result.close();
-//                statement.close();
-//                return address;
-//            } else {
-//                result.close();
-//                statement.close();
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 
     public Student loadStudentDetails(int studentID) {
         try {

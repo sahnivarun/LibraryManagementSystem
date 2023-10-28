@@ -7,7 +7,6 @@ public class MainScreen extends JFrame {
 
     private JButton btnBuy = new JButton("Order Book");
     private JButton btnSell = new JButton("Load/Save Book");
-    private JButton btnTrack = new JButton("Track Book");
     RemoteDataAdapter dao;
 
     // Label to display user information
@@ -29,7 +28,6 @@ public class MainScreen extends JFrame {
 
         btnSell.setPreferredSize(new Dimension(120, 50));
         btnBuy.setPreferredSize(new Dimension(120, 50));
-        btnTrack.setPreferredSize(new Dimension(120,50));
 
         JLabel title = new JLabel("Library Management System");
         title.setFont(new Font("Sans Serif", Font.BOLD, 25));
@@ -40,7 +38,6 @@ public class MainScreen extends JFrame {
         JPanel panelButton = new JPanel();
         panelButton.add(btnBuy);
         panelButton.add(btnSell);
-        panelButton.add(btnTrack);
 
         this.getContentPane().add(panelButton);
 
