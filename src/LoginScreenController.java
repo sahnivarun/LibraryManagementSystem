@@ -27,26 +27,6 @@ public class LoginScreenController extends JFrame implements ActionListener {
         int y = (screenSize.height - getHeight()) / 2;
         this.setLocation(x, y);
 
-//        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-//
-//        this.getContentPane().add(new JLabel ("Library Management System"));
-//
-//        JPanel main = new JPanel(new SpringLayout());
-//
-//        main.add(new JLabel("Username:"));
-//        main.add(txtUserName);
-//        main.add(new JLabel("Password:"));
-//        main.add(txtPassword);
-//
-//        SpringUtilities.makeCompactGrid(main, 2,2,6,6,6,6);
-//
-//        this.getContentPane().add(main);
-//        this.getContentPane().add(btnLogin);
-//
-//        btnLogin.setAlignmentX(JButton.CENTER_ALIGNMENT);
-//
-//        btnLogin.addActionListener(this);
-
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 

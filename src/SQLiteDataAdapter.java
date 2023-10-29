@@ -160,29 +160,110 @@ public class SQLiteDataAdapter implements DataAccess {
     }
 
     public boolean saveStudent(Student student) {
+
+        System.out.println("calling savestudnt");
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
-            statement.setInt(1, student.getStudentID());
-            statement.setString(2, student.getStudentName());
-            statement.setString(3, student.getEmailID());
-            statement.setString(4, student.getStudentNumber());
+            if (isStudentIDExists(student.getStudentID())) {
 
-            int rowsAffected = statement.executeUpdate();
-            statement.close();
+                System.out.println(student.getStudentID());
+                // If the student ID already exists, update the existing entry
+                PreparedStatement updateStatement = connection.prepareStatement("UPDATE Student SET StudentName = ?, EmailID = ?, StudentNumber = ? WHERE StudentID = ?");
+                updateStatement.setString(1, student.getStudentName());
+                updateStatement.setString(2, student.getEmailID());
+                updateStatement.setString(3, student.getStudentNumber());
+                updateStatement.setInt(4, student.getStudentID());
 
-            return rowsAffected > 0;
+                int rowsAffected = updateStatement.executeUpdate();
+                updateStatement.close();
+
+                return true;
+
+            } else {
+                // If the student ID doesn't exist, insert a new entry
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
+                insertStatement.setInt(1, student.getStudentID());
+                insertStatement.setString(2, student.getStudentName());
+                insertStatement.setString(3, student.getEmailID());
+                insertStatement.setString(4, student.getStudentNumber());
+
+                int rowsAffected = insertStatement.executeUpdate();
+                insertStatement.close();
+
+                return rowsAffected > 0;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
+    public boolean isStudentIDExists(int studentID) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
+            statement.setInt(1, studentID);
+
+            ResultSet resultSet = statement.executeQuery();
+            boolean exists = resultSet.next(); // Check if any rows were returned
+
+            resultSet.close();
+            statement.close();
+
+            return exists;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+//    public boolean saveStudent(Student student) {
+//        try {
+//            if (isStudentIDExists(student.getStudentID())) {
+//                return true;
+//            }
+//            else {
+//
+//                PreparedStatement statement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
+//                statement.setInt(1, student.getStudentID());
+//                statement.setString(2, student.getStudentName());
+//                statement.setString(3, student.getEmailID());
+//                statement.setString(4, student.getStudentNumber());
+//
+//                int rowsAffected = statement.executeUpdate();
+//                statement.close();
+//
+//                return rowsAffected > 0;
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+//
+//    public boolean isStudentIDExists(int studentID) {
+//        try {
+//            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
+//            statement.setInt(1, studentID);
+//
+//            ResultSet resultSet = statement.executeQuery();
+//            boolean exists = resultSet.next(); // Check if any rows were returned
+//
+//            resultSet.close();
+//            statement.close();
+//
+//            return exists;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
     public boolean saveReceipt(Receipt receipt) {
         try {
             int receiptID = getOrderCount();
 
             receipt.setOrderId(receiptID);
-           // receipt.setStudentId(receiptID);
             receipt.setReceiptNumber(receiptID);
 
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?)");

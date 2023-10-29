@@ -333,6 +333,8 @@ class ClientHandler extends Thread  {
     private static void handleSaveStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
             // Parse the JSON data from the request into a Student object
+            System.out.println("handleSaveStudentRequest()");
+
             Gson gson = new Gson();
             Student student = gson.fromJson(req.body, Student.class);
 
