@@ -332,30 +332,32 @@ class ClientHandler extends Thread  {
 
     private static void handleSaveStudentRequest(RequestModel req, ResponseModel res, DataAccess dao, Connection connection) {
         try {
-            // Parse the JSON data from the request into a Student object
-            System.out.println("handleSaveStudentRequest()");
 
             Gson gson = new Gson();
             Student student = gson.fromJson(req.body, Student.class);
 
-            // Create a PreparedStatement for inserting a student into the database
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
-            stmt.setInt(1, student.getStudentID());
-            stmt.setString(2, student.getStudentName());
-            stmt.setString(3, student.getEmailID());
-            stmt.setString(4, student.getStudentNumber());
+            res.code = ResponseModel.OK;
+            res.body = "Student record saved successfully.";
+            // Parse the JSON data from the request into a Student object
 
-            int rowsInserted = stmt.executeUpdate();
-
-            if (rowsInserted > 0) {
-                // Student record was successfully saved
-                res.code = ResponseModel.OK;
-                res.body = "Student record saved successfully.";
-            } else {
-                // Student record could not be saved
-                res.code = ResponseModel.ERROR;
-                res.body = "Error saving the student record to the database.";
-            }
+//            // Create a PreparedStatement for inserting a student into the database
+//            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
+//            stmt.setInt(1, student.getStudentID());
+//            stmt.setString(2, student.getStudentName());
+//            stmt.setString(3, student.getEmailID());
+//            stmt.setString(4, student.getStudentNumber());
+//
+//            int rowsInserted = stmt.executeUpdate();
+//
+//            if (rowsInserted > 0) {
+//                // Student record was successfully saved
+//                res.code = ResponseModel.OK;
+//                res.body = "Student record saved successfully.";
+//            } else {
+//                // Student record could not be saved
+//                res.code = ResponseModel.ERROR;
+//                res.body = "Error saving the student record to the database.";
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             res.code = ResponseModel.ERROR;

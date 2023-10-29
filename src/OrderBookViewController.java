@@ -229,85 +229,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
     }
 
-//changed UI
-//    private Student getStudentFromUI() {
-//
-//        JDialog studentDialog = new JDialog(this, "Student Information", true);
-//        studentDialog.setLayout(new BorderLayout());
-//
-//        JPanel studentPanel = new JPanel();
-//        studentPanel.setLayout(new BoxLayout(studentPanel, BoxLayout.Y_AXIS));
-//
-//        // Student ID Row
-//        JLabel lblStudentID = new JLabel("Student ID:");
-//        JTextField txtStudentID = new JTextField(20);
-//        JPanel studentIDRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        studentIDRow.add(lblStudentID);
-//        studentIDRow.add(txtStudentID);
-//        studentPanel.add(studentIDRow);
-//
-//        // Load Student Button Row
-//        JButton btnloadStudent = new JButton("Load Student Details");
-//        JPanel btnLoadRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        btnLoadRow.add(btnloadStudent);
-//        studentPanel.add(btnLoadRow);
-//
-////        JButton btnloadStudent = new JButton("Load Student Details");
-////        btnloadStudent.setMaximumSize(new Dimension(Integer.MAX_VALUE, btnloadStudent.getPreferredSize().height));
-////        studentPanel.add(btnloadStudent);
-//
-//        // Student Name Row
-//        JLabel lblName = new JLabel("Student Name:");
-//        JTextField txtName = new JTextField(20);
-//        JPanel nameRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        nameRow.add(lblName);
-//        nameRow.add(txtName);
-//        studentPanel.add(nameRow);
-//
-//        // Email ID Row
-//        JLabel lblEmail = new JLabel("Email ID:");
-//        JTextField txtEmail = new JTextField(20);
-//        JPanel emailRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        emailRow.add(lblEmail);
-//        emailRow.add(txtEmail);
-//        studentPanel.add(emailRow);
-//
-//        // Mobile Number Row
-//        JLabel lblNum = new JLabel("Mobile Number:");
-//        JTextField txtNum = new JTextField(20);
-//        JPanel numRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        numRow.add(lblNum);
-//        numRow.add(txtNum);
-//        studentPanel.add(numRow);
-//
-//        // OK Button
-//        JButton btnOK = new JButton("OK");
-//
-//        // ActionListener for the "Load Student Details" button
-//        btnloadStudent.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // ... [Keep this part unchanged]
-//            }
-//        });
-//
-//        btnOK.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // ... [Keep this part unchanged]
-//            }
-//        });
-//
-//        studentDialog.add(studentPanel, BorderLayout.CENTER);
-//        studentDialog.add(btnOK, BorderLayout.SOUTH);
-//
-//        studentDialog.pack();
-//        studentDialog.setLocationRelativeTo(this);
-//        studentDialog.setVisible(true);
-//
-//        return student;
-//    }
-
     private Student getStudentFromUI() {
 
         JDialog studentDialog = new JDialog(this, "Student Information", true);
@@ -393,15 +314,17 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                         student.setStudentNumber(num);
                         orderBook.setStudentID(studentID);
 
+                        orderBook.setStudent(student);
+
                         // Save student using DataAdapter
-                        if (dao.saveStudent(student)) {
-                            orderBook.setStudent(student);
+//                        if (dao.saveStudent(student)) {
+//                            orderBook.setStudent(student);
 
                             // After processing, close the dialog
                             studentDialog.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error saving student details.");
-                        }
+//                        } else {
+//                            JOptionPane.showMessageDialog(null, "Error saving student details.");
+//                        }
                     }
                 } catch (Exception ex) {
                 }
