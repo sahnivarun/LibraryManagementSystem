@@ -7,15 +7,14 @@ public class Book {
     private String status;
 
     public Book(){
-
     }
+
     public Book(int bookID, String bookName, String authorName, double quantity, String status) {
         this.bookID = bookID;
         this.bookName = bookName;
         this.authorName = authorName;
         this.quantity = quantity;
         this.status = status;
-
     }
 
     public int getBookID() {

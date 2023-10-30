@@ -237,6 +237,14 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JPanel studentPanel = new JPanel();
         studentPanel.setLayout(new GridLayout(0, 2));
 
+        JLabel lblInfo = new JLabel("Existing student IDs exist from: ");
+        JLabel lblInfo2 = new JLabel("1 - 40");
+        Font boldFont = new Font(lblInfo.getFont().getFontName(), Font.BOLD, lblInfo.getFont().getSize());
+        lblInfo.setFont(boldFont);
+        lblInfo2.setFont(boldFont);
+        studentPanel.add(lblInfo);
+        studentPanel.add(lblInfo2);
+
         // Create labels and input fields for student information
         JLabel lblStudentID = new JLabel("Student ID:");
         JTextField txtStudentID = new JTextField(20);
@@ -287,7 +295,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                     txtName.setText("");
                     txtEmail.setText("");
                     txtNum.setText("");
-                    JOptionPane.showMessageDialog(null, "This student ID does not exist in our records. Please fill in the details.");
+                    JOptionPane.showMessageDialog(null, "This student ID does not exist in our records. Please enter correct student ID.");
                 }
             }
         });
@@ -305,7 +313,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                     // Add validations
 
                     if (studentID<=0 || name.isEmpty() || email.isEmpty() || num.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Please fill in all required fields.");
+                        JOptionPane.showMessageDialog(null, "Please provide valid student ID");
                     }  else {
                         student = new Student(studentID, name, email, num);
                         student.setStudentID(studentID);
@@ -354,8 +362,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
        // System.out.println("OrderCount"+orderCount);
 
         // Add receipt information labels
-        JLabel lblReceiptNumber = new JLabel("Receipt Number: " + orderCount);
-        JLabel lblOrderID = new JLabel("Order ID: " + orderCount);
+        JLabel lblReceiptNumber = new JLabel("Order Number: " + orderCount);
 
         JLabel lblStudent = new JLabel("Student Details: " + receipt.getStudent());
 
@@ -365,7 +372,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JLabel lblDateTime = new JLabel("Date and Time: " + receipt.getDateTime());
 
         receiptPanel.add(lblReceiptNumber);
-        receiptPanel.add(lblOrderID);
         receiptPanel.add(lblStudent);
         receiptPanel.add(lblBooks);
         receiptPanel.add(lblDateTime);

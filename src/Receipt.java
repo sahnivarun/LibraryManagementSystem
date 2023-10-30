@@ -6,7 +6,6 @@ public class Receipt {
     private int orderId;
    // private int studentId;
     private String dateTime;
-
     private String student;
     private String books;
 
@@ -77,8 +76,7 @@ public class Receipt {
         String formattedDate = dateFormat.format(new Date(dateTime));
 
         return "Receipt{" +
-                "receiptNumber=" + receiptNumber +
-                ", orderId=" + orderId +
+                "Order Number=" + receiptNumber +
            //     ", studentID=" + studentId +
                 ", timestamp=" + formattedDate +
                 ", studentDetails='" + student + '\'' +

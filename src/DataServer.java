@@ -404,19 +404,68 @@ class ClientHandler extends Thread  {
         }
     }
 
+//    private static void handleLoadUserRequest(RequestModel req, ResponseModel res, Connection connection) {
+//        System.out.println("Handle Load UserRequest()");
+//        try {
+//
+//            // Parse the body JSON to extract the username value
+//            Gson gson = new Gson();
+//            JsonObject jsonObject = gson.fromJson(req.body, JsonObject.class);
+//            if (jsonObject.has("username")) {
+//                String username = jsonObject.get("username").getAsString();
+//                if (jsonObject.has("password")){
+//                    String password = jsonObject.get("password").getAsString();
+//                }
+//                System.out.println("Parsed username: " + username);
+//
+//                PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Users WHERE UserName = ?");
+//                stmt.setString(1, username);
+//
+//                ResultSet resultSet = stmt.executeQuery();
+//                System.out.println("result");
+//                if (resultSet.next()) {
+//                    User user = new User();
+//                    user.setUserID(resultSet.getInt("UserID"));
+//                    user.setUsername(resultSet.getString("UserName"));
+//                    user.setFullName(resultSet.getString("DisplayName"));
+//                    user.setPassword(resultSet.getString("Password"));
+//
+//                    res.code = ResponseModel.OK;
+//                    res.body = gson.toJson(user);
+//                    System.out.println("User Created");
+//                } else {
+//                    System.out.println("User not found");
+//                    res.code = ResponseModel.DATA_NOT_FOUND;
+//                    res.body = "";
+//                }
+//            } else {
+//                System.out.println("Username not found in request body");
+//                res.code = ResponseModel.ERROR;
+//                res.body = "Username not provided.";
+//            }
+//
+//        } catch (Exception e) {
+//            System.out.println("Exception: " + e.toString());
+//            e.printStackTrace();
+//            res.code = ResponseModel.ERROR;
+//            res.body = "Error loading the user from the database.";
+//        }
+//    }
     private static void handleLoadUserRequest(RequestModel req, ResponseModel res, Connection connection) {
         System.out.println("Handle Load UserRequest()");
         try {
-
-            // Parse the body JSON to extract the username value
+            // Parse the body JSON to extract the username and password values
             Gson gson = new Gson();
             JsonObject jsonObject = gson.fromJson(req.body, JsonObject.class);
-            if (jsonObject.has("username")) {
+            if (jsonObject.has("username") && jsonObject.has("password")) {
                 String username = jsonObject.get("username").getAsString();
+                String password = jsonObject.get("password").getAsString(); // Get password from the request
+
                 System.out.println("Parsed username: " + username);
 
-                PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Users WHERE UserName = ?");
+                PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Users WHERE UserName = ? AND Password = ?");
                 stmt.setString(1, username);
+                stmt.setString(2, password);
 
                 ResultSet resultSet = stmt.executeQuery();
                 System.out.println("result");
@@ -429,23 +478,22 @@ class ClientHandler extends Thread  {
 
                     res.code = ResponseModel.OK;
                     res.body = gson.toJson(user);
-                    System.out.println("User Created");
+                    System.out.println("User Found");
                 } else {
-                    System.out.println("User not found");
-                    res.code = ResponseModel.DATA_NOT_FOUND;
-                    res.body = "";
+                    System.out.println("Username or Password incorrect");
+                    res.code = ResponseModel.DATA_NOT_FOUND; // This code may need to be changed to reflect an authentication failure
+                    res.body = ""; // You might want to send a specific message here, e.g., "Invalid credentials."
                 }
             } else {
-                System.out.println("Username not found in request body");
+                System.out.println("Username or Password not found in request body");
                 res.code = ResponseModel.ERROR;
-                res.body = "Username not provided.";
+                res.body = "Username or Password not provided.";
             }
-
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.toString());
+        } catch (SQLException e) {
+            // Handle SQLException
             e.printStackTrace();
             res.code = ResponseModel.ERROR;
-            res.body = "Error loading the user from the database.";
+            res.body = "An error occurred while processing the request.";
         }
     }
 
