@@ -14,10 +14,6 @@ public class Application {
     // Main components of this application
     private Connection connection;
 
-    public Connection getDBConnection() {
-        return connection;
-    }
-
     private DataAdapter dataAdapter;
 
     private User currentUser = null;

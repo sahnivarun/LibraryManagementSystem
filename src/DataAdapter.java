@@ -71,43 +71,6 @@
             }
         }
 
-        public Order loadOrder(int id) {
-            try {
-                Order order = null;
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Orders WHERE OrderID = " + id);
-
-                if (resultSet.next()) {
-                    order = new Order();
-                    order.setOrderID(resultSet.getInt("OrderID"));
-                    order.setBuyerID(resultSet.getInt("CustomerID"));
-                    order.setTotalCost(resultSet.getDouble("TotalCost"));
-                    order.setDate(resultSet.getString("OrderDate"));
-                    resultSet.close();
-                    statement.close();
-                }
-
-                // loading the order lines for this order
-                resultSet = statement.executeQuery("SELECT * FROM OrderLine WHERE OrderID = " + id);
-
-                while (resultSet.next()) {
-                    OrderLine line = new OrderLine();
-                    line.setOrderID(resultSet.getInt(1));
-                    line.setProductID(resultSet.getInt(2));
-                    line.setQuantity(resultSet.getDouble(3));
-                    line.setCost(resultSet.getDouble(4));
-                    order.addLine(line);
-                }
-
-                return order;
-
-            } catch (SQLException e) {
-                System.out.println("Database access error!");
-                e.printStackTrace();
-                return null;
-            }
-        }
-
         public int getOrderCount() {
             int orderCount = 0;
 
@@ -128,17 +91,6 @@
 
             return orderCount;
 
-        }
-
-        // Function to calculate the total cost of the order
-        private double calculateTotalCost(Order order) {
-            double totalCost = 0.0;
-
-            for (OrderLine line : order.getLines()) {
-                totalCost += line.getCost();
-            }
-
-            return totalCost;
         }
 
         public boolean saveOrder(Order order) {
@@ -242,65 +194,6 @@
             }
         }
 
-        public ShippingAddress loadShippingAddress(int id) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM ShippingAddress WHERE AddressID = ?");
-                statement.setInt(1, id);
-
-                ResultSet result = statement.executeQuery();
-                if (result.next()) {
-                    ShippingAddress address = new ShippingAddress();
-                    address.setAddressID(result.getInt("AddressID"));
-                    address.setStreetNumberAndName(result.getString("StreetNumberAndName"));
-                    address.setApartmentOrUnitNumber(result.getString("ApartmentOrUnitNumber"));
-                    address.setCity(result.getString("City"));
-                    address.setState(result.getString("State"));
-                    address.setZipCode(result.getInt("ZipCode"));
-
-                    result.close();
-                    statement.close();
-                    return address;
-                } else {
-                    result.close();
-                    statement.close();
-                    return null;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        public CreditCard loadCreditCard(int id) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM CreditCard WHERE CardNumber = ?");
-                statement.setInt(1, id);
-
-                ResultSet result = statement.executeQuery();
-                if (result.next()) {
-                    CreditCard card = new CreditCard();
-                    card.setCardNumber(result.getInt("CardNumber"));
-                    card.setName(result.getString("Name"));
-                    card.setExpiryMonth(result.getInt("ExpiryMonth"));
-                    card.setExpiryYear(result.getInt("ExpiryYear"));
-                    card.setCvv(result.getInt("CVV"));
-                    card.setBillingAddress(result.getString("BillingAddress"));
-
-                    result.close();
-                    statement.close();
-                    return card;
-                } else {
-                    result.close();
-                    statement.close();
-                    return null;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        // Change #2: Add a method to save a receipt.
         public boolean saveReceipt(Receipt receipt) {
             try {
                 int receiptOrderID = getOrderCount();

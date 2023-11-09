@@ -7,18 +7,6 @@ public class LoginScreenController extends JFrame implements ActionListener {
     private JTextField txtPassword = new JTextField(10);
     private JButton    btnLogin    = new JButton("Login");
 
-    public JButton getBtnLogin() {
-        return btnLogin;
-    }
-
-    public JTextField getTxtPassword() {
-        return txtPassword;
-    }
-
-    public JTextField getTxtUserName() {
-        return txtUserName;
-    }
-
     public LoginScreenController() {
         this.setSize(300, 150);
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
