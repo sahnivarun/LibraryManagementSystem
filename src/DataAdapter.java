@@ -1,6 +1,6 @@
-    import java.sql.*;
-    import java.util.ArrayList;
-    import java.util.List;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
     public class DataAdapter {
         private Connection connection;
@@ -239,64 +239,6 @@
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
-            }
-        }
-
-        public ShippingAddress loadShippingAddress(int id) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM ShippingAddress WHERE AddressID = ?");
-                statement.setInt(1, id);
-
-                ResultSet result = statement.executeQuery();
-                if (result.next()) {
-                    ShippingAddress address = new ShippingAddress();
-                    address.setAddressID(result.getInt("AddressID"));
-                    address.setStreetNumberAndName(result.getString("StreetNumberAndName"));
-                    address.setApartmentOrUnitNumber(result.getString("ApartmentOrUnitNumber"));
-                    address.setCity(result.getString("City"));
-                    address.setState(result.getString("State"));
-                    address.setZipCode(result.getInt("ZipCode"));
-
-                    result.close();
-                    statement.close();
-                    return address;
-                } else {
-                    result.close();
-                    statement.close();
-                    return null;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        public CreditCard loadCreditCard(int id) {
-            try {
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM CreditCard WHERE CardNumber = ?");
-                statement.setInt(1, id);
-
-                ResultSet result = statement.executeQuery();
-                if (result.next()) {
-                    CreditCard card = new CreditCard();
-                    card.setCardNumber(result.getInt("CardNumber"));
-                    card.setName(result.getString("Name"));
-                    card.setExpiryMonth(result.getInt("ExpiryMonth"));
-                    card.setExpiryYear(result.getInt("ExpiryYear"));
-                    card.setCvv(result.getInt("CVV"));
-                    card.setBillingAddress(result.getString("BillingAddress"));
-
-                    result.close();
-                    statement.close();
-                    return card;
-                } else {
-                    result.close();
-                    statement.close();
-                    return null;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return null;
             }
         }
 

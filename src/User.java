@@ -1,3 +1,6 @@
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class User {
     private int userID;
     private String username;
@@ -35,6 +38,25 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public static User fromJson(String json) {
+        try {
+            // Assuming your JSON data is represented as a JSONObject
+            JSONObject jsonObject = new JSONObject(json);
+
+            User user = new User();
+            user.setUserID(jsonObject.getInt("UserID"));
+            user.setUsername(jsonObject.getString("UserName"));
+            user.setPassword(jsonObject.getString("Password"));
+            user.setFullName(jsonObject.getString("DisplayName"));
+            // Set other fields as needed
+
+            return user;
+        } catch (JSONException e) {
+            // Handle JSON parsing exceptions
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
