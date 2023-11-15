@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
     public class DataAdapter {
+
         private Connection connection;
 
         public DataAdapter(Connection connection) {
@@ -71,43 +72,6 @@ import java.util.List;
             }
         }
 
-        public Order loadOrder(int id) {
-            try {
-                Order order = null;
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Orders WHERE OrderID = " + id);
-
-                if (resultSet.next()) {
-                    order = new Order();
-                    order.setOrderID(resultSet.getInt("OrderID"));
-                    order.setBuyerID(resultSet.getInt("CustomerID"));
-                    order.setTotalCost(resultSet.getDouble("TotalCost"));
-                    order.setDate(resultSet.getString("OrderDate"));
-                    resultSet.close();
-                    statement.close();
-                }
-
-                // loading the order lines for this order
-                resultSet = statement.executeQuery("SELECT * FROM OrderLine WHERE OrderID = " + id);
-
-                while (resultSet.next()) {
-                    OrderLine line = new OrderLine();
-                    line.setOrderID(resultSet.getInt(1));
-                    line.setProductID(resultSet.getInt(2));
-                    line.setQuantity(resultSet.getDouble(3));
-                    line.setCost(resultSet.getDouble(4));
-                    order.addLine(line);
-                }
-
-                return order;
-
-            } catch (SQLException e) {
-                System.out.println("Database access error!");
-                e.printStackTrace();
-                return null;
-            }
-        }
-
         public int getOrderCount() {
             int orderCount = 0;
 
@@ -128,17 +92,6 @@ import java.util.List;
 
             return orderCount;
 
-        }
-
-        // Function to calculate the total cost of the order
-        private double calculateTotalCost(Order order) {
-            double totalCost = 0.0;
-
-            for (OrderLine line : order.getLines()) {
-                totalCost += line.getCost();
-            }
-
-            return totalCost;
         }
 
         public boolean saveOrder(Order order) {
@@ -242,7 +195,6 @@ import java.util.List;
             }
         }
 
-        // Change #2: Add a method to save a receipt.
         public boolean saveReceipt(Receipt receipt) {
             try {
                 int receiptOrderID = getOrderCount();

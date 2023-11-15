@@ -31,24 +31,6 @@ public class TestR {
         }
     }
 
-    public static boolean verifyUserFromRedis(Jedis jedis, String username, String password) {
-        // Form the key for the user data in Redis (assuming the data is in the "User1" hash key)
-        String key = "User1";
-
-        // Check if the key exists in Redis
-        if (jedis.exists(key)) {
-            // Get the JSON data for the current user from the hash fields
-            String userNameFromRedis = jedis.hget(key, "UserName");
-            String passwordFromRedis = jedis.hget(key, "Password");
-
-            // Check if the username and password match
-            return userNameFromRedis.equals(username) && passwordFromRedis.equals(password);
-        }
-
-        return false;
-    }
-
-
     public static void displayProductInfo(Jedis jedis, String productId) {
         // Form the key for the product data in Redis
         String key = "ProductID";
@@ -94,4 +76,22 @@ public class TestR {
             System.out.println("Key not found in Redis.");
         }
     }
+
+    public static boolean verifyUserFromRedis(Jedis jedis, String username, String password) {
+        // Form the key for the user data in Redis (assuming the data is in the "User1" hash key)
+        String key = "User1";
+
+        // Check if the key exists in Redis
+        if (jedis.exists(key)) {
+            // Get the JSON data for the current user from the hash fields
+            String userNameFromRedis = jedis.hget(key, "UserName");
+            String passwordFromRedis = jedis.hget(key, "Password");
+
+            // Check if the username and password match
+            return userNameFromRedis.equals(username) && passwordFromRedis.equals(password);
+        }
+
+        return false;
+    }
+
 }
