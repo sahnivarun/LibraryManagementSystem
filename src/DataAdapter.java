@@ -1,6 +1,7 @@
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisDataException;
+import org.json.JSONObject;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
     public class DataAdapter {
 
@@ -8,6 +9,7 @@ import java.util.List;
 
         public DataAdapter(Connection connection) {
             this.connection = connection;
+            Jedis jedis = new Jedis("redis://default:varunsahni@redis-17090.c262.us-east-1-3.ec2.cloud.redislabs.com:17090");
         }
 
         public Product loadProduct(int id) {
@@ -218,6 +220,23 @@ import java.util.List;
                 e.printStackTrace();
                 return false;
             }
+        }
+
+        public static boolean verifyUserFromRedis(Jedis jedis, String username, String password) {
+            // Form the key for the user data in Redis (assuming the data is in the "User1" hash key)
+            String key = "User:1";
+
+            // Check if the key exists in Redis
+            if (jedis.exists(key)) {
+                // Get the JSON data for the current user from the hash fields
+                String userNameFromRedis = jedis.hget(key, "UserName");
+                String passwordFromRedis = jedis.hget(key, "Password");
+
+                // Check if the username and password match
+                return userNameFromRedis.equals(username) && passwordFromRedis.equals(password);
+            }
+
+            return false;
         }
 
     }

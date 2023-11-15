@@ -1,7 +1,6 @@
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisDataException;
 import org.json.JSONObject;
-import com.google.gson.Gson;
 
 public class TestR {
 
@@ -79,7 +78,7 @@ public class TestR {
 
     public static boolean verifyUserFromRedis(Jedis jedis, String username, String password) {
         // Form the key for the user data in Redis (assuming the data is in the "User1" hash key)
-        String key = "User1";
+        String key = "User:1";
 
         // Check if the key exists in Redis
         if (jedis.exists(key)) {
@@ -93,5 +92,7 @@ public class TestR {
 
         return false;
     }
+
+
 
 }
