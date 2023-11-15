@@ -88,8 +88,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-
-        Application.getInstance().getLoginScreenController().setVisible(true); // Show Login Screen
+        Application.getInstance().getLoginScreenController().setVisible(true);
     }
 
 }
