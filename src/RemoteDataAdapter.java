@@ -1,12 +1,25 @@
 import com.google.gson.Gson;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.io.IOException;
+import java.net.URL;
+
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static util.PortAddresses.MAIN_SERVER_PORT;
 
 public class RemoteDataAdapter implements DataAccess {
+    private static final String URL = "http://localhost:5056";
+
+    private static final String BOOK = "/book";
     private int orderCount;
     private Gson gson = new Gson();
     private Socket s = null;
@@ -42,33 +55,44 @@ public class RemoteDataAdapter implements DataAccess {
         }
     }
 
-    @Override
-    public boolean saveBook(Book book) {
-        //connect(); // Establish the connection before sending data
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.SAVE_BOOK_REQUEST;
-        req.body = gson.toJson(book);
 
-        String json = gson.toJson(req);
-        try {
-            dos.writeUTF(json);
 
-            String received = dis.readUTF();
+    public void main(String[] args) throws IOException {
+        test();
+    }
 
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+    void test() throws IOException {
+        Book book = getBook(1);
+        book.setBookName("Arshnoor");
+        Book newBook = updateBook(book);
+    }
 
-            if (res.code == ResponseModel.OK) {
-                System.out.println("Book saved on the server successfully.");
-                return true;
-            } else {
-                System.out.println("Failed to save the book on the server.");
-            }
+
+    public Book updateBook(Book book) throws IOException {
+        URL url = new URL("http://localhost:5056/book");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode bookNode = objectMapper.valueToTree(book);
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = objectMapper.writeValueAsBytes(bookNode);
+            os.write(input);
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.out.println("Error while saving the book on the server.");
+            return new Book();
         }
-
-        return false;
+        int responseCode = connection.getResponseCode();
+        Book responseBook = new Book();
+        if (responseCode == 200) {
+            ObjectMapper responseMapper = new ObjectMapper();
+            responseBook = responseMapper.readValue(connection.getInputStream(), Book.class);
+            System.out.println("Name: " +  responseBook.getBookName());
+        } else {
+            System.out.println("GET Book request failed. Response code: " + responseCode);
+        }
+        return responseBook;
     }
 
     @Override
@@ -106,6 +130,31 @@ public class RemoteDataAdapter implements DataAccess {
         }
 
         return null;
+    }
+
+    private static URL getUrlBook(String item, int id) throws IOException{
+        String url = URL + item +"/" + id;
+        return new URL(url);
+    }
+    static Book getBook(int id) throws IOException {
+        URL url = getUrlBook(BOOK, id);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        Book book = new Book();
+        int responseCode = connection.getResponseCode();
+        if (responseCode == 200) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
+            book = objectMapper.readValue(responseJson, Book.class);
+
+            System.out.println("Response from GET Product request:");
+            System.out.println("Receiving a Book object");
+            System.out.println("BookID = " + book.getBookID());
+            System.out.println("Book name = " + book.getBookName());
+        } else {
+            System.out.println("GET Product request failed. Response code: " + responseCode);
+        }
+        return book;
     }
 
     @Override
@@ -174,8 +223,8 @@ public class RemoteDataAdapter implements DataAccess {
         return null;
     }
 
-    @Override
-    public boolean saveStudent(Student student) {
+
+    public boolean saveStudent(Student student, int id) {
         // Connect to the server (establish communication with the server)
 
         RequestModel req = new RequestModel();

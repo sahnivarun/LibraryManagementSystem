@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class BookViewController extends JFrame implements ActionListener {
     private JTextField txtBookID  = new JTextField(10);
@@ -80,11 +81,21 @@ public class BookViewController extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == getBtnLoadBook())
-            loadBook();
+        if (e.getSource() == getBtnLoadBook()) {
+            try {
+                loadBook();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         else
-        if (e.getSource() == getBtnSaveBook())
-            saveBook();
+        if (e.getSource() == getBtnSaveBook()) {
+            try {
+                saveBook();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     public JTextField getTxtBookID() {
@@ -107,7 +118,7 @@ public class BookViewController extends JFrame implements ActionListener {
         return txtStatus;
     }
 
-    private void saveBook() {
+    private void saveBook() throws IOException {
         int bookID;
         try {
             bookID = Integer.parseInt(txtBookID.getText());
@@ -160,7 +171,7 @@ public class BookViewController extends JFrame implements ActionListener {
         book.setQuantity(bookQuantity);
 
         // Store the book to the database and check if it was saved successfully
-        if (dao.saveBook(book)) {
+        if (dao.updateBook(book) != null) {
             JOptionPane.showMessageDialog(null, "Book Saved Successfully");
         } else {
             JOptionPane.showMessageDialog(null, "Failed to save the book. Please check the data and try again.");
@@ -168,7 +179,7 @@ public class BookViewController extends JFrame implements ActionListener {
 
     }
 
-    private void loadBook() {
+    private void loadBook() throws IOException {
         int bookID = 0;
         try {
             bookID = Integer.parseInt(txtBookID.getText());
@@ -183,7 +194,7 @@ public class BookViewController extends JFrame implements ActionListener {
             return;
         }
 
-        Book book = dao.loadBook(bookID);
+        Book book = dao.getBook(bookID);
 
         if (book == null) {
             JOptionPane.showMessageDialog(null, "This book ID does not exist in the database!");

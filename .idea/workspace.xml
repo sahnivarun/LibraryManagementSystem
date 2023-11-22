@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="loadstudent raw2">
+      <change afterPath="$PROJECT_DIR$/com.fasterxml.jackson.databind.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jackson-all-1.9.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StoreApp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StoreApp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BookViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Receipt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receipt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store.db" beforeDir="false" afterPath="$PROJECT_DIR$/store.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SQLiteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +37,12 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "arshnoor21"
+  }
+}]]></component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -41,9 +51,20 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="a9545f92-88fd-4953-ac26-b2b4845b896d" />
+        <option name="url" value="https://github.com/sahnivarun/StoreApp.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
   <component name="ProjectId" id="2XJvALYXFAyx5sqvA36shp6oC0e" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -54,11 +75,16 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "final__updated__arshnoor",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "git-widget-placeholder": "iteration__3__start__arshnoor",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Application">
+  <component name="RunManager" selected="Application.DataServer2">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Application" />
       <module name="StoreApp" />
@@ -73,10 +99,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DataServer2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DataServer2" />
+      <module name="StoreApp" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RemoteDataAdapter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="RemoteDataAdapter" />
+      <module name="StoreApp" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Application" />
+        <item itemvalue="Application.DataServer2" />
+        <item itemvalue="Application.RemoteDataAdapter" />
         <item itemvalue="Application.DataServer" />
+        <item itemvalue="Application.Application" />
       </list>
     </recent_temporary>
   </component>
@@ -183,6 +225,9 @@
     <option name="localTasksCounter" value="14" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -218,5 +263,20 @@
     <MESSAGE value="loadstudent raw" />
     <MESSAGE value="loadstudent raw2" />
     <option name="LAST_COMMIT_MESSAGE" value="loadstudent raw2" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/RemoteDataAdapter.java</url>
+          <line>70</line>
+          <properties class="RemoteDataAdapter" method="updateBook">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

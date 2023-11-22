@@ -1,16 +1,18 @@
+import java.io.IOException;
+
 public interface DataAccess {
 
     void connect();
 
     Book loadBook(int id);
 
-    boolean saveBook(Book book);
+    Book updateBook(Book book) throws IOException;
 
     boolean saveOrderBook(OrderBook orderBook);
 
     Student loadStudent(int id);
 
-    boolean saveStudent(Student student);
+    boolean saveStudent(Student student, int id);
 
     boolean saveReceipt(Receipt receipt);
 

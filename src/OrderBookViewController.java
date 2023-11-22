@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.IOException;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,14 +64,24 @@ public class OrderBookViewController extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnAddBook)
-            addBook();
-        else if (e.getSource() == btnOrderBook)
-            makeOrder();
+        if (e.getSource() == btnAddBook) {
+            try {
+                addBook();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        else if (e.getSource() == btnOrderBook) {
+            try {
+                makeOrder();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
 
     }
 
-    private void makeOrder() {
+    private void makeOrder() throws IOException {
 
         if (orderBook.getLines().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No books in the order.");
@@ -87,12 +98,12 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 int bookID = line.getBookID();
                 double lineQuantity = line.getQuantity();
 
-                Book book = dao.loadBook(bookID);
+                Book book = dao.getBook(bookID);
 
                 if (book != null) {
                     double updatedQuantity = book.getQuantity() - lineQuantity;
                     book.setQuantity(updatedQuantity);
-                    dao.saveBook(book); // Update the book's quantity
+                    dao.updateBook(book); // Update the book's quantity
                 }
             }
 
@@ -111,7 +122,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             // Build the book details string from the order lines
             StringBuilder bookDetails = new StringBuilder();
             for (OrderLineBook line : orderBook.getLines()) {
-                Book orderedBook = dao.loadBook(line.getBookID());
+                Book orderedBook = dao.getBook(line.getBookID());
                 if (orderedBook != null) {
                     String bookDetail = orderedBook.getBookName() + " x " + line.getQuantity();
                     if (bookDetails.length() > 0) {
@@ -141,7 +152,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
     }
 
-    private void addBook() {
+    private void addBook() throws IOException {
         String id = JOptionPane.showInputDialog("Enter BookID: ");
 
         if (id == null || id.isEmpty() || !id.matches("\\d+")) {
@@ -149,7 +160,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             return;
         }
 
-        Book book = dao.loadBook(Integer.parseInt(id));
+        Book book = dao.getBook(Integer.parseInt(id));
         if (book == null) {
             JOptionPane.showMessageDialog(null, "This book does not exist!");
             return;

@@ -2,11 +2,12 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Date;
+import java.io.IOException;
 
-public class SQLiteDataAdapter implements DataAccess {
+public class DataAdapter implements DataAccess {
     private Connection connection;
 
-    public SQLiteDataAdapter(Connection connection) {
+    public DataAdapter(Connection connection) {
         this.connection = connection;
     }
 
@@ -57,6 +58,10 @@ public class SQLiteDataAdapter implements DataAccess {
             System.out.println("Database access error!");
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public Book updateBook(Book book) {
         return null;
     }
 
@@ -159,9 +164,9 @@ public class SQLiteDataAdapter implements DataAccess {
         }
     }
 
-    public boolean saveStudent(Student student) {
+    public boolean saveStudent(Student student, int id) {
 
-        System.out.println("calling savestudnt");
+        System.out.println("calling savestudent");
         try {
             if (isStudentIDExists(student.getStudentID())) {
 

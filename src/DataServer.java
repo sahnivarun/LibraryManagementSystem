@@ -1,11 +1,9 @@
-
 import java.io.*;
 import java.sql.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -50,7 +48,7 @@ public class DataServer
                 DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
                 Gson gson = new Gson();
-                DataAccess dao = new SQLiteDataAdapter(Application.getInstance().getDBConnection());
+                DataAccess dao = new DataAdapter(Application.getInstance().getDBConnection());
 
                 ClientHandler clientHandler = new ClientHandler(s, dis, dos, gson, dao, connection,ss);
                 clientHandler.run();
