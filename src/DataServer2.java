@@ -39,6 +39,7 @@ public class DataServer2 {
                 Book book = dataAdapter.loadBook(Integer.valueOf(id));
                 String jsonResponse = objectToJson(book);
 
+
                 exchange.getResponseHeaders().set("Content-Type", "application/json");
                 exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
