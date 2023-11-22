@@ -11,22 +11,20 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import static util.PortAddresses.MAIN_SERVER_PORT;
 
-public class RemoteDataAdapter implements DataAccess {
+public class RemoteDataAdapter {
     private static final String URL = "http://localhost:5056";
-
     private static final String BOOK = "/book";
+    private static final String USER = "/user";
+
     private int orderCount;
     private Gson gson = new Gson();
     private Socket s = null;
     private DataInputStream dis = null;
     private DataOutputStream dos = null;
 
-    @Override
     public void connect() {
 
         try {
@@ -55,21 +53,15 @@ public class RemoteDataAdapter implements DataAccess {
         }
     }
 
-
-
-    public void main(String[] args) throws IOException {
-        test();
-    }
-
     void test() throws IOException {
         Book book = getBook(1);
         book.setBookName("Arshnoor");
         Book newBook = updateBook(book);
     }
 
-
     public Book updateBook(Book book) throws IOException {
         URL url = new URL("http://localhost:5056/book");
+
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
@@ -79,24 +71,21 @@ public class RemoteDataAdapter implements DataAccess {
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = objectMapper.writeValueAsBytes(bookNode);
             os.write(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return new Book();
         }
         int responseCode = connection.getResponseCode();
         Book responseBook = new Book();
         if (responseCode == 200) {
             ObjectMapper responseMapper = new ObjectMapper();
             responseBook = responseMapper.readValue(connection.getInputStream(), Book.class);
-            System.out.println("Name: " +  responseBook.getBookName());
+            //for debugging
+            System.out.println("BookName: " +  responseBook.getBookName());
         } else {
             System.out.println("GET Book request failed. Response code: " + responseCode);
         }
         return responseBook;
     }
 
-    @Override
-    public Book loadBook(int bookID) {
+    public Book rdaloadBook(int bookID) {
         //connect();
         RequestModel req = new RequestModel();
         req.code = RequestModel.LOAD_BOOK_REQUEST;
@@ -157,7 +146,6 @@ public class RemoteDataAdapter implements DataAccess {
         return book;
     }
 
-    @Override
     public boolean saveOrderBook(OrderBook orderBook) {
         //connect();
         RequestModel req = new RequestModel();
@@ -186,7 +174,6 @@ public class RemoteDataAdapter implements DataAccess {
         return false;
     }
 
-    @Override
     public Student loadStudent(int studentID) {
         //connect();
         RequestModel req = new RequestModel();
@@ -253,7 +240,6 @@ public class RemoteDataAdapter implements DataAccess {
         return false;
     }
 
-    @Override
     public boolean saveReceipt(Receipt receipt) {
         //connect();
         RequestModel req = new RequestModel();
@@ -282,7 +268,6 @@ public class RemoteDataAdapter implements DataAccess {
         return false;
     }
 
-    @Override
     public User loadUser(String username, String password) {
         //connect();
         RequestModel req = new RequestModel();
@@ -325,7 +310,34 @@ public class RemoteDataAdapter implements DataAccess {
         return null;
     }
 
-    @Override
+    private static URL getUrlUser(String item, String username, String password) throws IOException{
+        String url = URL + item +"/" + username + "/" + password;
+        return new URL(url);
+    }
+
+    public User getUser(String username, String password) throws IOException {
+        URL url = getUrlUser(USER, username, password);
+        System.out.println(url);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        User user = new User();
+        int responseCode = connection.getResponseCode();
+        if (responseCode == 200) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
+            user = objectMapper.readValue(responseJson, User.class);
+            //testing for proper working
+            System.out.println("Response from GET Product request:");
+            System.out.println("UserID: " + user.getUserID());
+            System.out.println("UserName: " +  user.getUsername());
+            System.out.println("Password: " + user.getPassword());
+            System.out.println("Display Name: " + user.getFullName());
+        } else {
+            System.out.println("GET Product request failed. Response code: " + responseCode);
+        }
+        return user;
+    }
+
     public int getOrderCount() {
         //connect();
 

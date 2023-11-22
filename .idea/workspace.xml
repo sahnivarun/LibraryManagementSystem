@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="loadstudent raw2">
-      <change afterPath="$PROJECT_DIR$/com.fasterxml.jackson.databind.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jackson-all-1.9.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="error debug server">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StoreApp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StoreApp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BookViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LoginScreenController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoginScreenController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SQLiteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +77,7 @@
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.DataServer2">
+  <component name="RunManager" selected="Application.Application">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Application" />
       <module name="StoreApp" />
@@ -115,10 +108,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Application" />
         <item itemvalue="Application.DataServer2" />
         <item itemvalue="Application.RemoteDataAdapter" />
         <item itemvalue="Application.DataServer" />
-        <item itemvalue="Application.Application" />
       </list>
     </recent_temporary>
   </component>
@@ -222,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698620273028</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="error debug server">
+      <option name="closed" value="true" />
+      <created>1700678789067</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1700678789067</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,19 +263,50 @@
     <MESSAGE value="Almost completed. Minor Fixes." />
     <MESSAGE value="loadstudent raw" />
     <MESSAGE value="loadstudent raw2" />
-    <option name="LAST_COMMIT_MESSAGE" value="loadstudent raw2" />
+    <MESSAGE value="error debug server" />
+    <option name="LAST_COMMIT_MESSAGE" value="error debug server" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/BookViewController.java</url>
+          <line>173</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
+          <line>90</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/RemoteDataAdapter.java</url>
-          <line>70</line>
+          <line>61</line>
           <properties class="RemoteDataAdapter" method="updateBook">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="5" />
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

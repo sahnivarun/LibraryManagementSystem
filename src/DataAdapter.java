@@ -72,25 +72,34 @@ public class DataAdapter implements DataAccess {
 
             ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) { // this book exists, update its fields
+            System.out.println("Book Name: "+book.getBookName());
+            System.out.println("Author Name: "+book.getAuthorName());
+            System.out.println("Book Quantity: "+book.getQuantity());
+            System.out.println("Book Status: "+book.getStatus());
+
+            if (resultSet.next()) { // this product exists, update its fields
                 statement = connection.prepareStatement("UPDATE Books SET BookName = ?, AuthorName = ?, Quantity = ?, Status = ? WHERE BookID = ?");
                 statement.setString(1, book.getBookName());
                 statement.setString(2, book.getAuthorName());
-                statement.setDouble(3, book.getQuantity());
+                statement.setInt(3, (int)book.getQuantity());
                 statement.setString(4, book.getStatus());
+                statement.setInt(5, book.getBookID());
+                System.out.println("Inside Update command");
 
-            } else { // this book does not exist, use insert into
-                statement = connection.prepareStatement("INSERT INTO Books (BookID, BookName, AuthorName, Quantity, Status) VALUES (?, ?, ?, ?, ?)");
-                statement.setInt(1, book.getBookID());
+            }
+            else { // this product does not exist, use insert into
+                statement = connection.prepareStatement("INSERT INTO Books(BookID, BookName, AuthorName, Quantity, Status) VALUES (?, ?, ?, ?, ?)");
                 statement.setString(2, book.getBookName());
                 statement.setString(3, book.getAuthorName());
                 statement.setDouble(4, book.getQuantity());
                 statement.setString(5, book.getStatus());
+                statement.setInt(1, book.getBookID());
+                System.out.println("Inside Insert command");
             }
             statement.execute();
             resultSet.close();
             statement.close();
-            return true; // save successfully
+            return true;        // save successfully
 
         } catch (SQLException e) {
             System.out.println("Database access error!");

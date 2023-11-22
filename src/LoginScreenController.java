@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
 
 public class LoginScreenController extends JFrame implements ActionListener {
     private JTextField txtUserName = new JTextField(20);
@@ -21,7 +22,6 @@ public class LoginScreenController extends JFrame implements ActionListener {
         getContentPane().setBackground(Color.GRAY);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Center the application window on the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - getWidth()) / 2;
         int y = (screenSize.height - getHeight()) / 2;
@@ -30,7 +30,6 @@ public class LoginScreenController extends JFrame implements ActionListener {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // Set the background color here
         mainPanel.setBackground(Color.GRAY);
 
         JPanel titlePanel = new JPanel();
@@ -72,8 +71,12 @@ public class LoginScreenController extends JFrame implements ActionListener {
             String password = txtPassword.getText().trim();
 
             System.out.println("Login with username = " + username + " and password = " + password);
-            User user = dao.loadUser(username, password);
-
+            User user = null;  //get user
+            try {
+                user = dao.getUser(username, password);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             if (user == null) {
                 JOptionPane.showMessageDialog(null, "This user does not exist!");
             }
