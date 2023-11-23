@@ -212,7 +212,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         }
     }
 
-    private void loadStudent(JTextField txtStudentID, JTextField txtName, JTextField txtEmail, JTextField txtNum) {
+    private void loadStudent(JTextField txtStudentID, JTextField txtName, JTextField txtEmail, JTextField txtNum) throws IOException {
         int studentID = 0;
         try {
             studentID = Integer.parseInt(txtStudentID.getText());
@@ -227,7 +227,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             return;
         }
 
-        Student student = dao.loadStudent(studentID);
+        Student student = dao.getStudent(studentID);
 
         if (student == null) {
            // JOptionPane.showMessageDialog(null, "This student ID does not exist in the database!");
@@ -294,7 +294,12 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 int studentID = Integer.parseInt(txtStudentID.getText());
 
                 // Attempt to load student details
-                Student student = dao.loadStudent(studentID);
+                Student student = null;
+                try {
+                    student = dao.getStudent(studentID);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
 
                 if (student != null) {
                     // Student exists, populate the fields

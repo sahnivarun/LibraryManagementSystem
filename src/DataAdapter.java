@@ -1,3 +1,4 @@
+import java.io.DataOutputStream;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,6 +10,14 @@ public class DataAdapter implements DataAccess {
 
     public DataAdapter(Connection connection) {
         this.connection = connection;
+    }
+
+    public void sendResponse(DataOutputStream out, String message, int statusCode, String contentType) throws IOException {
+        out.writeBytes("HTTP/1.1 " + statusCode + " OK\r\n");
+        out.writeBytes("Content-Type: " + contentType + "\r\n");
+        out.writeBytes("Content-Length: " + message.length() + "\r\n");
+        out.writeBytes("\r\n");
+        out.writeBytes(message);
     }
 
     @Override

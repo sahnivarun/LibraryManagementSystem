@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="post book done part 2">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_29_23,_6_33_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_29_23,_6_33_PM_[Changes]/store.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_29_23,_6_40_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_29_23,_6_40_PM_[Changes]/store.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_29_23__6_33_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_29_23__6_40_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_10_28_23,_3_49_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_10_28_23,_3_49_PM_[Changes]/store.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_10_28_23__3_49_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
     </list>
@@ -31,12 +39,6 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "arshnoor21"
-  }
-}]]></component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -56,9 +58,6 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
   <component name="ProjectId" id="2XJvALYXFAyx5sqvA36shp6oC0e" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -67,18 +66,10 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "iteration__3__start__arshnoor",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
-  }
-}]]></component>
-  <component name="RunManager" selected="Application.Application">
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../arsh" />
+  </component>
+  <component name="RunManager" selected="Application.DataServer2">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Application" />
       <module name="StoreApp" />
@@ -109,9 +100,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Application" />
         <item itemvalue="Application.DataServer2" />
         <item itemvalue="Application.RemoteDataAdapter" />
+        <item itemvalue="Application.Application" />
         <item itemvalue="Application.DataServer" />
       </list>
     </recent_temporary>
@@ -294,23 +285,13 @@
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
-          <line>80</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
           <line>46</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
-          <line>90</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/RemoteDataAdapter.java</url>
-          <line>61</line>
+          <line>56</line>
           <properties class="RemoteDataAdapter" method="updateBook">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

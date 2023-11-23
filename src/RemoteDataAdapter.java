@@ -18,6 +18,7 @@ public class RemoteDataAdapter {
     private static final String URL = "http://localhost:5056";
     private static final String BOOK = "/book";
     private static final String USER = "/user";
+    private static final String STUDENT = "/student";
 
     private int orderCount;
     private Gson gson = new Gson();
@@ -53,12 +54,6 @@ public class RemoteDataAdapter {
         }
     }
 
-    void test() throws IOException {
-        Book book = getBook(1);
-        book.setBookName("Arshnoor");
-        Book newBook = updateBook(book);
-    }
-
     public Book updateBook(Book book) throws IOException {
         URL url = new URL("http://localhost:5056/book");
 
@@ -83,42 +78,6 @@ public class RemoteDataAdapter {
             System.out.println("GET Book request failed. Response code: " + responseCode);
         }
         return responseBook;
-    }
-
-    public Book rdaloadBook(int bookID) {
-        //connect();
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.LOAD_BOOK_REQUEST;
-        req.body = String.valueOf(bookID);
-
-        String json = gson.toJson(req);
-        try {
-            dos.writeUTF(json);
-            String received = dis.readUTF();
-
-            System.out.println("Server response:" + received);
-
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-
-            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
-                System.out.println("The request is not recognized by the Server");
-                return null;
-            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
-                System.out.println("The Server could not find a book with this ID!");
-                return null;
-            } else {
-                Book model = gson.fromJson(res.body, Book.class);
-                System.out.println("Receiving a Book object");
-                System.out.println("BookID = " + model.getBookID());
-                System.out.println("Book name = " + model.getBookName());
-                return model;
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
     }
 
     private static URL getUrlBook(String item, int id) throws IOException{
@@ -199,71 +158,122 @@ public class RemoteDataAdapter {
 //        return false;
 //    }
 
-    public Student loadStudent(int studentID) {
-        //connect();
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.LOAD_STUDENT_REQUEST;
-        req.body = String.valueOf(studentID);
 
-        String json = gson.toJson(req);
-        try {
-            dos.writeUTF(json);
-            String received = dis.readUTF();
+//    public Student loadStudent(int studentID) {
+//        //connect();
+//        RequestModel req = new RequestModel();
+//        req.code = RequestModel.LOAD_STUDENT_REQUEST;
+//        req.body = String.valueOf(studentID);
+//
+//        String json = gson.toJson(req);
+//        try {
+//            dos.writeUTF(json);
+//            String received = dis.readUTF();
+//
+//            System.out.println("Server response:" + received);
+//
+//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+//
+//            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
+//                System.out.println("The request is not recognized by the Server");
+//                return null;
+//            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
+//                System.out.println("The Server could not find a student with this ID!");
+//                return null;
+//            } else {
+//                Student model = gson.fromJson(res.body, Student.class);
+//                System.out.println("Receiving a Student object");
+//                System.out.println("StudentID = " + model.getStudentID());
+//                System.out.println("Student name = " + model.getStudentName());
+//                return model;
+//            }
+//
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
-            System.out.println("Server response:" + received);
-
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-
-            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
-                System.out.println("The request is not recognized by the Server");
-                return null;
-            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
-                System.out.println("The Server could not find a student with this ID!");
-                return null;
-            } else {
-                Student model = gson.fromJson(res.body, Student.class);
-                System.out.println("Receiving a Student object");
-                System.out.println("StudentID = " + model.getStudentID());
-                System.out.println("Student name = " + model.getStudentName());
-                return model;
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
+    private static URL getUrlStudent(String item, int id) throws IOException{
+        String url = URL + item +"/" + id;
+        return new URL(url);
     }
 
+    static Student getStudent(int id) throws IOException {
+        URL url = getUrlStudent(STUDENT, id);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        Student student = new Student();
+        int responseCode = connection.getResponseCode();
+        if (responseCode == 200) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
+            student = objectMapper.readValue(responseJson, Student.class);
 
-    public boolean saveStudent(Student student, int id) {
-        // Connect to the server (establish communication with the server)
-
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.SAVE_STUDENT_REQUEST;
-        req.body = gson.toJson(student);
-
-        String json = gson.toJson(req);
-        try {
-            dos.writeUTF(json);
-
-            String received = dis.readUTF();
-
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-
-            if (res.code == ResponseModel.OK) {
-                System.out.println("Student details saved on the server successfully.");
-                return true;
-            } else {
-                System.out.println("Failed to save the student details on the server.");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("Error while saving the student details on the server.");
+            System.out.println("Response from GET Student request:");
+            System.out.println("Student ID: " + student.getStudentID());
+            System.out.println("Name " +  student.getStudentName());
+            System.out.println("Email Id" + student.getEmailID());
+            System.out.println("Number " + student.getStudentNumber());
+        } else {
+            System.out.println("GET Student request failed. Response code: " + responseCode);
         }
-
-        return false;
+        return student;
     }
+
+    static Student updateStudent(Student student) throws IOException {
+        URL url = new URL("http://localhost:5056/student/1");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode studentNode = objectMapper.valueToTree(student);
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = objectMapper.writeValueAsBytes(studentNode);
+            os.write(input);
+        }
+        int responseCode = connection.getResponseCode();
+        Student responseStudent = new Student();
+        if (responseCode == 200) {
+            ObjectMapper responseMapper = new ObjectMapper();
+            responseStudent = responseMapper.readValue(connection.getInputStream(), Student.class);
+            System.out.println("Student Details" +  responseStudent.getFullStudent());
+        } else {
+            System.out.println("GET Student request failed. Response code: " + responseCode);
+        }
+        return responseStudent;
+    }
+
+//    public boolean saveStudent(Student student, int id) {
+//        // Connect to the server (establish communication with the server)
+//
+//        RequestModel req = new RequestModel();
+//        req.code = RequestModel.SAVE_STUDENT_REQUEST;
+//        req.body = gson.toJson(student);
+//
+//        String json = gson.toJson(req);
+//        try {
+//            dos.writeUTF(json);
+//
+//            String received = dis.readUTF();
+//
+//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+//
+//            if (res.code == ResponseModel.OK) {
+//                System.out.println("Student details saved on the server successfully.");
+//                return true;
+//            } else {
+//                System.out.println("Failed to save the student details on the server.");
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            System.out.println("Error while saving the student details on the server.");
+//        }
+//
+//        return false;
+//    }
 
     public boolean saveReceipt(Receipt receipt) {
         //connect();
