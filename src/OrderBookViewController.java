@@ -92,7 +92,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         Student student = getStudentFromUI();
 
         // Use the DataAdapter to save the order to the database
-        if (dao.saveOrderBook(orderBook)) {
+        if (dao.updateOrderBook(orderBook) != null) {
 
             for (OrderLineBook line : orderBook.getLines()) {
                 int bookID = line.getBookID();

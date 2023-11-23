@@ -146,33 +146,58 @@ public class RemoteDataAdapter {
         return book;
     }
 
-    public boolean saveOrderBook(OrderBook orderBook) {
-        //connect();
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.SAVE_ORDERBOOK_REQUEST;
-        req.body = gson.toJson(orderBook);
+    public OrderBook updateOrderBook(OrderBook order) throws IOException {
+        URL url = new URL("http://localhost:5056/order");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
 
-        String json = gson.toJson(req);
-        try {
-            dos.writeUTF(json);
-
-            String received = dis.readUTF();
-
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-
-            if (res.code == ResponseModel.OK) {
-                System.out.println("Order saved on the server successfully.");
-                return true;
-            } else {
-                System.out.println("Failed to save the order on the server.");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("Error while saving the order on the server.");
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode orderNode = objectMapper.valueToTree(order);
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = objectMapper.writeValueAsBytes(orderNode);
+            os.write(input);
         }
-
-        return false;
+        int responseCode = connection.getResponseCode();
+        OrderBook responseOrder = new OrderBook();
+        if (responseCode == 200) {
+            ObjectMapper responseMapper = new ObjectMapper();
+            responseOrder = responseMapper.readValue(connection.getInputStream(), OrderBook.class);
+            //validation for debugging
+            System.out.println("Order Id: " +  responseOrder.getOrderID());
+        } else {
+            System.out.println("POST Order request failed. Response code: " + responseCode);
+        }
+        return responseOrder;
     }
+
+//    public boolean saveOrderBook(OrderBook orderBook) {
+//        //connect();
+//        RequestModel req = new RequestModel();
+//        req.code = RequestModel.SAVE_ORDERBOOK_REQUEST;
+//        req.body = gson.toJson(orderBook);
+//
+//        String json = gson.toJson(req);
+//        try {
+//            dos.writeUTF(json);
+//
+//            String received = dis.readUTF();
+//
+//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
+//
+//            if (res.code == ResponseModel.OK) {
+//                System.out.println("Order saved on the server successfully.");
+//                return true;
+//            } else {
+//                System.out.println("Failed to save the order on the server.");
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            System.out.println("Error while saving the order on the server.");
+//        }
+//
+//        return false;
+//    }
 
     public Student loadStudent(int studentID) {
         //connect();

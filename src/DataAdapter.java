@@ -130,42 +130,99 @@ public class DataAdapter implements DataAccess {
 
     }
 
+//    public boolean saveOrderBook(OrderBook orderBook) {
+//        try {
+//            int nextOrderID = getOrderCount() + 1;
+//
+//            // Calculate the return date, which is 60 days from the order date
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY"); // Define your date format
+//            Date orderDate = new Date(System.currentTimeMillis());
+//            Calendar calendar = Calendar.getInstance();
+//            //calendar.setTime(orderDate);
+//            calendar.add(Calendar.DATE, 60);
+//            Date returnDate = (Date) calendar.getTime();
+//
+//            // Format the return date as a string
+//            String returnDateString = dateFormat.format(returnDate);
+//
+//            PreparedStatement statement = connection.prepareStatement("INSERT INTO OrderBook (OrderID, StudentID, OrderDate, ReturnDate) VALUES (?, ?, ?, ?)");
+//            statement.setInt(1, nextOrderID);
+//            statement.setInt(2, nextOrderID);
+//            statement.setString(3, String.valueOf(orderDate));
+//            statement.setString(4, returnDateString);
+//
+//            statement.execute();
+//            statement.close();
+//
+//            statement = connection.prepareStatement("INSERT INTO OrderLineBook (OrderID, BookID, Quantity, BookName) VALUES (?, ?, ?, ?)");
+//
+//            for (OrderLineBook line : orderBook.getLines()) {
+//                statement.setInt(1, nextOrderID);
+//                statement.setInt(2, line.getBookID());
+//                statement.setDouble(3, line.getQuantity());
+//                statement.setString(4, line.getBookName());
+//
+//                statement.execute();
+//            }
+//            statement.close();
+//            return true; // save successfully!
+//        } catch (SQLException e) {
+//            System.out.println("Database access error!");
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
     public boolean saveOrderBook(OrderBook orderBook) {
         try {
             int nextOrderID = getOrderCount() + 1;
-
-            // Calculate the return date, which is 60 days from the order date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Define your date format
-            Date orderDate = new Date(System.currentTimeMillis());
             Calendar calendar = Calendar.getInstance();
-            //calendar.setTime(orderDate);
-            calendar.add(Calendar.DATE, 60);
-            Date returnDate = (Date) calendar.getTime();
 
-            // Format the return date as a string
-            String returnDateString = dateFormat.format(returnDate);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO OrderBook (OrderID, StudentID, OrderDate, ReturnDate) VALUES (?, ?, ?, ?)");
-            statement.setInt(1, nextOrderID);
-            statement.setInt(2, nextOrderID);
-            statement.setString(3, String.valueOf(orderDate));
-            statement.setString(4, returnDateString);
+            calendar.add(Calendar.DAY_OF_MONTH, 60);
 
-            statement.execute();
-            statement.close();
+            String futureDate = dateFormat.format(calendar.getTime());
 
-            statement = connection.prepareStatement("INSERT INTO OrderLineBook (OrderID, BookID, Quantity, BookName) VALUES (?, ?, ?, ?)");
+            orderBook.setReturnDate(futureDate);
 
-            for (OrderLineBook line : orderBook.getLines()) {
-                statement.setInt(1, nextOrderID);
-                statement.setInt(2, line.getBookID());
-                statement.setDouble(3, line.getQuantity());
-                statement.setString(4, line.getBookName());
 
-                statement.execute();
+            PreparedStatement orderStmt = connection.prepareStatement("INSERT INTO OrderBook (OrderDate, StudentID, ReturnDate) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            orderStmt.setString(1, String.valueOf(new java.util.Date(System.currentTimeMillis())));
+            orderStmt.setInt(2, orderBook.getStudentID());
+            orderStmt.setString(3, futureDate);
+
+            int rowsInserted = orderStmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                // Retrieve the ID of the inserted order
+                ResultSet rs = orderStmt.getGeneratedKeys();
+                if (rs.next()) {
+                    int lastOrderID = rs.getInt(1);
+
+                    // Insert order lines
+                    PreparedStatement lineStmt = connection.prepareStatement("INSERT INTO OrderLineBook (OrderID, BookID, Quantity, BookName) VALUES (?, ?, ?, ?)");
+
+                    for (OrderLineBook line : orderBook.getLines()) {
+                        lineStmt.setInt(1, lastOrderID);
+                        lineStmt.setInt(2, line.getBookID());
+                        lineStmt.setDouble(3, line.getQuantity());
+                        lineStmt.setString(4, line.getBookName());
+                        lineStmt.addBatch();
+                    }
+                    lineStmt.executeBatch();
+                    lineStmt.close();
+                    System.out.println("Order and order lines saved successfully.");
+                    return true;
+
+                } else {
+                    System.out.println("Error retrieving the order ID.");
+                    return false;
+                }
+            } else {
+                System.out.println("Error saving the order to the database.");
+                return false;
             }
-            statement.close();
-            return true; // save successfully!
         } catch (SQLException e) {
             System.out.println("Database access error!");
             e.printStackTrace();
