@@ -10,6 +10,9 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.*;
 
 import static util.PortAddresses.MAIN_SERVER_PORT;
@@ -18,6 +21,7 @@ public class RemoteDataAdapter {
     private static final String URL = "http://localhost:5056";
     private static final String BOOK = "/book";
     private static final String USER = "/user";
+    private static final String STUDENT = "/student";
 
     private int orderCount;
     private Gson gson = new Gson();
@@ -235,6 +239,26 @@ public class RemoteDataAdapter {
         return null;
     }
 
+    static Student rdagetStudent(int id) throws IOException {
+        URL url = getUrlBook(STUDENT, id);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        Student student = new Student();
+        int responseCode = connection.getResponseCode();
+        if (responseCode == 200) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
+            student = objectMapper.readValue(responseJson, Student.class);
+            System.out.println("Response from GET Student request:");
+            System.out.println("Receiving a Student object");
+            System.out.println("StudentID = " + student.getStudentID());
+            System.out.println("Student name = " + student.getStudentName());
+        } else {
+            System.out.println("GET Student request failed. Response code: " + responseCode);
+        }
+        return student;
+    }
 
     public boolean saveStudent(Student student, int id) {
         // Connect to the server (establish communication with the server)
@@ -291,6 +315,31 @@ public class RemoteDataAdapter {
         }
 
         return false;
+    }
+
+    public Receipt updateReceipt(Receipt receipt) throws IOException {
+        URL url = new URL("http://localhost:5056/receipt");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode receiptNode = objectMapper.valueToTree(receipt);
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = objectMapper.writeValueAsBytes(receiptNode);
+            os.write(input);
+        }
+        int responseCode = connection.getResponseCode();
+        Receipt responseReceipt = new Receipt();
+        if (responseCode == 200) {
+            ObjectMapper responseMapper = new ObjectMapper();
+            responseReceipt = responseMapper.readValue(connection.getInputStream(), Receipt.class);
+            //validation for debugging
+            System.out.println("Order Id of receipt: " +  receipt.getOrderId());
+        } else {
+            System.out.println("POST Receipt request failed. Response code: " + responseCode);
+        }
+        return responseReceipt;
     }
 
     public User loadUser(String username, String password) {

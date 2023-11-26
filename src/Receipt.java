@@ -4,10 +4,18 @@ import java.text.SimpleDateFormat;
 public class Receipt {
     private int receiptNumber;
     private int orderId;
-   // private int studentId;
     private String dateTime;
     private String student;
+    private int studentID;
     private String books;
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(String studentID) {
+        this.studentID = Integer.parseInt(studentID);
+    }
 
     public String getBooks() {
         return books;

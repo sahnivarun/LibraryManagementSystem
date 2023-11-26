@@ -4,6 +4,7 @@ public class Student {
         private String emailID;
         private String studentNumber;
 
+
         // Constructor with parameters
         public Student(int studentID, String studentName, String emailID, String studentNumber) {
                 this.studentID = studentID;
@@ -52,12 +53,12 @@ public class Student {
         }
 
         // Special function to get the full student information
-        public String getFullStudent() {
-                return "Student ID: " + studentID +
-                        "   Name: " + studentName +
-                        "   Email ID: " + emailID +
-                        "   Number: " + studentNumber;
-        }
+//        public String getFullStudent() {
+//                return "Student ID: " + studentID +
+//                        "   Name: " + studentName +
+//                        "   Email ID: " + emailID +
+//                        "   Number: " + studentNumber;
+//        }
 
         // Override toString method
         @Override

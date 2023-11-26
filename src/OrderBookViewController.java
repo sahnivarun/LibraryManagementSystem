@@ -6,13 +6,14 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class OrderBookViewController extends JFrame implements ActionListener {
     private OrderBook orderBook = null;
-
     private JButton btnAddBook = new JButton("Add a new book");
     private JButton btnOrderBook = new JButton("Save book order");
 
@@ -78,16 +79,24 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 throw new RuntimeException(ex);
             }
         }
-
     }
 
     private void makeOrder() throws IOException {
+        LocalDate today = LocalDate.now();
+        LocalDate future = today.plusDays(60);
 
+        // Define the desired date format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Format the date using the defined format
+        String today_date = today.format(formatter);
+        String futureDate = future.format(formatter);
+        orderBook.setReturnDate(futureDate);
+        orderBook.setOrderDate(today_date);
         if (orderBook.getLines().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No books in the order.");
             return;
         }
-
         // Capture Student information
         Student student = getStudentFromUI();
 
@@ -111,13 +120,13 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             Date date = new Date(currentTimeMillis);
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             String formattedDate = dateFormat.format(date);
-
             // Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(orderBook.getOrderID());
             //  receipt.setStudentId(orderBook.getStudentID());
             receipt.setDateTime(formattedDate);
-            receipt.setStudent(orderBook.getStudent().getFullStudent());
+            receipt.setStudent(orderBook.getStudent().getStudentName());
+            //receipt.setStudentID(orderBook.getStudentID());
 
             // Build the book details string from the order lines
             StringBuilder bookDetails = new StringBuilder();
@@ -135,7 +144,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             receipt.setBooks(bookDetails.toString()); // Set the book details in the receipt
 
             // Use the DataAdapter to save the receipt to the database
-            if (dao.saveReceipt(receipt)) {
+            if (dao.updateReceipt(receipt) != null) {
                 JOptionPane.showMessageDialog(null, "Order created and saved successfully!");
 
                 showReceiptDialog(receipt);
@@ -212,34 +221,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         }
     }
 
-    private void loadStudent(JTextField txtStudentID, JTextField txtName, JTextField txtEmail, JTextField txtNum) {
-        int studentID = 0;
-        try {
-            studentID = Integer.parseInt(txtStudentID.getText());
-        }
-        catch (NumberFormatException e) {
-           // JOptionPane.showMessageDialog(null, "Invalid student ID! Please provide a valid book ID!");
-            return;
-        }
-
-        if(studentID<=0) {
-            JOptionPane.showMessageDialog(null, "Invalid student ID! Please provide a non negative student ID");
-            return;
-        }
-
-        Student student = dao.loadStudent(studentID);
-
-        if (student == null) {
-           // JOptionPane.showMessageDialog(null, "This student ID does not exist in the database!");
-            return;
-        }
-
-        txtName.setText(student.getStudentName());
-        txtEmail.setText(student.getEmailID());
-        txtNum.setText(student.getStudentNumber());
-
-    }
-
     private Student getStudentFromUI() {
 
         JDialog studentDialog = new JDialog(this, "Student Information", true);
@@ -294,7 +275,12 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 int studentID = Integer.parseInt(txtStudentID.getText());
 
                 // Attempt to load student details
-                Student student = dao.loadStudent(studentID);
+                Student student = null;
+                try {
+                    student = dao.rdagetStudent(studentID);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
 
                 if (student != null) {
                     // Student exists, populate the fields

@@ -17,6 +17,7 @@ public class DataServer2 {
         server.createContext("/order", new OrderHandler());
         server.createContext("/user", new UserHandler());
         server.createContext("/student", new StudentHandler());
+        server.createContext("/receipt", new ReceiptHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("Data Server is running on port " + port);
@@ -148,6 +149,33 @@ public class DataServer2 {
                 dataAdapter.saveStudent(receivedStudent, Integer.parseInt(id));
 
                 String jsonResponse = objectToJson(receivedStudent);
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(jsonResponse.getBytes());
+                os.close();
+            } else {
+                exchange.sendResponseHeaders(405, 0); // Method not allowed for non-POST requests
+            }
+        }
+    }
+
+    static class ReceiptHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            Connection sqlConn = null;
+            try {
+                sqlConn = DriverManager.getConnection("jdbc:sqlite:store.db");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            DataAdapter dataAdapter = new DataAdapter(sqlConn);
+            if ("POST".equals(exchange.getRequestMethod())) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                Receipt receivedReceipt = objectMapper.readValue(exchange.getRequestBody(), Receipt.class);
+                dataAdapter.saveReceipt(receivedReceipt);
+
+                String jsonResponse = objectToJson(receivedReceipt);
                 exchange.getResponseHeaders().set("Content-Type", "application/json");
                 exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
