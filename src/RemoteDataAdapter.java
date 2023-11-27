@@ -175,34 +175,6 @@ public class RemoteDataAdapter {
         return responseOrder;
     }
 
-//    public boolean saveOrderBook(OrderBook orderBook) {
-//        //connect();
-//        RequestModel req = new RequestModel();
-//        req.code = RequestModel.SAVE_ORDERBOOK_REQUEST;
-//        req.body = gson.toJson(orderBook);
-//
-//        String json = gson.toJson(req);
-//        try {
-//            dos.writeUTF(json);
-//
-//            String received = dis.readUTF();
-//
-//            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-//
-//            if (res.code == ResponseModel.OK) {
-//                System.out.println("Order saved on the server successfully.");
-//                return true;
-//            } else {
-//                System.out.println("Failed to save the order on the server.");
-//            }
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//            System.out.println("Error while saving the order on the server.");
-//        }
-//
-//        return false;
-//    }
-
     public Student loadStudent(int studentID) {
         //connect();
         RequestModel req = new RequestModel();
@@ -334,8 +306,6 @@ public class RemoteDataAdapter {
         if (responseCode == 200) {
             ObjectMapper responseMapper = new ObjectMapper();
             responseReceipt = responseMapper.readValue(connection.getInputStream(), Receipt.class);
-            //validation for debugging
-            System.out.println("Order Id of receipt: " +  receipt.getOrderId());
         } else {
             System.out.println("POST Receipt request failed. Response code: " + responseCode);
         }

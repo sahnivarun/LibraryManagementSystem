@@ -130,49 +130,6 @@ public class DataAdapter implements DataAccess {
 
     }
 
-//    public boolean saveOrderBook(OrderBook orderBook) {
-//        try {
-//            int nextOrderID = getOrderCount() + 1;
-//
-//            // Calculate the return date, which is 60 days from the order date
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY"); // Define your date format
-//            Date orderDate = new Date(System.currentTimeMillis());
-//            Calendar calendar = Calendar.getInstance();
-//            //calendar.setTime(orderDate);
-//            calendar.add(Calendar.DATE, 60);
-//            Date returnDate = (Date) calendar.getTime();
-//
-//            // Format the return date as a string
-//            String returnDateString = dateFormat.format(returnDate);
-//
-//            PreparedStatement statement = connection.prepareStatement("INSERT INTO OrderBook (OrderID, StudentID, OrderDate, ReturnDate) VALUES (?, ?, ?, ?)");
-//            statement.setInt(1, nextOrderID);
-//            statement.setInt(2, nextOrderID);
-//            statement.setString(3, String.valueOf(orderDate));
-//            statement.setString(4, returnDateString);
-//
-//            statement.execute();
-//            statement.close();
-//
-//            statement = connection.prepareStatement("INSERT INTO OrderLineBook (OrderID, BookID, Quantity, BookName) VALUES (?, ?, ?, ?)");
-//
-//            for (OrderLineBook line : orderBook.getLines()) {
-//                statement.setInt(1, nextOrderID);
-//                statement.setInt(2, line.getBookID());
-//                statement.setDouble(3, line.getQuantity());
-//                statement.setString(4, line.getBookName());
-//
-//                statement.execute();
-//            }
-//            statement.close();
-//            return true; // save successfully!
-//        } catch (SQLException e) {
-//            System.out.println("Database access error!");
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-
     public boolean saveOrderBook(OrderBook orderBook) {
         try {
             int nextOrderID = getOrderCount() + 1;
@@ -287,49 +244,6 @@ public class DataAdapter implements DataAccess {
         }
     }
 
-//    public boolean saveStudent(Student student) {
-//        try {
-//            if (isStudentIDExists(student.getStudentID())) {
-//                return true;
-//            }
-//            else {
-//
-//                PreparedStatement statement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
-//                statement.setInt(1, student.getStudentID());
-//                statement.setString(2, student.getStudentName());
-//                statement.setString(3, student.getEmailID());
-//                statement.setString(4, student.getStudentNumber());
-//
-//                int rowsAffected = statement.executeUpdate();
-//                statement.close();
-//
-//                return rowsAffected > 0;
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//
-//    public boolean isStudentIDExists(int studentID) {
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
-//            statement.setInt(1, studentID);
-//
-//            ResultSet resultSet = statement.executeQuery();
-//            boolean exists = resultSet.next(); // Check if any rows were returned
-//
-//            resultSet.close();
-//            statement.close();
-//
-//            return exists;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-
     public boolean saveReceipt(Receipt receipt) {
         try {
             int receiptID = getOrderCount();
@@ -405,5 +319,48 @@ public class DataAdapter implements DataAccess {
         }
         return null;
     }
+
+//    public boolean saveStudent(Student student) {
+//        try {
+//            if (isStudentIDExists(student.getStudentID())) {
+//                return true;
+//            }
+//            else {
+//
+//                PreparedStatement statement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
+//                statement.setInt(1, student.getStudentID());
+//                statement.setString(2, student.getStudentName());
+//                statement.setString(3, student.getEmailID());
+//                statement.setString(4, student.getStudentNumber());
+//
+//                int rowsAffected = statement.executeUpdate();
+//                statement.close();
+//
+//                return rowsAffected > 0;
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+//
+//    public boolean isStudentIDExists(int studentID) {
+//        try {
+//            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
+//            statement.setInt(1, studentID);
+//
+//            ResultSet resultSet = statement.executeQuery();
+//            boolean exists = resultSet.next(); // Check if any rows were returned
+//
+//            resultSet.close();
+//            statement.close();
+//
+//            return exists;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
 }

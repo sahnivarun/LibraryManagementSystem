@@ -182,7 +182,7 @@ public class DataServer2 {
                 os.write(jsonResponse.getBytes());
                 os.close();
             } else {
-                exchange.sendResponseHeaders(405, 0); // Method not allowed for non-POST requests
+                exchange.sendResponseHeaders(405, 0);
             }
         }
     }

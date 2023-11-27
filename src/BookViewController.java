@@ -98,22 +98,6 @@ public class BookViewController extends JFrame implements ActionListener {
         }
     }
 
-    public JTextField getTxtBookID() {
-        return txtBookID;
-    }
-
-    public JTextField getTxtBookName() {
-        return txtBookName;
-    }
-
-    public JTextField getTxtQuantity() {
-        return txtBookQuantity;
-    }
-
-    public JTextField getTxtAuthorName() {
-        return txtAuthorName;
-    }
-
     public JTextField getTxtStatus() {
         return txtStatus;
     }

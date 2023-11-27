@@ -307,7 +307,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 String num = txtNum.getText();
 
                 try {
-                    // Add validations
+                    // Validations
 
                     if (studentID<=0 || name.isEmpty() || email.isEmpty() || num.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Please provide valid student ID");
@@ -321,15 +321,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
                         orderBook.setStudent(student);
 
-                        // Save student using DataAdapter
-//                        if (dao.saveStudent(student)) {
-//                            orderBook.setStudent(student);
-
-                            // After processing, close the dialog
-                            studentDialog.dispose();
-//                        } else {
-//                            JOptionPane.showMessageDialog(null, "Error saving student details.");
-//                        }
+                        studentDialog.dispose();
                     }
                 } catch (Exception ex) {
                 }
@@ -356,7 +348,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
         int orderCount = dao.getOrderCount();
         receipt.setReceiptNumber(orderCount);
-       // System.out.println("OrderCount"+orderCount);
 
         // Add receipt information labels
         JLabel lblReceiptNumber = new JLabel("Order Number: " + orderCount);
