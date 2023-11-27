@@ -423,7 +423,7 @@ public class RemoteDataAdapter {
             String json = gson.toJson(req);
             dos.writeUTF(json);
 
-            // Receive the response from the server
+            //Receive the response from the server
             String received = dis.readUTF();
             System.out.println("Server response: " + received);
 
