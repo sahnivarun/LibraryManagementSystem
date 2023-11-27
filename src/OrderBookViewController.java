@@ -367,7 +367,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
 
         // Add receipt information labels
-        JLabel lblReceiptNumber = new JLabel("Order Number: " + orderCount+1);
+        JLabel lblReceiptNumber = new JLabel("Order Number: " + orderCount);
 
         JLabel lblStudent = new JLabel("Student Details: " + receipt.getStudent());
 
