@@ -31,7 +31,6 @@ public class Receipt {
     public Receipt(int receiptNumber, int orderId, int studentId, String dateTime, String student, String books) {
         this.receiptNumber = receiptNumber;
         this.orderId = orderId;
-      //  this.studentId = studentId;
         this.dateTime = dateTime;
         this.student = student;
         this.books= books;
@@ -55,14 +54,6 @@ public class Receipt {
         this.orderId = orderId;
     }
 
-   // public int getStudentId() {
-//        return studentId;
-//    }
-//
-//    public void setStudentId(int studentId) {
-//        this.studentId = studentId;
-//    }
-
     public String getDateTime() {
         return dateTime;
     }
@@ -85,7 +76,6 @@ public class Receipt {
 
         return "Receipt{" +
                 "Order Number=" + receiptNumber +
-           //     ", studentID=" + studentId +
                 ", timestamp=" + formattedDate +
                 ", studentDetails='" + student + '\'' +
                 '}';

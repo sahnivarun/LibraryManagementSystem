@@ -363,11 +363,11 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         int orderCount = dao.getOrderCount();
         System.out.println("OrderCount:"+ orderCount);
         receipt.setReceiptNumber(orderCount+1);
-        int curr_order_id = orderCount+1;
        // System.out.println("OrderCount"+orderCount);
 
+
         // Add receipt information labels
-        JLabel lblReceiptNumber = new JLabel("Order Number: " + curr_order_id);
+        JLabel lblReceiptNumber = new JLabel("Order Number: " + orderCount+1);
 
         JLabel lblStudent = new JLabel("Student Details: " + receipt.getStudent());
 

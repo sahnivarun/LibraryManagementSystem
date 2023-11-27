@@ -25,43 +25,9 @@ public class Application {
 
     private User currentUser = null;
 
-//    public User getCurrentUser() {
-//        return currentUser;
-//    }
-
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
-
-//    public LoginScreenController loginScreenController = new LoginScreenController(dao);
-
-//    public LoginScreenController getLoginScreenController() {
-//        return loginScreenController;
-//    }
-//
-//    public RemoteDataAdapter getDao() {
-//        return dao;
-//    }
-//
-//    public void setDao(RemoteDataAdapter dao) {
-//        this.dao = dao;
-//    }
-//
-//    private Connection setConnection() {
-//        if (connection == null) {
-//            try {
-//                Class.forName("org.sqlite.JDBC");
-//                connection = DriverManager.getConnection(url);
-//
-//                return connection;
-//            } catch (Exception e) {
-//                return null;
-//            }
-//        } else {
-//            return connection;
-//        }
-//
-//    }
 
     private Application() {
         // create SQLite database connection here!

@@ -52,14 +52,6 @@ public class Student {
                 this.studentNumber = studentNumber;
         }
 
-        // Special function to get the full student information
-//        public String getFullStudent() {
-//                return "Student ID: " + studentID +
-//                        "   Name: " + studentName +
-//                        "   Email ID: " + emailID +
-//                        "   Number: " + studentNumber;
-//        }
-
         // Override toString method
         @Override
         public String toString() {
