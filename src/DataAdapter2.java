@@ -21,7 +21,7 @@ public class DataAdapter2 implements DataAccess {
     public DataAdapter2(Connection connection) {
         this.connection = connection;
 
-        this.jedis = new Jedis("redis://default:varunsahni@redis-17090.c262.us-east-1-3.ec2.cloud.redislabs.com:17090");
+        Jedis jedis = new Jedis("redis://default:library@redis-12961.c321.us-east-1-2.ec2.cloud.redislabs.com:12961");
 
         // Establish MongoDB connection
         establishMongoDBConnection();
@@ -31,7 +31,7 @@ public class DataAdapter2 implements DataAccess {
     public int getOrderCountMongoDB() {
         try {
             // Get the MongoDB collection
-            MongoDatabase database = mongoClient.getDatabase("Store");
+            MongoDatabase database = mongoClient.getDatabase("library");
             MongoCollection<Document> ordersCollection = database.getCollection("Orders");
 
             // Count the number of documents in the Orders collection
@@ -56,7 +56,7 @@ public class DataAdapter2 implements DataAccess {
 
         try {
             mongoClient = MongoClients.create(settings);
-            MongoDatabase database = mongoClient.getDatabase("Store");
+            MongoDatabase database = mongoClient.getDatabase("library");
             database.runCommand(new Document("ping", 1));
             System.out.println("Connected to MongoDB!");
         } catch (MongoException e) {
@@ -66,7 +66,7 @@ public class DataAdapter2 implements DataAccess {
     }
 
     public void checkMongoDBConnection() {
-        if (mongoClient != null && mongoClient.getDatabase("Store") != null) {
+        if (mongoClient != null && mongoClient.getDatabase("library") != null) {
             System.out.println("MongoDB connection is established.");
         } else {
             System.out.println("MongoDB connection is not established.");
