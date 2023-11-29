@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="redis_raw">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="db_master">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,7 +253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701213519722</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="db_master">
+      <created>1701270607365</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1701270607365</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,7 +307,8 @@
     <MESSAGE value="rest api complete" />
     <MESSAGE value="rest api completed finally" />
     <MESSAGE value="redis_raw" />
-    <option name="LAST_COMMIT_MESSAGE" value="redis_raw" />
+    <MESSAGE value="db_master" />
+    <option name="LAST_COMMIT_MESSAGE" value="db_master" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
