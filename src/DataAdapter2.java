@@ -500,6 +500,7 @@ public class DataAdapter2 implements DataAccess {
             int receiptOrderID = getNextReceiptOrderIDMongoDB();
 
             receipt.setOrderId(receiptOrderID);
+            System.out.println("receiptOrderfromMongo" receiptOrderID);
 
             // Get the MongoDB database
             MongoDatabase database = mongoClient.getDatabase("LibraryApp");

@@ -75,7 +75,7 @@ public class Receipt {
         String formattedDate = dateFormat.format(new Date(dateTime));
 
         return "Receipt{" +
-                "Order Number=" + receiptNumber +
+                "Order Number=" + orderId +
                 ", timestamp=" + formattedDate +
                 ", studentDetails='" + student + '\'' +
                 '}';
