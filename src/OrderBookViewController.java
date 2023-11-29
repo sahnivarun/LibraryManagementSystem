@@ -89,7 +89,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         // Format the date using the defined format
-        String today_date = today.format(formatter);
+//        String today_date = today.format(formatter);
         String futureDate = future.format(formatter);
 
 //      int orderCount = dao.getOrderCount();
@@ -133,10 +133,11 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             // Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(orderBook.getOrderID());
+
             receipt.setStudentID(orderBook.getStudentID());
             receipt.setDateTime(formattedDate);
             receipt.setStudent(orderBook.getStudent().getStudentName());
-           // receipt.setReceiptNumber(orderCount+1);
+            // receipt.setReceiptNumber(orderCount+1);
             //receipt.setStudentID(orderBook.getStudentID());
 
             // Build the book details string from the order lines
@@ -372,8 +373,8 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
 
         // Add receipt information labels
-        JLabel lblReceiptNumber = new JLabel("Order Number: " + orderBook.getOrderID());
-        System.out.println("Order Id inside receiptdialog: " + orderBook.getOrderID());
+        JLabel lblReceiptNumber = new JLabel("Order Number: " + receipt.getOrderId());
+        System.out.println("Order Id inside receiptdialog: " + receipt.getOrderId());
 
         JLabel lblStudent = new JLabel("Student Details: " + receipt.getStudent());
 

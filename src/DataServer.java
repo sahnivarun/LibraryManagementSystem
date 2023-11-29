@@ -370,11 +370,11 @@ class ClientHandler extends Thread  {
             Receipt receipt = gson.fromJson(req.body, Receipt.class);
 
             // Get the next available receipt number
-            int receiptNumber = dao.getOrderCount();
-
-            receipt.setReceiptNumber(receiptNumber);
-           // receipt.setStudentId(receiptNumber);
-            receipt.setOrderId(receiptNumber);
+//            int receiptNumber = dao.getOrderCount();
+//
+//            receipt.setReceiptNumber(receiptNumber);
+//           // receipt.setStudentId(receiptNumber);
+//            receipt.setOrderId(receiptNumber);
 
             // Create a PreparedStatement for inserting receipt information into the database
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO Receipt (OrderID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?)");

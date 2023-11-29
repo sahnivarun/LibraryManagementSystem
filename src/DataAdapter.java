@@ -248,8 +248,8 @@ public class DataAdapter implements DataAccess {
         try {
             int receiptID = getOrderCount();
 
-            receipt.setOrderId(receiptID);
-            receipt.setReceiptNumber(receiptID);
+       //     receipt.setOrderId(receiptID);
+       //     receipt.setReceiptNumber(receiptID);
 
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Receipt (OrderID, DateTime, StudentDetails, Books) VALUES (?, ?, ?, ?)");
             statement.setInt(1, receipt.getOrderId());

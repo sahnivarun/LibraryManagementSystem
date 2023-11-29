@@ -338,6 +338,7 @@ public class DataAdapter2 implements DataAccess {
     //MongoDB function to save OrderBook
     public boolean saveOrderBook(OrderBook orderBook) {
         try {
+            orderBook.setOrderID(getNextOrderIDMongoDB());
             // Get the MongoDB database
             MongoDatabase database = mongoClient.getDatabase("LibraryApp");
 
@@ -499,8 +500,8 @@ public class DataAdapter2 implements DataAccess {
         try {
             int receiptOrderID = getNextReceiptOrderIDMongoDB();
 
-            receipt.setOrderId(receiptOrderID);
-            System.out.println("receiptOrderfromMongo" receiptOrderID);
+            receipt.setOrderId(getNextOrderIDMongoDB());
+            System.out.println("receiptOrderfromMongo"+ getNextOrderIDMongoDB());
 
             // Get the MongoDB database
             MongoDatabase database = mongoClient.getDatabase("LibraryApp");
