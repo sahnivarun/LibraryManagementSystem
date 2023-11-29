@@ -346,7 +346,7 @@ public class DataAdapter2 implements DataAccess {
 
             // Create a document for OrderBook
             Document orderBookDocument = new Document()
-                    .append("OrderID", getNextOrderIDMongoDB()) // Implement getNextOrderIDMongoDB() accordingly
+                    .append("OrderID", getNextOrderIDMongoDB())
                     .append("OrderDate", orderBook.getOrderDate())
                     .append("StudentID", orderBook.getStudentID())
                     .append("ReturnDate", getFutureDate());

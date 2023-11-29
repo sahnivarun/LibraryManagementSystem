@@ -133,7 +133,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             // Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(orderBook.getOrderID());
-            //  receipt.setStudentId(orderBook.getStudentID());
+            receipt.setStudentID(orderBook.getStudentID());
             receipt.setDateTime(formattedDate);
             receipt.setStudent(orderBook.getStudent().getStudentName());
             receipt.setReceiptNumber(orderCount+1);
@@ -365,14 +365,14 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         JPanel receiptPanel = new JPanel();
         receiptPanel.setLayout(new GridLayout(0, 1));
 
-        int orderCount = dao.getOrderCount();
-        System.out.println("OrderCount:"+ orderCount);
-        receipt.setReceiptNumber(orderCount+1);
-       // System.out.println("OrderCount"+orderCount);
+//        int orderCount = dao.getOrderCount();
+//        System.out.println("OrderCount:"+ orderCount);
+//        receipt.setReceiptNumber(orderCount+1);
+//        System.out.println("OrderCount"+orderCount);
 
 
         // Add receipt information labels
-        JLabel lblReceiptNumber = new JLabel("Order Number: " + orderCount);
+        JLabel lblReceiptNumber = new JLabel("Order Number: " + orderBook.getOrderID());
 
         JLabel lblStudent = new JLabel("Student Details: " + receipt.getStudent());
 

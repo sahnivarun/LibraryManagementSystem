@@ -13,8 +13,8 @@ public class Receipt {
         return studentID;
     }
 
-    public void setStudentID(String studentID) {
-        this.studentID = Integer.parseInt(studentID);
+    public void setStudentID(int studentID) {
+        this.studentID = studentID;
     }
 
     public String getBooks() {
