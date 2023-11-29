@@ -95,9 +95,14 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         int orderCount = dao.getOrderCount();
         orderBook.setOrderID(orderCount+1);
         System.out.println("OrderCount:"+ orderCount);
-
         orderBook.setReturnDate(futureDate);
-        orderBook.setOrderDate(today_date);
+
+        long currentTimeMillis = System.currentTimeMillis();
+        Date date = new Date(currentTimeMillis);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = dateFormat.format(date);
+
+        orderBook.setOrderDate(formattedDate);
         if (orderBook.getLines().isEmpty()) {
             JOptionPane.showMessageDialog(null, "No books in the order.");
             return;
@@ -121,10 +126,10 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 }
             }
 
-            long currentTimeMillis = System.currentTimeMillis();
-            Date date = new Date(currentTimeMillis);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String formattedDate = dateFormat.format(date);
+//            long currentTimeMillis = System.currentTimeMillis();
+//            Date date = new Date(currentTimeMillis);
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//            String formattedDate = dateFormat.format(date);
             // Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(orderBook.getOrderID());

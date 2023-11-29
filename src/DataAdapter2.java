@@ -124,6 +124,7 @@ public class DataAdapter2 implements DataAccess {
 //        return null;
 //    }
 
+    //Redis function to load a Book
     public Book loadBook(int id) {
         try {
             // Construct the key based on the book ID
@@ -157,6 +158,7 @@ public class DataAdapter2 implements DataAccess {
         }
         return null;
     }
+
 
     public Book updateBook(Book book) {
         return null;
@@ -234,6 +236,7 @@ public class DataAdapter2 implements DataAccess {
 //        }
 //    }
 
+    //Redis function to save a Book
     public boolean saveBook(Book book) {
         try {
             // Construct the key based on the book ID
@@ -252,7 +255,6 @@ public class DataAdapter2 implements DataAccess {
             return false; // cannot save!
         }
     }
-
 
     public int getOrderCount() {
         int orderCount = 0;
@@ -333,10 +335,11 @@ public class DataAdapter2 implements DataAccess {
 //        }
 //    }
 
+    //MongoDB function to save OrderBook
     public boolean saveOrderBook(OrderBook orderBook) {
         try {
             // Get the MongoDB database
-            MongoDatabase database = mongoClient.getDatabase("YourDatabaseName");
+            MongoDatabase database = mongoClient.getDatabase("LibraryApp");
 
             // Save OrderBook to the OrderBook collection
             MongoCollection<Document> orderBookCollection = database.getCollection("OrderBook");
@@ -344,7 +347,7 @@ public class DataAdapter2 implements DataAccess {
             // Create a document for OrderBook
             Document orderBookDocument = new Document()
                     .append("OrderID", getNextOrderIDMongoDB()) // Implement getNextOrderIDMongoDB() accordingly
-                    .append("OrderDate", new Date())
+                    .append("OrderDate", orderBook.getOrderDate())
                     .append("StudentID", orderBook.getStudentID())
                     .append("ReturnDate", getFutureDate());
 
@@ -385,7 +388,7 @@ public class DataAdapter2 implements DataAccess {
     private int getNextOrderIDMongoDB() {
         try {
             // Get the MongoDB database
-            MongoDatabase database = mongoClient.getDatabase("YourDatabaseName");
+            MongoDatabase database = mongoClient.getDatabase("LibraryApp");
 
             // Get the OrderBook collection
             MongoCollection<Document> orderBookCollection = database.getCollection("OrderBook");
@@ -491,15 +494,15 @@ public class DataAdapter2 implements DataAccess {
 //        }
 //    }
 
+    //MongoDB function to save a Receipt
     public boolean saveReceipt(Receipt receipt) {
         try {
             int receiptOrderID = getNextReceiptOrderIDMongoDB();
 
             receipt.setOrderId(receiptOrderID);
-            receipt.setReceiptNumber(receiptOrderID);
 
             // Get the MongoDB database
-            MongoDatabase database = mongoClient.getDatabase("YourDatabaseName");
+            MongoDatabase database = mongoClient.getDatabase("LibraryApp");
 
             // Get the Receipts collection
             MongoCollection<Document> receiptsCollection = database.getCollection("Receipts");
@@ -507,9 +510,9 @@ public class DataAdapter2 implements DataAccess {
             // Create a document for the receipt
             Document receiptDocument = new Document()
                     .append("orderID", receiptOrderID)
-                    .append("userID", receiptOrderID)
+                    .append("userID", receipt.getStudentID())
                     .append("dateTime", receipt.getDateTime())
-                    .append("studentDetails", receipt.getStudent()) // Assuming studentDetails is equivalent to StudentDetails in SQL
+                    .append("studentDetails", receipt.getStudent())
                     .append("books", receipt.getBooks());
 
             // Insert the receipt document into the Receipts collection
@@ -528,7 +531,7 @@ public class DataAdapter2 implements DataAccess {
     private int getNextReceiptOrderIDMongoDB() {
         try {
             // Get the MongoDB database
-            MongoDatabase database = mongoClient.getDatabase("YourDatabaseName");
+            MongoDatabase database = mongoClient.getDatabase("LibraryApp");
 
             // Get the Receipts collection
             MongoCollection<Document> receiptsCollection = database.getCollection("Receipts");
@@ -580,6 +583,7 @@ public class DataAdapter2 implements DataAccess {
 //        return null;
 //    }
 
+    //Jedis function to load user
     public User loadUser(String username, String password) {
         try {
             // Construct the key based on the username
@@ -615,6 +619,7 @@ public class DataAdapter2 implements DataAccess {
         return null;  // Authentication failed
     }
 
+    //Jedis function to load a Student
     public Student loadStudent(int studentID) {
         try {
             // Construct the key based on the student ID
