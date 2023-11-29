@@ -140,10 +140,16 @@ public class RemoteDataAdapter {
             JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
             book = objectMapper.readValue(responseJson, Book.class);
 
-            System.out.println("Response from GET Product request:");
-            System.out.println("Receiving a Book object");
-            System.out.println("BookID = " + book.getBookID());
-            System.out.println("Book name = " + book.getBookName());
+            if(book!=null){
+                System.out.println("Response from GET Product request:");
+                System.out.println("Receiving a Book object");
+                System.out.println("BookID = " + book.getBookID());
+                System.out.println("Book name = " + book.getBookName());
+            }
+            else{
+                System.out.println("No such Book Found");
+            }
+
         } else {
             System.out.println("GET Product request failed. Response code: " + responseCode);
         }
@@ -371,11 +377,18 @@ public class RemoteDataAdapter {
             JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
             user = objectMapper.readValue(responseJson, User.class);
             //testing for proper working
-            System.out.println("Response from GET Product request:");
-            System.out.println("UserID: " + user.getUserID());
-            System.out.println("UserName: " +  user.getUsername());
-            System.out.println("Password: " + user.getPassword());
-            System.out.println("Display Name: " + user.getFullName());
+            System.out.println("Response from GET User request:");
+            if(user!=null) {
+                System.out.println("UserID: " + user.getUserID());
+                System.out.println("UserName: " +  user.getUsername());
+                System.out.println("Password: " + user.getPassword());
+                System.out.println("Display Name: " + user.getFullName());
+            }
+
+            else{
+                System.out.println("Authentication Failed");
+            }
+
         } else {
             System.out.println("GET Product request failed. Response code: " + responseCode);
         }

@@ -48,7 +48,7 @@ public class DataServer
                 DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
                 Gson gson = new Gson();
-                DataAccess dao = new DataAdapter(Application.getInstance().getDBConnection());
+                DataAccess dao = new DataAdapter2(Application.getInstance().getDBConnection());
 
                 ClientHandler clientHandler = new ClientHandler(s, dis, dos, gson, dao, connection,ss);
                 clientHandler.run();

@@ -22,7 +22,7 @@ public class DataAdapter2 implements DataAccess {
     public DataAdapter2(Connection connection) {
         this.connection = connection;
 
-        Jedis jedis = new Jedis("redis://default:library@redis-12961.c321.us-east-1-2.ec2.cloud.redislabs.com:12961");
+        jedis = new Jedis("redis://default:library@redis-12961.c321.us-east-1-2.ec2.cloud.redislabs.com:12961");
 
         // Establish MongoDB connection
         establishMongoDBConnection();
@@ -229,27 +229,27 @@ public class DataAdapter2 implements DataAccess {
         }
     }
 
-//    public int getOrderCount() {
-//        int orderCount = 0;
-//
-//        try {
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM OrderBook");
-//
-//            if (resultSet.next()) {
-//                orderCount = resultSet.getInt(1);
-//            }
-//
-//            resultSet.close();
-//            statement.close();
-//        } catch (SQLException e) {
-//            System.out.println("Database access error!");
-//            e.printStackTrace();
-//        }
-//
-//        return orderCount;
-//
-//    }
+    public int getOrderCount() {
+        int orderCount = 0;
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM OrderBook");
+
+            if (resultSet.next()) {
+                orderCount = resultSet.getInt(1);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+
+        return orderCount;
+
+    }
 
 //    public boolean saveOrderBook(OrderBook orderBook) {
 //        try {
@@ -385,62 +385,62 @@ public class DataAdapter2 implements DataAccess {
         }
     }
 
-//    public boolean saveStudent(Student student, int id) {
-//
-//        System.out.println("calling savestudent");
-//        try {
-//            if (isStudentIDExists(student.getStudentID())) {
-//
-//                System.out.println(student.getStudentID());
-//                // If the student ID already exists, update the existing entry
-//                PreparedStatement updateStatement = connection.prepareStatement("UPDATE Student SET StudentName = ?, EmailID = ?, StudentNumber = ? WHERE StudentID = ?");
-//                updateStatement.setString(1, student.getStudentName());
-//                updateStatement.setString(2, student.getEmailID());
-//                updateStatement.setString(3, student.getStudentNumber());
-//                updateStatement.setInt(4, student.getStudentID());
-//
-//                int rowsAffected = updateStatement.executeUpdate();
-//                updateStatement.close();
-//
-//                return true;
-//
-//            } else {
-//                // If the student ID doesn't exist, insert a new entry
-//                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
-//                insertStatement.setInt(1, student.getStudentID());
-//                insertStatement.setString(2, student.getStudentName());
-//                insertStatement.setString(3, student.getEmailID());
-//                insertStatement.setString(4, student.getStudentNumber());
-//
-//                int rowsAffected = insertStatement.executeUpdate();
-//                insertStatement.close();
-//
-//                return rowsAffected > 0;
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//
-//    public boolean isStudentIDExists(int studentID) {
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
-//            statement.setInt(1, studentID);
-//
-//            ResultSet resultSet = statement.executeQuery();
-//            boolean exists = resultSet.next(); // Check if any rows were returned
-//
-//            resultSet.close();
-//            statement.close();
-//
-//            return exists;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
+    public boolean saveStudent(Student student, int id) {
+
+        System.out.println("calling savestudent");
+        try {
+            if (isStudentIDExists(student.getStudentID())) {
+
+                System.out.println(student.getStudentID());
+                // If the student ID already exists, update the existing entry
+                PreparedStatement updateStatement = connection.prepareStatement("UPDATE Student SET StudentName = ?, EmailID = ?, StudentNumber = ? WHERE StudentID = ?");
+                updateStatement.setString(1, student.getStudentName());
+                updateStatement.setString(2, student.getEmailID());
+                updateStatement.setString(3, student.getStudentNumber());
+                updateStatement.setInt(4, student.getStudentID());
+
+                int rowsAffected = updateStatement.executeUpdate();
+                updateStatement.close();
+
+                return true;
+
+            } else {
+                // If the student ID doesn't exist, insert a new entry
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
+                insertStatement.setInt(1, student.getStudentID());
+                insertStatement.setString(2, student.getStudentName());
+                insertStatement.setString(3, student.getEmailID());
+                insertStatement.setString(4, student.getStudentNumber());
+
+                int rowsAffected = insertStatement.executeUpdate();
+                insertStatement.close();
+
+                return rowsAffected > 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isStudentIDExists(int studentID) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
+            statement.setInt(1, studentID);
+
+            ResultSet resultSet = statement.executeQuery();
+            boolean exists = resultSet.next(); // Check if any rows were returned
+
+            resultSet.close();
+            statement.close();
+
+            return exists;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 //    public boolean saveReceipt(Receipt receipt) {
 //        try {
@@ -586,6 +586,7 @@ public class DataAdapter2 implements DataAccess {
             System.out.println("Error accessing Redis database!");
             e.printStackTrace();
         }
+        System.out.println("Authentication Failed");
         return null;  // Authentication failed
     }
 

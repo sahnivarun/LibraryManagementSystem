@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="db_master">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataServer2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +264,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701270607365</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="db_master">
+      <created>1701272649220</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1701272649220</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,29 +325,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
-          <line>132</line>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/RemoteDataAdapter.java</url>
-          <line>293</line>
+          <line>299</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/OrderBookViewController.java</url>
           <line>348</line>
           <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
-          <line>134</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
-          <line>146</line>
-          <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
@@ -348,14 +344,10 @@
           <line>70</line>
           <option name="timeStamp" value="67" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/DataAdapter.java</url>
-          <line>246</line>
-          <properties class="DataAdapter" method="saveReceipt">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="65" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/DataAdapter2.java</url>
+          <line>231</line>
+          <option name="timeStamp" value="68" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
