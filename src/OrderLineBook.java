@@ -2,7 +2,7 @@ public class OrderLineBook {
 
     private int orderID;
     private int bookID;
-    private double quantity;
+    private int quantity;
     private String bookName;
 
     public int getOrderID() {
@@ -21,11 +21,11 @@ public class OrderLineBook {
         this.bookID = bookID;
     }
 
-    public double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

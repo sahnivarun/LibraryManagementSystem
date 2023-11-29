@@ -25,7 +25,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
     private RemoteDataAdapter dao;
 
     private Book book; // Store the selected book
-    private double quantity; // Store the selected quantity
+    private int quantity; // Store the selected quantity
     private Receipt receipt;
     private Student student;
 
@@ -110,12 +110,12 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
             for (OrderLineBook line : orderBook.getLines()) {
                 int bookID = line.getBookID();
-                double lineQuantity = line.getQuantity();
+                int lineQuantity = line.getQuantity();
 
                 Book book = dao.getBook(bookID);
 
                 if (book != null) {
-                    double updatedQuantity = book.getQuantity() - lineQuantity;
+                    int updatedQuantity = book.getQuantity() - lineQuantity;
                     book.setQuantity(updatedQuantity);
                     dao.updateBook(book); // Update the book's quantity
                 }
@@ -181,7 +181,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             return;
         }
 
-        double quantity = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter quantity: "));
+        int quantity = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter quantity: "));
 
         if (quantity <= 0 || quantity > book.getQuantity()) {
             JOptionPane.showMessageDialog(null, "This quantity is not valid!");

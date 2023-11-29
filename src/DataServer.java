@@ -299,7 +299,7 @@ class ClientHandler extends Thread  {
                     for (OrderLineBook line : orderBook.getLines()) {
                         lineStmt.setInt(1, lastOrderID);
                         lineStmt.setInt(2, line.getBookID());
-                        lineStmt.setDouble(3, line.getQuantity());
+                        lineStmt.setInt(3, line.getQuantity());
                         lineStmt.setString(4, line.getBookName());
                         lineStmt.addBatch();
                     }

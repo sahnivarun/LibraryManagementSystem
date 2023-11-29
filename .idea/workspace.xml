@@ -4,9 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="load_user_done">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="save_book_done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BookViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataServer2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OrderLineBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderLineBook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/MainServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,8 +101,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Application" />
-        <item itemvalue="Application.DataServer" />
         <item itemvalue="Application.DataServer2" />
+        <item itemvalue="Application.DataServer" />
         <item itemvalue="Application.RemoteDataAdapter" />
       </list>
     </recent_temporary>
@@ -275,7 +283,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701274500017</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="save_book_done">
+      <created>1701275623868</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1701275623868</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -324,7 +339,8 @@
     <MESSAGE value="redis_raw" />
     <MESSAGE value="db_master" />
     <MESSAGE value="load_user_done" />
-    <option name="LAST_COMMIT_MESSAGE" value="load_user_done" />
+    <MESSAGE value="save_book_done" />
+    <option name="LAST_COMMIT_MESSAGE" value="save_book_done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -340,14 +356,9 @@
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
-          <line>78</line>
-          <option name="timeStamp" value="66" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
-          <line>70</line>
-          <option name="timeStamp" value="67" />
+          <url>file://$PROJECT_DIR$/src/DataAdapter2.java</url>
+          <line>99</line>
+          <option name="timeStamp" value="74" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -356,5 +367,8 @@
         <PinnedItemInfo parentTag="java.net.SocketException" memberName="cause" />
       </pinned-members>
     </pin-to-top-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/LibraryFinal$DataServer2.ic" NAME="DataServer2 Coverage Results" MODIFIED="1701275983938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

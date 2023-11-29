@@ -124,21 +124,29 @@ public class DataAdapter2 implements DataAccess {
 //        return null;
 //    }
 
-    public Book loadBook(int bookID) {
+    public Book loadBook(int id) {
         try {
             // Construct the key based on the book ID
-            System.out.println(bookID);
-            String key = "Book" + bookID;
+            System.out.println("Query for Book ID:" + id);
+            String key = "Book" + id;
+            System.out.println("Looking for key:" + key);
 
             // Check if the key exists in Redis
             if (jedis.exists(key)) {
                 // Retrieve the values from Redis and create a Book object
                 Book book = new Book();
-                book.setBookID(bookID);
+                book.setBookID(id);
                 book.setBookName(jedis.hget(key, "BookName"));
+                System.out.println("Book Name:" + book.getBookName());
+
                 book.setAuthorName(jedis.hget(key, "AuthorName"));
+                System.out.println("Author Name:" + book.getAuthorName());
+
                 book.setQuantity(Integer.parseInt(jedis.hget(key, "Quantity")));
+                System.out.println("Book Quantity:" + book.getQuantity());
+
                 book.setStatus(jedis.hget(key, "Status"));
+                System.out.println("Book Status:" + book.getStatus());
 
                 return book;
             }
@@ -180,7 +188,7 @@ public class DataAdapter2 implements DataAccess {
 //                statement = connection.prepareStatement("INSERT INTO Books(BookID, BookName, AuthorName, Quantity, Status) VALUES (?, ?, ?, ?, ?)");
 //                statement.setString(2, book.getBookName());
 //                statement.setString(3, book.getAuthorName());
-//                statement.setDouble(4, book.getQuantity());
+//                statement.setInt(4, book.getQuantity());
 //                statement.setString(5, book.getStatus());
 //                statement.setInt(1, book.getBookID());
 //                System.out.println("Inside Insert command");
@@ -301,7 +309,7 @@ public class DataAdapter2 implements DataAccess {
 //                    for (OrderLineBook line : orderBook.getLines()) {
 //                        lineStmt.setInt(1, lastOrderID);
 //                        lineStmt.setInt(2, line.getBookID());
-//                        lineStmt.setDouble(3, line.getQuantity());
+//                        lineStmt.setInt(3, line.getQuantity());
 //                        lineStmt.setString(4, line.getBookName());
 //                        lineStmt.addBatch();
 //                    }

@@ -49,7 +49,7 @@ public class MainServer {
                 } else {
                     out.print("Name: " + res.getString(2)); // Product name
                     out.print(" Price: " + res.getDouble(3)); // Price
-                    out.print(" Qty: " + res.getDouble(4)); // Quantity
+                    out.print(" Qty: " + res.getInt(4)); // Quantity
                     out.println(); // Newline
                 }
             } else if (userChoice.equalsIgnoreCase("update")) {
@@ -66,12 +66,12 @@ public class MainServer {
                 if (updateValues.length == 3) {
                     String newName = updateValues[0].trim();
                     double newPrice = Double.parseDouble(updateValues[1].trim());
-                    double newQuantity = Double.parseDouble(updateValues[2].trim());
+                    int newQuantity = Integer.parseInt(updateValues[2].trim());
 
                     // Update the product in the database
                     updateStatement.setString(1, newName);
                     updateStatement.setDouble(2, newPrice);
-                    updateStatement.setDouble(3, newQuantity);
+                    updateStatement.setInt(3, newQuantity);
                     updateStatement.setInt(4, id);
 
                     int rowsUpdated = updateStatement.executeUpdate();

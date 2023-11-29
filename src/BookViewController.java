@@ -130,9 +130,9 @@ public class BookViewController extends JFrame implements ActionListener {
             return;
         }
 
-        double bookQuantity;
+        int bookQuantity;
         try {
-            bookQuantity = Double.parseDouble(txtBookQuantity.getText());
+            bookQuantity = Integer.parseInt(txtBookQuantity.getText());
             if(bookQuantity <= 0){
                 JOptionPane.showMessageDialog(null, "Book quantity must be a positive number!");
                 return;

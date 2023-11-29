@@ -91,7 +91,7 @@ public class DataAdapter implements DataAccess {
                 statement = connection.prepareStatement("INSERT INTO Books(BookID, BookName, AuthorName, Quantity, Status) VALUES (?, ?, ?, ?, ?)");
                 statement.setString(2, book.getBookName());
                 statement.setString(3, book.getAuthorName());
-                statement.setDouble(4, book.getQuantity());
+                statement.setInt(4, book.getQuantity());
                 statement.setString(5, book.getStatus());
                 statement.setInt(1, book.getBookID());
                 System.out.println("Inside Insert command");
@@ -163,7 +163,7 @@ public class DataAdapter implements DataAccess {
                     for (OrderLineBook line : orderBook.getLines()) {
                         lineStmt.setInt(1, lastOrderID);
                         lineStmt.setInt(2, line.getBookID());
-                        lineStmt.setDouble(3, line.getQuantity());
+                        lineStmt.setInt(3, line.getQuantity());
                         lineStmt.setString(4, line.getBookName());
                         lineStmt.addBatch();
                     }
