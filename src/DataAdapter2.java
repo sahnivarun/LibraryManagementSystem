@@ -127,6 +127,7 @@ public class DataAdapter2 implements DataAccess {
     public Book loadBook(int bookID) {
         try {
             // Construct the key based on the book ID
+            System.out.println(bookID);
             String key = "Book" + bookID;
 
             // Check if the key exists in Redis
@@ -145,8 +146,6 @@ public class DataAdapter2 implements DataAccess {
         } catch (Exception e) {
             System.out.println("Error accessing Redis database!");
             e.printStackTrace();
-        } finally {
-            jedis.close();
         }
         return null;
     }
@@ -198,36 +197,54 @@ public class DataAdapter2 implements DataAccess {
 //        }
 //    }
 
+//    public boolean saveBook(Book book) {
+//        try {
+//            // Construct the key based on the book ID
+//            String key = "Book:" + book.getBookID();
+//
+//            // Check if the book already exists in Redis
+//            if (jedis.exists(key)) {
+//                // Update the existing book's fields
+//                jedis.hset(key, "BookName", book.getBookName());
+//                jedis.hset(key, "AuthorName", book.getAuthorName());
+//                jedis.hset(key, "Quantity", String.valueOf(book.getQuantity()));
+//                jedis.hset(key, "Status", book.getStatus());
+//            } else {
+//                // Create a new book in Redis
+//                jedis.hset(key, "BookName", book.getBookName());
+//                jedis.hset(key, "AuthorName", book.getAuthorName());
+//                jedis.hset(key, "Quantity", String.valueOf(book.getQuantity()));
+//                jedis.hset(key, "Status", book.getStatus());
+//            }
+//
+//            return true; // saved successfully
+//
+//        } catch (Exception e) {
+//            System.out.println("Error accessing Redis database!");
+//            e.printStackTrace();
+//            return false; // cannot save!
+//        }
+//    }
+
     public boolean saveBook(Book book) {
         try {
             // Construct the key based on the book ID
             String key = "Book" + book.getBookID();
 
-            // Check if the book already exists in Redis
-            if (jedis.exists(key)) {
-                // Update the existing book's fields
-                jedis.hset(key, "BookName", book.getBookName());
-                jedis.hset(key, "AuthorName", book.getAuthorName());
-                jedis.hset(key, "Quantity", String.valueOf(book.getQuantity()));
-                jedis.hset(key, "Status", book.getStatus());
-            } else {
-                // Create a new book in Redis
-                jedis.hset(key, "BookName", book.getBookName());
-                jedis.hset(key, "AuthorName", book.getAuthorName());
-                jedis.hset(key, "Quantity", String.valueOf(book.getQuantity()));
-                jedis.hset(key, "Status", book.getStatus());
-            }
+            // Update the existing book's fields or create a new book in Redis
+            jedis.hset(key, "BookName", book.getBookName());
+            jedis.hset(key, "AuthorName", book.getAuthorName());
+            jedis.hset(key, "Quantity", String.valueOf(book.getQuantity()));
+            jedis.hset(key, "Status", book.getStatus());
 
             return true; // saved successfully
-
         } catch (Exception e) {
             System.out.println("Error accessing Redis database!");
             e.printStackTrace();
             return false; // cannot save!
-        } finally {
-            jedis.close();
         }
     }
+
 
     public int getOrderCount() {
         int orderCount = 0;

@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="db_master">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="load_user_done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -271,7 +268,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701272649220</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="load_user_done">
+      <created>1701274500017</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1701274500017</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,7 +323,8 @@
     <MESSAGE value="rest api completed finally" />
     <MESSAGE value="redis_raw" />
     <MESSAGE value="db_master" />
-    <option name="LAST_COMMIT_MESSAGE" value="db_master" />
+    <MESSAGE value="load_user_done" />
+    <option name="LAST_COMMIT_MESSAGE" value="load_user_done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -343,11 +348,6 @@
           <url>file://$PROJECT_DIR$/src/DataServer2.java</url>
           <line>70</line>
           <option name="timeStamp" value="67" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DataAdapter2.java</url>
-          <line>231</line>
-          <option name="timeStamp" value="68" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
