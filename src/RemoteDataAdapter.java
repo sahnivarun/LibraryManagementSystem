@@ -22,8 +22,7 @@ public class RemoteDataAdapter {
     private static final String BOOK = "/book";
     private static final String USER = "/user";
     private static final String STUDENT = "/student";
-
-    private int orderCount;
+    public int orderCount;
     private Gson gson = new Gson();
     private Socket s = null;
     private DataInputStream dis = null;
@@ -175,6 +174,7 @@ public class RemoteDataAdapter {
             responseOrder = responseMapper.readValue(connection.getInputStream(), OrderBook.class);
             //validation for debugging
             System.out.println("Order Id: " +  responseOrder.getOrderID());
+            orderCount = responseOrder.getOrderID();
         } else {
             System.out.println("POST Order request failed. Response code: " + responseCode);
         }
