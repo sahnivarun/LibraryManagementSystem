@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .main-container {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 600px;
+        }
+        .title {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="title">Library Management System</div>
+        <div class="button-container">
+            <button id="btnBuy" class="button">Order Book</button>
+            <button id="btnSell" class="button">Load/Save Book</button>
+        </div>
+        <div id="userInfo" class="user-info"></div>
+    </div>
+
+    <script>
+        // Function to handle opening OrderBookView
+        document.getElementById('btnBuy').addEventListener('click', function() {
+            // You can replace this with your logic to handle OrderBookView
+            // For demonstration purposes, alerting the action
+            alert('Opening Order Book');
+        });
+
+        // Function to handle opening BookViewController
+        document.getElementById('btnSell').addEventListener('click', function() {
+            // You can replace this with your logic to handle BookViewController
+            // For demonstration purposes, alerting the action
+            alert('Opening Load/Save Book');
+        });
+
+        // Function to set user information
+        function setUserInfo(user) {
+            const userInfo = document.getElementById('userInfo');
+            userInfo.innerText = `User ID: ${user.userID} | Username: ${user.username} | Full Name: ${user.fullName}`;
+        }
+
+        // Example data to simulate user information
+        const user = {
+            userID: 123,
+            username: 'sampleUser',
+            fullName: 'John Doe'
+        };
+
+        // Call setUserInfo with the sample user data
+        setUserInfo(user);
+    </script>
+</body>
+</html>

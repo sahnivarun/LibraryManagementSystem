@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-//axios
+//axios might have to be used
 
 const port = 20000;
 
@@ -9,7 +9,7 @@ const server = http.createServer((req, res) => {
     // Handling requests
     if (req.method === 'GET' && req.url === '/') {
         // Serve an HTML file
-        const filePath = path.join(__dirname, 'index.html');
+        const filePath = path.join(__dirname, 'login.html');
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
                 res.writeHead(500);

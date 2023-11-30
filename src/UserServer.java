@@ -23,6 +23,10 @@ public class UserServer {
     static class UserHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:20000");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
             Connection conn = null;
 
             DataAdapter2 dataAdapter = new DataAdapter2(conn);

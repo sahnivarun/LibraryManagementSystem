@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="Implemented REST APIs">
-      <change afterPath="$PROJECT_DIR$/jedis-5.0.2.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mongodb-jdbc-2.0.3-all.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LMS_Website/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LMS_Website/server.js" afterDir="false" />
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="Microservices Implemented">
+      <change afterPath="$PROJECT_DIR$/src/LMS_Website/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/LMS_Website/manage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StoreApp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StoreApp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LMS_Website/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/server.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -332,7 +327,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701319450680</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Microservices Implemented">
+      <option name="closed" value="true" />
+      <created>1701380881784</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1701380881784</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -387,7 +390,8 @@
     <MESSAGE value="order_done" />
     <MESSAGE value="receipt_done" />
     <MESSAGE value="microservices_4" />
-    <option name="LAST_COMMIT_MESSAGE" value="microservices_4" />
+    <MESSAGE value="Microservices Implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Microservices Implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -396,6 +400,26 @@
           <url>file://$PROJECT_DIR$/src/OrderBookViewController.java</url>
           <line>324</line>
           <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/UserServer.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/LMS_Website/login.html</url>
+          <line>50</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/DataAdapter2.java</url>
+          <line>251</line>
+          <properties class="DataAdapter2" method="loadUser">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="78" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
