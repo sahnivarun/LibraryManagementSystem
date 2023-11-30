@@ -89,12 +89,8 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         // Format the date using the defined format
-//        String today_date = today.format(formatter);
         String futureDate = future.format(formatter);
 
-//      int orderCount = dao.getOrderCount();
-//      orderBook.setOrderID(orderCount+1);
-//      System.out.println("OrderCount:"+ orderCount);
         orderBook.setReturnDate(futureDate);
 
         long currentTimeMillis = System.currentTimeMillis();
@@ -107,6 +103,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "No books in the order.");
             return;
         }
+
         // Capture Student information
         Student student = getStudentFromUI();
 
@@ -126,10 +123,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 }
             }
 
-//            long currentTimeMillis = System.currentTimeMillis();
-//            Date date = new Date(currentTimeMillis);
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-//            String formattedDate = dateFormat.format(date);
             // Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(orderBook.getOrderID());
@@ -137,8 +130,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             receipt.setStudentID(orderBook.getStudentID());
             receipt.setDateTime(formattedDate);
             receipt.setStudent(orderBook.getStudent().getStudentName());
-            // receipt.setReceiptNumber(orderCount+1);
-            //receipt.setStudentID(orderBook.getStudentID());
 
             // Build the book details string from the order lines
             StringBuilder bookDetails = new StringBuilder();
@@ -161,7 +152,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
                 showReceiptDialog(receipt);
 
-                // Now, you can reset the order and clear the table
                 orderBook = new OrderBook();
                 items.setRowCount(0);
             } else {
@@ -224,13 +214,6 @@ public class OrderBookViewController extends JFrame implements ActionListener {
 
     public void addRow(Object[] row) {
         items.addRow(row);
-    }
-
-    private void addStudent() {
-        Student student = getStudentFromUI();
-        if (student != null) {
-            orderBook.setStudent(student);
-        }
     }
 
     private Student getStudentFromUI() {
@@ -359,18 +342,13 @@ public class OrderBookViewController extends JFrame implements ActionListener {
     }
 
     private void showReceiptDialog(Receipt receipt) {
-        // Create a dialog to display the receipt information
+
+        //dialog to display the receipt information
         JDialog receiptDialog = new JDialog(this, "Receipt", true);
         receiptDialog.setLayout(new BorderLayout());
 
         JPanel receiptPanel = new JPanel();
         receiptPanel.setLayout(new GridLayout(0, 1));
-
-//        int orderCount = dao.getOrderCount();
-//        System.out.println("OrderCount:"+ orderCount);
-//        receipt.setReceiptNumber(orderCount+1);
-//        System.out.println("OrderCount"+orderCount);
-
 
         // Add receipt information labels
         JLabel lblReceiptNumber = new JLabel("Order Number: " + dao.orderCount);

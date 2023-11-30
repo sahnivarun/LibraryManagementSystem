@@ -2,7 +2,7 @@ import java.io.IOException;
 
 public interface DataAccess {
 
-    void connect();
+   // void connect();
 
     Book loadBook(int id);
 
@@ -12,13 +12,10 @@ public interface DataAccess {
 
     Student loadStudent(int id);
 
-    boolean saveStudent(Student student, int id);
-
     boolean saveReceipt(Receipt receipt);
 
     User loadUser(String username, String password);
 
-    int getOrderCount();
 }
 
 
