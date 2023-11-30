@@ -16,7 +16,9 @@ import java.io.*;
 import static util.PortAddresses.MAIN_SERVER_PORT;
 
 public class RemoteDataAdapter {
-    private static final String URL = "http://localhost:5056";
+    private static final String URLUser = "http://localhost:5057";
+    private static final String URLBook = "http://localhost:5058";
+    private static final String URLStudent = "http://localhost:5059";
     private static final String BOOK = "/book";
     private static final String USER = "/user";
     private static final String STUDENT = "/student";
@@ -39,7 +41,7 @@ public class RemoteDataAdapter {
     }
 
     public Book updateBook(Book book) throws IOException {
-        URL url = new URL("http://localhost:5056/book");
+        URL url = new URL("http://localhost:5058/book");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -65,7 +67,7 @@ public class RemoteDataAdapter {
     }
 
     private static URL getUrlBook(String item, int id) throws IOException{
-        String url = URL + item +"/" + id;
+        String url = URLBook + item +"/" + id;
         return new URL(url);
     }
     static Book getBook(int id) throws IOException {
@@ -96,7 +98,7 @@ public class RemoteDataAdapter {
     }
 
     public OrderBook updateOrderBook(OrderBook order) throws IOException {
-        URL url = new URL("http://localhost:5056/order");
+        URL url = new URL("http://localhost:5059/order");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
@@ -121,8 +123,13 @@ public class RemoteDataAdapter {
         return responseOrder;
     }
 
+    private static URL getUrlStudent(String item, int id) throws IOException{
+        String url = URLStudent + item +"/" + id;
+        return new URL(url);
+    }
+
     static Student rdagetStudent(int id) throws IOException {
-        URL url = getUrlBook(STUDENT, id);
+        URL url = getUrlStudent(STUDENT, id);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         Student student = new Student();
@@ -143,7 +150,7 @@ public class RemoteDataAdapter {
     }
 
     public Receipt updateReceipt(Receipt receipt) throws IOException {
-        URL url = new URL("http://localhost:5056/receipt");
+        URL url = new URL("http://localhost:5059/receipt");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
@@ -166,7 +173,7 @@ public class RemoteDataAdapter {
     }
 
     private static URL getUrlUser(String item, String username, String password) throws IOException{
-        String url = URL + item +"/" + username + "/" + password;
+        String url = URLUser + item +"/" + username + "/" + password;
         return new URL(url);
     }
 

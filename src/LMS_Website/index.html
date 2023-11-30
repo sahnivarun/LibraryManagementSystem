@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Product</title>
+</head>
+<body>
+<h1>Update Product</h1>
+<form id="productForm">
+    Product ID:<br>
+    <input type="text" id="productId" name="productId"><br>
+    Name:<br>
+    <input type="text" id="productName" name="productName"><br>
+    Price:<br>
+    <input type="text" id="productPrice" name="productPrice"><br>
+    Quantity:<br>
+    <input type="text" id="productQuantity" name="productQuantity"><br><br>
+    Seller Id:<br>
+    <input type="text" id="sellerId" name="sellerId"><br>
+
+    <input type="button" value="Update" onclick="postData()">
+</form>
+
+<div id="responseMessage"></div>
+
+<script>
+    function postData() {
+        const formData = {
+            productID: document.getElementById('productId').value,
+            name: document.getElementById('productName').value,
+            price: document.getElementById('productPrice').value,
+            quantity: document.getElementById('productQuantity').value,
+            sellerID: document.getElementById('sellerId').value
+        };
+
+        fetch('http://localhost:8080/product/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    response.text().then(errorMessage => {
+                        // Handle error response
+                        document.getElementById('responseMessage').innerHTML = 'Error: ' + errorMessage;
+                    });
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                // Handle success response
+                if (data) {
+                    const queryString = Object.keys(data).map(key => `${key}=${data[key]}`).join('&');
+                    // document.getElementById('responseMessage').innerHTML = 'Product updated successfully: ' + JSON.stringify(data);
+                    document.getElementById('responseMessage').innerHTML = 'Product updated successfully: ' + queryString;
+                }
+            })
+            .catch(error => {
+                // For other errors
+                document.getElementById('responseMessage').innerHTML = 'There was a problem updating the product: ' + error.message;
+                document.getElementById('errorDisplay').innerText = `Error code: ${error}`;
+            });
+    }
+</script>
+</body>
+</html>

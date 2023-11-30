@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="microservices_4">
-      <change beforePath="$PROJECT_DIR$/src/BookRemoteDataAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OrderBookRemoteDataAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UserRemoteDataAdapter.java" beforeDir="false" />
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="Implemented REST APIs">
+      <change afterPath="$PROJECT_DIR$/jedis-5.0.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mongodb-jdbc-2.0.3-all.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/LMS_Website/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/LMS_Website/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StoreApp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StoreApp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataServer2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UserServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -58,13 +66,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Coding6/Jars/sqlite-jdbc-3.16.1.jar" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-  </component>
-  <component name="RunManager" selected="Application.Application">
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "git-widget-placeholder": "server__split__arshnoor",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="RunManager">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Application" />
       <module name="StoreApp" />
@@ -382,7 +394,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/OrderBookViewController.java</url>
-          <line>337</line>
+          <line>324</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
       </breakpoints>
