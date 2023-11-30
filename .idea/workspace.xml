@@ -4,21 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="microservices_2">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_26_23__10_00_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_26_23__10_00_PM__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26-11-2023_21_41__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26-11-2023_21_41__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26-11-2023_21_42__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26-11-2023_21_42__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26-11-2023_21_49__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26-11-2023_21_49__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-11-2023_16_02__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-11-2023_16_02__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26-11-2023_23_55__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26-11-2023_23_55__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAdapter2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="microservices_4">
+      <change beforePath="$PROJECT_DIR$/src/BookRemoteDataAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OrderBookRemoteDataAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UserRemoteDataAdapter.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +22,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="Varun_redis" />
@@ -323,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701283891280</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="microservices_4">
+      <created>1701319450680</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1701319450680</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -377,7 +374,8 @@
     <MESSAGE value="load_student_done" />
     <MESSAGE value="order_done" />
     <MESSAGE value="receipt_done" />
-    <option name="LAST_COMMIT_MESSAGE" value="receipt_done" />
+    <MESSAGE value="microservices_4" />
+    <option name="LAST_COMMIT_MESSAGE" value="microservices_4" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

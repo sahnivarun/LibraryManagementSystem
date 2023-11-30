@@ -12,14 +12,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DataAdapter2 implements DataAccess {
-    //private Connection connection;
 
     private Jedis jedis;
 
     private MongoClient mongoClient;
 
     public DataAdapter2(Connection connection) {
-      //  this.connection = connection;
 
         jedis = new Jedis("redis://default:library@redis-12961.c321.us-east-1-2.ec2.cloud.redislabs.com:12961");
 
@@ -46,29 +44,6 @@ public class DataAdapter2 implements DataAccess {
             e.printStackTrace();
         }
     }
-
-    //   @Override
-//    public void connect() {
-//        try {
-//            // db parameters
-//            String url = "jdbc:sqlite:store.db";
-//
-//            // create a connection to the database
-//            Class.forName("org.sqlite.JDBC");
-//
-//          //  connection = DriverManager.getConnection(url);
-//
-//           // if (connection == null)
-//            //    System.out.println("Cannot make the connection!!!");
-//         //   else
-//            //    System.out.println("The connection object is " + connection);
-//
-//        //    System.out.println("Connection to SQLite has been established.");
-//
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
 
     //Redis function to load a Book
     public Book loadBook(int id) {
@@ -129,28 +104,6 @@ public class DataAdapter2 implements DataAccess {
             return false; // cannot save!
         }
     }
-
-//    public int getOrderCount() {
-//        int orderCount = 0;
-//
-//        try {
-//           // Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM OrderBook");
-//
-//            if (resultSet.next()) {
-//                orderCount = resultSet.getInt(1);
-//            }
-//
-//            resultSet.close();
-//            statement.close();
-//        } catch (SQLException e) {
-//            System.out.println("Database access error!");
-//            e.printStackTrace();
-//        }
-//
-//        return orderCount;
-//
-//    }
 
     //MongoDB function to save OrderBook
     public boolean saveOrderBook(OrderBook orderBook) {
@@ -230,63 +183,6 @@ public class DataAdapter2 implements DataAccess {
             return -1; // Return -1 to indicate an error
         }
     }
-
-//    public boolean saveStudent(Student student, int id) {
-//
-//        System.out.println("calling savestudent");
-//        try {
-//            if (isStudentIDExists(student.getStudentID())) {
-//
-//                System.out.println(student.getStudentID());
-//                // If the student ID already exists, update the existing entry
-//                PreparedStatement updateStatement = connection.prepareStatement("UPDATE Student SET StudentName = ?, EmailID = ?, StudentNumber = ? WHERE StudentID = ?");
-//                updateStatement.setString(1, student.getStudentName());
-//                updateStatement.setString(2, student.getEmailID());
-//                updateStatement.setString(3, student.getStudentNumber());
-//                updateStatement.setInt(4, student.getStudentID());
-//
-//                int rowsAffected = updateStatement.executeUpdate();
-//                updateStatement.close();
-//
-//                return true;
-//
-//            } else {
-//                // If the student ID doesn't exist, insert a new entry
-//                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
-//                insertStatement.setInt(1, student.getStudentID());
-//                insertStatement.setString(2, student.getStudentName());
-//                insertStatement.setString(3, student.getEmailID());
-//                insertStatement.setString(4, student.getStudentNumber());
-//
-//                int rowsAffected = insertStatement.executeUpdate();
-//                insertStatement.close();
-//
-//                return rowsAffected > 0;
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//
-//    public boolean isStudentIDExists(int studentID) {
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
-//            statement.setInt(1, studentID);
-//
-//            ResultSet resultSet = statement.executeQuery();
-//            boolean exists = resultSet.next(); // Check if any rows were returned
-//
-//            resultSet.close();
-//            statement.close();
-//
-//            return exists;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
 
     //MongoDB function to save a Receipt
     public boolean saveReceipt(Receipt receipt) {
@@ -414,6 +310,63 @@ public class DataAdapter2 implements DataAccess {
         }
         return null;
     }
+
+//    public boolean saveStudent(Student student, int id) {
+//
+//        System.out.println("calling savestudent");
+//        try {
+//            if (isStudentIDExists(student.getStudentID())) {
+//
+//                System.out.println(student.getStudentID());
+//                // If the student ID already exists, update the existing entry
+//                PreparedStatement updateStatement = connection.prepareStatement("UPDATE Student SET StudentName = ?, EmailID = ?, StudentNumber = ? WHERE StudentID = ?");
+//                updateStatement.setString(1, student.getStudentName());
+//                updateStatement.setString(2, student.getEmailID());
+//                updateStatement.setString(3, student.getStudentNumber());
+//                updateStatement.setInt(4, student.getStudentID());
+//
+//                int rowsAffected = updateStatement.executeUpdate();
+//                updateStatement.close();
+//
+//                return true;
+//
+//            } else {
+//                // If the student ID doesn't exist, insert a new entry
+//                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO Student (StudentID, StudentName, EmailID, StudentNumber) VALUES (?, ?, ?, ?)");
+//                insertStatement.setInt(1, student.getStudentID());
+//                insertStatement.setString(2, student.getStudentName());
+//                insertStatement.setString(3, student.getEmailID());
+//                insertStatement.setString(4, student.getStudentNumber());
+//
+//                int rowsAffected = insertStatement.executeUpdate();
+//                insertStatement.close();
+//
+//                return rowsAffected > 0;
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+//
+//    public boolean isStudentIDExists(int studentID) {
+//        try {
+//            PreparedStatement statement = connection.prepareStatement("SELECT 1 FROM Student WHERE StudentID = ?");
+//            statement.setInt(1, studentID);
+//
+//            ResultSet resultSet = statement.executeQuery();
+//            boolean exists = resultSet.next(); // Check if any rows were returned
+//
+//            resultSet.close();
+//            statement.close();
+//
+//            return exists;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
 //    public Book loadBook(int bookID) {
 //        try {
@@ -689,4 +642,5 @@ public class DataAdapter2 implements DataAccess {
 //            return false;
 //        }
 //    }
+
 }
