@@ -17,8 +17,8 @@ import java.io.*;
 
 import static util.PortAddresses.MAIN_SERVER_PORT;
 
-public class RemoteDataAdapter {
-    private static final String URL = "http://localhost:5056";
+public class OrderBookRemoteDataAdapter {
+    private static final String URL = "http://localhost:5058";
     private static final String BOOK = "/book";
     private static final String USER = "/user";
     private static final String STUDENT = "/student";
@@ -54,105 +54,6 @@ public class RemoteDataAdapter {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    void test() throws IOException {
-        Book book = getBook(1);
-        book.setBookName("Arshnoor");
-        Book newBook = updateBook(book);
-    }
-
-    public Book updateBook(Book book) throws IOException {
-        URL url = new URL("http://localhost:5057/book");
-
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setDoOutput(true);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode bookNode = objectMapper.valueToTree(book);
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = objectMapper.writeValueAsBytes(bookNode);
-            os.write(input);
-        }
-        int responseCode = connection.getResponseCode();
-        Book responseBook = new Book();
-        if (responseCode == 200) {
-            ObjectMapper responseMapper = new ObjectMapper();
-            responseBook = responseMapper.readValue(connection.getInputStream(), Book.class);
-            //for debugging
-            System.out.println("BookName: " +  responseBook.getBookName());
-        } else {
-            System.out.println("GET Book request failed. Response code: " + responseCode);
-        }
-        return responseBook;
-    }
-
-    public Book rdaloadBook(int bookID) {
-        //connect();
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.LOAD_BOOK_REQUEST;
-        req.body = String.valueOf(bookID);
-
-        String json = gson.toJson(req);
-        try {
-            dos.writeUTF(json);
-            String received = dis.readUTF();
-
-            System.out.println("Server response:" + received);
-
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-
-            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
-                System.out.println("The request is not recognized by the Server");
-                return null;
-            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
-                System.out.println("The Server could not find a book with this ID!");
-                return null;
-            } else {
-                Book model = gson.fromJson(res.body, Book.class);
-                System.out.println("Receiving a Book object");
-                System.out.println("BookID = " + model.getBookID());
-                System.out.println("Book name = " + model.getBookName());
-                return model;
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private static URL getUrlBook(String item, int id) throws IOException{
-        String url = URL + item +"/" + id;
-        return new URL(url);
-    }
-    static Book getBook(int id) throws IOException {
-        URL url = getUrlBook(BOOK, id);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        Book book = new Book();
-        int responseCode = connection.getResponseCode();
-        if (responseCode == 200) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
-            book = objectMapper.readValue(responseJson, Book.class);
-
-            if(book!=null){
-                System.out.println("Response from GET Product request:");
-                System.out.println("Receiving a Book object");
-                System.out.println("BookID = " + book.getBookID());
-                System.out.println("Book name = " + book.getBookName());
-            }
-            else{
-                System.out.println("No such Book Found");
-            }
-
-        } else {
-            System.out.println("GET Product request failed. Response code: " + responseCode);
-        }
-        return book;
     }
 
     public OrderBook updateOrderBook(OrderBook order) throws IOException {
@@ -318,82 +219,5 @@ public class RemoteDataAdapter {
         return responseReceipt;
     }
 
-    public User loadUser(String username, String password) {
-        //connect();
-        RequestModel req = new RequestModel();
-        req.code = RequestModel.LOAD_USER_REQUEST;
-
-        // Create a User object with the provided username and password
-        User user = new User(username, password);
-
-        req.body = gson.toJson(user);
-
-        String json = gson.toJson(req);
-        System.out.println("json: " + json);
-        try {
-            dos.writeUTF(json);
-            String received = dis.readUTF();  // No data received
-            System.out.println("Received: " + received);
-
-            ResponseModel res = gson.fromJson(received, ResponseModel.class);
-
-            System.out.println("res: " + res.toString() + "  code: " + res.code + " body: "+ res.body);
-
-            if (res.code == ResponseModel.UNKNOWN_REQUEST) {
-                System.out.println("The request is not recognized by the Server");
-                return null;
-            } else if (res.code == ResponseModel.DATA_NOT_FOUND) {
-                System.out.println("The Server could not find a user with that username and password!");
-                return null;
-            } else {
-                User loadedUser = gson.fromJson(res.body, User.class);
-                System.out.println("Receiving a User object");
-                System.out.println("Username = " + loadedUser.getUsername());
-                return loadedUser;
-            }
-
-        } catch (Exception ex) {
-            System.out.println("exception: " + ex.toString() );
-            ex.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private static URL getUrlUser(String item, String username, String password) throws IOException{
-        String url = URL + item +"/" + username + "/" + password;
-        return new URL(url);
-    }
-
-    public User getUser(String username, String password) throws IOException {
-        URL url = getUrlUser(USER, username, password);
-        System.out.println(url);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        User user = new User();
-        int responseCode = connection.getResponseCode();
-        if (responseCode == 200) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
-            user = objectMapper.readValue(responseJson, User.class);
-            //testing for proper working
-            System.out.println("Response from GET User request:");
-            if(user!=null) {
-                System.out.println("UserID: " + user.getUserID());
-                System.out.println("UserName: " +  user.getUsername());
-                System.out.println("Password: " + user.getPassword());
-                System.out.println("Display Name: " + user.getFullName());
-            }
-
-            else{
-                System.out.println("Authentication Failed");
-            }
-
-        } else {
-            System.out.println("GET Product request failed. Response code: " + responseCode);
-        }
-        return user;
-    }
-
-
 }
+

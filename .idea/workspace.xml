@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="receipt_done">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="db_connection_mongo_redis_implemented">
+      <change afterPath="$PROJECT_DIR$/src/BookServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/OrderBookServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/UserServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/MainServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -313,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701283891280</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="db_connection_mongo_redis_implemented">
+      <created>1701290788366</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1701290788366</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -367,7 +374,8 @@
     <MESSAGE value="load_student_done" />
     <MESSAGE value="order_done" />
     <MESSAGE value="receipt_done" />
-    <option name="LAST_COMMIT_MESSAGE" value="receipt_done" />
+    <MESSAGE value="db_connection_mongo_redis_implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="db_connection_mongo_redis_implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
