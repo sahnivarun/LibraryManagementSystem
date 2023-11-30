@@ -69,6 +69,10 @@
                 const response = JSON.parse(xhr.responseText);
                 if (response && response.username === username) {
                     alert('Login successful!');
+                    localStorage.setItem('userID', response.userID);
+                    localStorage.setItem('username', response.username);
+                    localStorage.setItem('fullName', response.fullName);
+
                     window.location.href = 'manage.html';
                     // Redirect or perform necessary actions upon successful login
                 } else {

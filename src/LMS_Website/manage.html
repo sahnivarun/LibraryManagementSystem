@@ -68,15 +68,14 @@
             userInfo.innerText = `User ID: ${user.userID} | Username: ${user.username} | Full Name: ${user.fullName}`;
         }
 
-        // Example data to simulate user information
-        const user = {
-            userID: 123,
-            username: 'sampleUser',
-            fullName: 'John Doe'
-        };
+        // Retrieve URL parameters and set user information
+        // Retrieve user information from Local Storage
+        const userID = localStorage.getItem('userID');
+        const username = localStorage.getItem('username');
+        const fullName = localStorage.getItem('fullName');
 
-        // Call setUserInfo with the sample user data
-        setUserInfo(user);
+        // Set user information on manage.html UI
+        setUserInfo({ userID, username, fullName });
     </script>
 </body>
 </html>
