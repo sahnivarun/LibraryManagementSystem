@@ -2,7 +2,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.codehaus.jackson.map.ObjectMapper;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -27,11 +26,7 @@ public class DataServer2 {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             Connection sqlConn = null;
-            try {
-                sqlConn = DriverManager.getConnection("jdbc:sqlite:store.db");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+
             DataAdapter2 dataAdapter = new DataAdapter2(sqlConn);
             if ("GET".equals(exchange.getRequestMethod())) {
                 String requestPath = exchange.getRequestURI().getPath();
@@ -67,11 +62,7 @@ public class DataServer2 {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             Connection sqlConn = null;
-            try {
-                sqlConn = DriverManager.getConnection("jdbc:sqlite:store.db");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+
             DataAdapter2 dataAdapter = new DataAdapter2(sqlConn);
             if ("POST".equals(exchange.getRequestMethod())) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -94,11 +85,7 @@ public class DataServer2 {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             Connection sqlConn = null;
-            try {
-                sqlConn = DriverManager.getConnection("jdbc:sqlite:store.db");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+
             DataAdapter2 dataAdapter = new DataAdapter2(sqlConn);
             if ("GET".equals(exchange.getRequestMethod())) {
                 String requestPath = exchange.getRequestURI().getPath();
@@ -121,11 +108,7 @@ public class DataServer2 {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             Connection sqlConn = null;
-            try {
-                sqlConn = DriverManager.getConnection("jdbc:sqlite:store.db");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+
             DataAdapter2 dataAdapter = new DataAdapter2(sqlConn);
             if ("GET".equals(exchange.getRequestMethod())) {
                 String requestPath = exchange.getRequestURI().getPath();
@@ -151,11 +134,7 @@ public class DataServer2 {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             Connection sqlConn = null;
-            try {
-                sqlConn = DriverManager.getConnection("jdbc:sqlite:store.db");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+
             DataAdapter2 dataAdapter = new DataAdapter2(sqlConn);
             if ("POST".equals(exchange.getRequestMethod())) {
                 ObjectMapper objectMapper = new ObjectMapper();

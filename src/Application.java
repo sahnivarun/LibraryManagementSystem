@@ -1,10 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class Application {
 
-    private String url = "jdbc:sqlite:store.db";
     private static Application instance;   // Singleton pattern
 
     public static Application getInstance() {
@@ -12,13 +7,6 @@ public class Application {
             instance = new Application();
         }
         return instance;
-    }
-
-    // Main components of this application
-    private Connection connection;
-
-    public Connection getDBConnection() {
-        return connection;
     }
 
     private static RemoteDataAdapter dao;
@@ -30,22 +18,8 @@ public class Application {
     }
 
     private Application() {
-        // create SQLite database connection here!
-        try {
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection(url);
-
             dao = new RemoteDataAdapter();
             dao.connect();
-
-        } catch (ClassNotFoundException ex) {
-            System.out.println("SQLite is not installed. System exits with error!");
-            ex.printStackTrace();
-            System.exit(1);
-        } catch (SQLException ex) {
-            System.out.println("SQLite database is not ready. System exits with error!" + ex.getMessage());
-            System.exit(2);
-        }
     }
 
     public static void main(String[] args) {

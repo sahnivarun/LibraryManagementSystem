@@ -4,12 +4,10 @@ import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class OrderBookViewController extends JFrame implements ActionListener {
