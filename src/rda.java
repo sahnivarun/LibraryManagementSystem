@@ -11,11 +11,13 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 
 import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.*;
 
 import static util.PortAddresses.MAIN_SERVER_PORT;
 
-public class RemoteDataAdapter {
+public class rda {
     private static final String URL = "http://localhost:5056";
     private static final String BOOK = "/book";
     private static final String USER = "/user";
