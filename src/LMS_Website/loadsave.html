@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Load/Save Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px auto;
+            max-width: 600px;
+        }
+        .title {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .input-container {
+            margin-bottom: 15px;
+        }
+        .label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .text-input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="title">Load/Save Books</div>
+<div class="button-container">
+    <button id="btnLoad" class="button">Load Book</button>
+    <button id="btnSave" class="button">Save Book</button>
+</div>
+
+<div class="input-container">
+    <label class="label" for="bookID">Book ID:</label>
+    <input type="text" id="bookID" class="text-input" />
+</div>
+
+<div class="input-container">
+    <label class="label" for="bookName">Book Name:</label>
+    <input type="text" id="bookName" class="text-input" />
+</div>
+
+<div class="input-container">
+    <label class="label" for="authorName">Author Name:</label>
+    <input type="text" id="authorName" class="text-input" />
+</div>
+
+<div class="input-container">
+    <label class="label" for="bookQuantity">Quantity:</label>
+    <input type="text" id="bookQuantity" class="text-input" />
+</div>
+
+<div class="input-container">
+    <label class="label" for="status">Status:</label>
+    <input type="text" id="status" class="text-input" />
+</div>
+
+
+<script>
+
+    // document.getElementById('btnLoad').addEventListener('click', function() {
+    //     // Add logic to load book from BookServer
+    //     const bookID = document.getElementById('bookID').value;
+    //
+    //     // Replace 'http://your-book-server-url/book/' with the actual URL of your BookServer load endpoint
+    //     fetch(`http://localhost:5058/book/${bookID}`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             // Update the UI with the loaded book data
+    //             document.getElementById('bookName').value = data.bookName || '';
+    //             document.getElementById('authorName').value = data.authorName || '';
+    //             document.getElementById('bookQuantity').value = data.quantity || '';
+    //             document.getElementById('status').value = data.status || '';
+    //
+    //             alert('Loaded Book'); // You can remove this line if you don't want an alert
+    //         })
+    //         .catch(error => {
+    //             console.error('Error loading book:', error);
+    //         });
+    // });
+    //
+    // document.getElementById('btnSave').addEventListener('click', function() {
+    //     // Add logic to save book to BookServer
+    //     const bookID = document.getElementById('bookID').value;
+    //     const bookName = document.getElementById('bookName').value;
+    //     const authorName = document.getElementById('authorName').value;
+    //     const bookQuantity = document.getElementById('bookQuantity').value;
+    //     const status = document.getElementById('status').value;
+    //
+    //     // Create a data object to send to the server
+    //     const bookData = {
+    //         bookID: bookID,
+    //         bookName: bookName,
+    //         authorName: authorName,
+    //         bookQuantity: bookQuantity,
+    //         status: status
+    //     };
+    //
+    //     // Replace 'http://your-book-server-url/book' with the actual URL of your BookServer save endpoint
+    //     fetch('http://localhost:5058/book', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(bookData)
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             // Handle the saved book data
+    //             alert(`Saved Book: ${JSON.stringify(data)}`);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error saving book:', error);
+    //         });
+    // });
+
+    document.getElementById('btnLoad').addEventListener('click', function() {
+        const bookID = document.getElementById('bookID').value;
+
+        fetch(`http://localhost:5058/book/${bookID}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch book: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('bookName').value = data.bookName || '';
+                document.getElementById('authorName').value = data.authorName || '';
+                document.getElementById('bookQuantity').value = data.quantity || '';
+                document.getElementById('status').value = data.status || '';
+
+                alert('Loaded Book');
+            })
+            .catch(error => {
+                console.error('Error loading book:', error);
+            });
+    });
+
+    document.getElementById('btnSave').addEventListener('click', function() {
+        const bookID = document.getElementById('bookID').value;
+        const bookName = document.getElementById('bookName').value;
+        const authorName = document.getElementById('authorName').value;
+        const bookQuantity = document.getElementById('bookQuantity').value;
+        const status = document.getElementById('status').value;
+
+        const bookData = {
+            bookID: bookID,
+            bookName: bookName,
+            authorName: authorName,
+            bookQuantity: bookQuantity,
+            status: status
+        };
+
+        fetch('http://localhost:5058/book', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bookData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to save book: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(`Saved Book: ${JSON.stringify(data)}`);
+            })
+            .catch(error => {
+                console.error('Error saving book:', error);
+            });
+    });
+
+</script>
+</body>
+</html>

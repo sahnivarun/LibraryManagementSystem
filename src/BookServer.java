@@ -24,6 +24,12 @@ public class BookServer {
     static class BookHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+
+            // Set CORS headers for all requests
+            exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type");
+
             Connection conn = null;
 
             DataAdapter2 dataAdapter = new DataAdapter2(conn);
