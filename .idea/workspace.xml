@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="loadbook_done">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="loadsavebook_web_implemented">
+      <change afterPath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BookServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BookServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LMS_Website/manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/manage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,7 +379,23 @@
       <option name="project" value="LOCAL" />
       <updated>1701416694024</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="loadsavebook_web_implemented">
+      <option name="closed" value="true" />
+      <created>1701421606505</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1701421606505</updated>
+    </task>
+    <task id="LOCAL-00037" summary="loadsavebook_web_implemented">
+      <option name="closed" value="true" />
+      <created>1701421711936</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1701421711936</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -410,7 +426,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="order saving" />
     <MESSAGE value="receipt details fix" />
     <MESSAGE value="Almost completed. Minor Fixes." />
     <MESSAGE value="loadstudent raw" />
@@ -435,7 +450,8 @@
     <MESSAGE value="loadsave_web_raw" />
     <MESSAGE value="loadbook_web_working" />
     <MESSAGE value="loadbook_done" />
-    <option name="LAST_COMMIT_MESSAGE" value="loadbook_done" />
+    <MESSAGE value="loadsavebook_web_implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="loadsavebook_web_implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

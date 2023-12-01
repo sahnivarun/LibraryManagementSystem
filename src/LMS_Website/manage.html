@@ -50,16 +50,12 @@
     <script>
         // Function to handle opening OrderBookView
         document.getElementById('btnBuy').addEventListener('click', function() {
-            // You can replace this with your logic to handle OrderBookView
-            // For demonstration purposes, alerting the action
-            alert('Opening Order Book');
+            // Redirect to the order.html page
+            window.location.href = 'orderbook.html';
         });
 
         // Function to handle opening BookViewController
         document.getElementById('btnSell').addEventListener('click', function() {
-            // You can replace this with your logic to handle BookViewController
-            // For demonstration purposes, alerting the action
-            // alert('Opening Load/Save Book');
 
             // Redirect to the loadsave.html page
             window.location.href = 'loadsave.html';
@@ -68,7 +64,7 @@
         // Function to set user information
         function setUserInfo(user) {
             const userInfo = document.getElementById('userInfo');
-            userInfo.innerText = `User ID: ${user.userID} | Username: ${user.username} | Full Name: ${user.fullName}`;
+            userInfo.innerText = `Username: ${user.username} | Full Name: ${user.fullName}`;
         }
 
         // Retrieve URL parameters and set user information
