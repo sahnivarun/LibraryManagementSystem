@@ -3,7 +3,6 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import org.codehaus.jackson.map.ObjectMapper;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -53,6 +52,8 @@ public class BookServer {
             } else if ("POST".equals(exchange.getRequestMethod())) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 Book receivedBook = objectMapper.readValue(exchange.getRequestBody(), Book.class);
+                // Log the received book details
+                System.out.println("Received Book: " + receivedBook.toString());
 
                 System.out.println("Before saveBook");
                 dataAdapter.saveBook(receivedBook);

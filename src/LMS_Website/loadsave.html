@@ -125,10 +125,10 @@
         const status = document.getElementById('status').value;
 
         const bookData = {
-            bookID: bookID,
+            bookID: parseInt(bookID),  // Parse the string to an integer
             bookName: bookName,
             authorName: authorName,
-            bookQuantity: bookQuantity,
+            bookQuantity: parseInt(bookQuantity),  // Parse the string to an integer
             status: status
         };
 
