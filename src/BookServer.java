@@ -51,13 +51,14 @@ public class BookServer {
                 os.close();
             } else if ("POST".equals(exchange.getRequestMethod())) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                Book receivedBook = objectMapper.readValue(exchange.getRequestBody(), Book.class);
-                // Log the received book details
-                System.out.println("Received Book: " + receivedBook.toString());
 
-                System.out.println("Before saveBook");
+//                // Log the raw JSON request
+//                String rawJsonRequest = new String(exchange.getRequestBody().readAllBytes());
+//                System.out.println("Received JSON Request: " + rawJsonRequest);
+
+                Book receivedBook = objectMapper.readValue(exchange.getRequestBody(), Book.class);
+
                 dataAdapter.saveBook(receivedBook);
-                System.out.println("After saveBook");
 
                 String jsonResponse = objectToJson(receivedBook);
                 exchange.getResponseHeaders().set("Content-Type", "application/json");
