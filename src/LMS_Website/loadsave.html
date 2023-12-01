@@ -85,29 +85,6 @@
 
 <script>
 
-    // document.getElementById('btnLoad').addEventListener('click', function() {
-    //     const bookID = document.getElementById('bookID').value;
-    //
-    //     fetch(`http://localhost:5058/book/${bookID}`)
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error(`Failed to fetch book: ${response.statusText}`);
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             document.getElementById('bookName').value = data.bookName || '';
-    //             document.getElementById('authorName').value = data.authorName || '';
-    //             document.getElementById('bookQuantity').value = data.quantity || '';
-    //             document.getElementById('status').value = data.status || '';
-    //
-    //             alert('Loaded Book');
-    //         })
-    //         .catch(error => {
-    //             console.error('Error loading book:', error);
-    //         });
-    // });
-
     document.getElementById('btnLoad').addEventListener('click', function() {
         const bookID = document.getElementById('bookID').value;
 

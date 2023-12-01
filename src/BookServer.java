@@ -30,6 +30,11 @@ public class BookServer {
             exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type");
 
+            if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(200, -1); // preflight request successful
+                return;
+            }
+
             Connection conn = null;
 
             DataAdapter2 dataAdapter = new DataAdapter2(conn);
@@ -49,7 +54,9 @@ public class BookServer {
                 ObjectMapper objectMapper = new ObjectMapper();
                 Book receivedBook = objectMapper.readValue(exchange.getRequestBody(), Book.class);
 
+                System.out.println("Before saveBook");
                 dataAdapter.saveBook(receivedBook);
+                System.out.println("After saveBook");
 
                 String jsonResponse = objectToJson(receivedBook);
                 exchange.getResponseHeaders().set("Content-Type", "application/json");
