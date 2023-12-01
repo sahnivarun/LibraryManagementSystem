@@ -85,62 +85,6 @@
 
 <script>
 
-    // document.getElementById('btnLoad').addEventListener('click', function() {
-    //     // Add logic to load book from BookServer
-    //     const bookID = document.getElementById('bookID').value;
-    //
-    //     // Replace 'http://your-book-server-url/book/' with the actual URL of your BookServer load endpoint
-    //     fetch(`http://localhost:5058/book/${bookID}`)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             // Update the UI with the loaded book data
-    //             document.getElementById('bookName').value = data.bookName || '';
-    //             document.getElementById('authorName').value = data.authorName || '';
-    //             document.getElementById('bookQuantity').value = data.quantity || '';
-    //             document.getElementById('status').value = data.status || '';
-    //
-    //             alert('Loaded Book'); // You can remove this line if you don't want an alert
-    //         })
-    //         .catch(error => {
-    //             console.error('Error loading book:', error);
-    //         });
-    // });
-    //
-    // document.getElementById('btnSave').addEventListener('click', function() {
-    //     // Add logic to save book to BookServer
-    //     const bookID = document.getElementById('bookID').value;
-    //     const bookName = document.getElementById('bookName').value;
-    //     const authorName = document.getElementById('authorName').value;
-    //     const bookQuantity = document.getElementById('bookQuantity').value;
-    //     const status = document.getElementById('status').value;
-    //
-    //     // Create a data object to send to the server
-    //     const bookData = {
-    //         bookID: bookID,
-    //         bookName: bookName,
-    //         authorName: authorName,
-    //         bookQuantity: bookQuantity,
-    //         status: status
-    //     };
-    //
-    //     // Replace 'http://your-book-server-url/book' with the actual URL of your BookServer save endpoint
-    //     fetch('http://localhost:5058/book', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(bookData)
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             // Handle the saved book data
-    //             alert(`Saved Book: ${JSON.stringify(data)}`);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error saving book:', error);
-    //         });
-    // });
-
     document.getElementById('btnLoad').addEventListener('click', function() {
         const bookID = document.getElementById('bookID').value;
 
