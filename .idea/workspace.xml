@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="loadsavebook_web_implemented">
-      <change afterPath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" afterDir="false" />
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="addbook_to_order_implemented">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LMS_Website/manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -395,7 +394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701421711936</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="addbook_to_order_implemented">
+      <option name="closed" value="true" />
+      <created>1701423783912</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1701423783912</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -426,7 +433,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="receipt details fix" />
     <MESSAGE value="Almost completed. Minor Fixes." />
     <MESSAGE value="loadstudent raw" />
     <MESSAGE value="loadstudent raw2" />
@@ -451,7 +457,8 @@
     <MESSAGE value="loadbook_web_working" />
     <MESSAGE value="loadbook_done" />
     <MESSAGE value="loadsavebook_web_implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="loadsavebook_web_implemented" />
+    <MESSAGE value="addbook_to_order_implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="addbook_to_order_implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
