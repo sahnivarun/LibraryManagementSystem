@@ -262,32 +262,30 @@
         // const bookID = document.getElementById('bookID').value;
         // const quantity = document.getElementById('quantity').value;
         // const bookName = window.currentBookName;
-
         const randomReceiptID = Math.floor(Math.random() * 1000) + 1;
+
 
         // Get all rows of the order table
         const orderTable = document.getElementById('orderTable');
         const rows = orderTable.getElementsByTagName('tr');
 
         // Create an array to store book details
-        const books = [];
+        const booksArray = [];
 
-        // Iterate through each row in the table, starting from the second row (skipping the header row)
         for (let i = 1; i < rows.length; i++) {
             const cells = rows[i].getElementsByTagName('td');
-            //const bookID = cells[0].textContent;
             const bookName = cells[1].textContent;
-            //const authorName = cells[2].textContent;
-            //const orderDate = cells[3].textContent;
-            //const returnDate = cells[4].textContent;
             const quantity = cells[5].textContent;
 
             // Create a string for each book line
             const bookLine = `${bookName} x ${quantity}`;
 
-            // Push the book line details to the books array
-            books.push(bookLine);
+            // Push the book line details to the booksArray
+            booksArray.push(bookLine);
         }
+
+        // Combine all book details into a comma-separated string
+        const booksString = booksArray.join(', ');
 
         // Get the current date and time in the specified format
         const currentDate = new Date();
@@ -296,11 +294,11 @@
         // Create receiptDetailsDB object in the specified format
         const receiptDetailsDB = {
             receiptNumber:0,
-            orderID: 0,
+            orderId: 0,
             dateTime: formattedDate,
             student: studentName,
             studentID: studentID,
-            books: books.join(', '), // Concatenate all book lines into a comma-separated string
+            books: booksString,
         };
 
         // Use Fetch API to send a POST request to save the receiptDetailsDB to the server
@@ -320,10 +318,9 @@
             });
 
         // Display receipt details in an alert
-        const receiptInfo = `Receipt Number: ${receiptDetailsDB.ReceiptID}\nStudent Details: ${JSON.stringify(receiptDetailsDB.student)}\nBooks: ${JSON.stringify(receiptDetailsDB.books)}\nDate and Time: ${receiptDetailsDB.dateTime}`;
+        const receiptInfo = `Receipt Number: ${randomReceiptID}\nStudent Details: ${JSON.stringify(receiptDetailsDB.student)}\nBooks: ${JSON.stringify(receiptDetailsDB.books)}\nDate and Time: ${receiptDetailsDB.dateTime}`;
         alert(receiptInfo);
     }
-
 
     // Attach event listeners to buttons
     document.getElementById('addBookBtn').addEventListener('click', addBook);
