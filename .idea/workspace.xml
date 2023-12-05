@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="desktop application validations complete">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="website application validation part 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LMS_Website/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -441,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701802098434</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="website application validation part 1">
+      <option name="closed" value="true" />
+      <created>1701806324717</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1701806324717</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -472,7 +480,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="post book done" />
     <MESSAGE value="post book done part 2" />
     <MESSAGE value="post book done part 3 for varun" />
     <MESSAGE value="rest api complete" />
@@ -497,7 +504,8 @@
     <MESSAGE value="order website completed" />
     <MESSAGE value="receipt added" />
     <MESSAGE value="desktop application validations complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="desktop application validations complete" />
+    <MESSAGE value="website application validation part 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="website application validation part 1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
