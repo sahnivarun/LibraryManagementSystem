@@ -159,6 +159,7 @@ public class RemoteDataAdapter {
 
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode receiptNode = objectMapper.valueToTree(receipt);
+        System.out.println("receiptNode is: "+receiptNode);
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = objectMapper.writeValueAsBytes(receiptNode);
             os.write(input);

@@ -22,12 +22,12 @@
     </style>
 </head>
 <body>
-<h1>Book Order View</h1>
+<h1>Order Book View</h1>
 
-<h4>1) Load Student ID. <br>
-    2) Enter the Book ID and the quantity needed and add the book. <br>
-    3) Save the book order.<br>
-    4) Generate receipt. <br>
+<h4>1) Enter Book ID and Quantity --> Click on "Add a new book" button. <br>
+    2) Enter the Student ID --> Click on "Load Student" button. <br>
+    3) Save the book order --> Click on "Save Book Order" button.<br>
+    4) Generate receipt --> Click on Generate Receipt button. <br>
     <br>
 </h4>
 
@@ -259,33 +259,68 @@
         const studentName = window.currentStudentName;
         const emailID = window.currentStudentEmail;
         const studentNumber = window.currentStudentNumber;
-        const bookID = document.getElementById('bookID').value;
-        const quantity = document.getElementById('quantity').value;
-        const bookName = window.currentBookName;
+        // const bookID = document.getElementById('bookID').value;
+        // const quantity = document.getElementById('quantity').value;
+        // const bookName = window.currentBookName;
 
         const randomReceiptID = Math.floor(Math.random() * 1000) + 1;
 
-        // Other logic to create receiptDetails
-        const receiptDetails = {
-            ReceiptID: randomReceiptID,
-            student: {
-                studentID: studentID,
-                studentName: studentName,
-                emailID: emailID,
-                studentNumber: studentNumber,
-            },
-            books: [
-                {
-                    bookID: bookID,
-                    bookName: bookName,
-                    quantity: quantity,
-                }
-            ],
-            dateTime: new Date().toLocaleString(), // Current date and time
+        // Get all rows of the order table
+        const orderTable = document.getElementById('orderTable');
+        const rows = orderTable.getElementsByTagName('tr');
+
+        // Create an array to store book details
+        const books = [];
+
+        // Iterate through each row in the table, starting from the second row (skipping the header row)
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            //const bookID = cells[0].textContent;
+            const bookName = cells[1].textContent;
+            //const authorName = cells[2].textContent;
+            //const orderDate = cells[3].textContent;
+            //const returnDate = cells[4].textContent;
+            const quantity = cells[5].textContent;
+
+            // Create a string for each book line
+            const bookLine = `${bookName} x ${quantity}`;
+
+            // Push the book line details to the books array
+            books.push(bookLine);
+        }
+
+        // Get the current date and time in the specified format
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`;
+
+        // Create receiptDetailsDB object in the specified format
+        const receiptDetailsDB = {
+            receiptNumber:0,
+            orderID: 0,
+            dateTime: formattedDate,
+            student: studentName,
+            studentID: studentID,
+            books: books.join(', '), // Concatenate all book lines into a comma-separated string
         };
 
+        // Use Fetch API to send a POST request to save the receiptDetailsDB to the server
+        fetch('http://localhost:5059/receipt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(receiptDetailsDB),
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Receipt details saved:', result);
+            })
+            .catch(error => {
+                console.error('Error saving receipt details:', error);
+            });
+
         // Display receipt details in an alert
-        const receiptInfo = `Order Number: ${receiptDetails.orderID}\nStudent Details: ${JSON.stringify(receiptDetails.student)}\nBooks: ${JSON.stringify(receiptDetails.books)}\nDate and Time: ${receiptDetails.dateTime}`;
+        const receiptInfo = `Receipt Number: ${receiptDetailsDB.ReceiptID}\nStudent Details: ${JSON.stringify(receiptDetailsDB.student)}\nBooks: ${JSON.stringify(receiptDetailsDB.books)}\nDate and Time: ${receiptDetailsDB.dateTime}`;
         alert(receiptInfo);
     }
 
