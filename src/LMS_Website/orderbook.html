@@ -263,9 +263,11 @@
         const quantity = document.getElementById('quantity').value;
         const bookName = window.currentBookName;
 
+        const randomReceiptID = Math.floor(Math.random() * 1000) + 1;
+
         // Other logic to create receiptDetails
         const receiptDetails = {
-            orderID: 0, // Add your order ID logic here
+            ReceiptID: randomReceiptID,
             student: {
                 studentID: studentID,
                 studentName: studentName,
@@ -278,7 +280,6 @@
                     bookName: bookName,
                     quantity: quantity,
                 }
-                // You can add more book details if needed
             ],
             dateTime: new Date().toLocaleString(), // Current date and time
         };
