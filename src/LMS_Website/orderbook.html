@@ -59,6 +59,7 @@
 <div>
     <button id="addBookBtn">Add a new book</button>
     <button id="orderBookBtn">Save book order</button>
+    <button id="generateReceiptBtn">Generate Receipt</button>
 </div>
 
 <script>
@@ -232,17 +233,49 @@
             });
     }
 
+    function generateReceipt() {
+        const studentID = document.getElementById('studentID').value;
+        const studentName = window.currentStudentName;
+        const emailID = window.currentStudentEmail;
+        const studentNumber = window.currentStudentNumber;
+        const bookID = document.getElementById('bookID').value;
+        const quantity = document.getElementById('quantity').value;
+        const bookName = window.currentBookName;
+
+        // Other logic to create receiptDetails
+        const receiptDetails = {
+            orderID: 0, // Add your order ID logic here
+            student: {
+                studentID: studentID,
+                studentName: studentName,
+                emailID: emailID,
+                studentNumber: studentNumber,
+            },
+            books: [
+                {
+                    bookID: bookID,
+                    bookName: bookName,
+                    quantity: quantity,
+                }
+                // You can add more book details if needed
+            ],
+            dateTime: new Date().toLocaleString(), // Current date and time
+        };
+
+        // Display receipt details in an alert
+        const receiptInfo = `Order Number: ${receiptDetails.orderID}\nStudent Details: ${JSON.stringify(receiptDetails.student)}\nBooks: ${JSON.stringify(receiptDetails.books)}\nDate and Time: ${receiptDetails.dateTime}`;
+        alert(receiptInfo);
+    }
+
 
     // Attach event listeners to buttons
     document.getElementById('addBookBtn').addEventListener('click', addBook);
     document.getElementById('orderBookBtn').addEventListener('click', saveBookOrder);
-
     // Attach event listener to the "Load Student" button
     document.getElementById('loadStudentBtn').addEventListener('click', loadStudentDetails);
-
+    document.getElementById('generateReceiptBtn').addEventListener('click', generateReceipt);
     // Function to redirect to main.html
     document.getElementById('backToMainBtn').addEventListener('click', function() {
-        // Redirect to the main.html page
         window.location.href = 'manage.html';
     });
 
