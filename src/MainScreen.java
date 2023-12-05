@@ -69,7 +69,7 @@ public class MainScreen extends JFrame {
 
     public void setUserInfo(User user) {
         // Display userID, username, and fullName in the label
-        lblUserInfo.setText("User ID: " + user.getUserID() + "    |    Username: " + user.getUsername() + "    |    Full Name: " + user.getFullName());
+        lblUserInfo.setText("Username: " + user.getUsername() + "    |    Full Name: " + user.getFullName());
     }
 
 }

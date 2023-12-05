@@ -55,6 +55,7 @@
 <div class="button-container">
     <button id="btnLoad" class="button">Load Book</button>
     <button id="btnSave" class="button">Save Book</button>
+    <button id="btnBack" class="button">Back to Main Page</button>
 </div>
 
 <div class="input-container">
@@ -154,6 +155,10 @@
             });
     });
 
+    document.getElementById('btnBack').addEventListener('click', function() {
+        // Redirect to the manage.html page
+        window.location.href = 'manage.html';
+    });
 </script>
 </body>
 </html>
