@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="receipt added">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="desktop application validations complete">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +81,7 @@
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Application">
+  <component name="RunManager" selected="Application.OrderBookServer">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Application" />
       <module name="StoreApp" />
@@ -110,10 +112,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Application" />
         <item itemvalue="Application.OrderBookServer" />
         <item itemvalue="Application.BookServer" />
         <item itemvalue="Application.UserServer" />
+        <item itemvalue="Application.Application" />
       </list>
     </recent_temporary>
   </component>
@@ -431,7 +433,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701763687498</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="desktop application validations complete">
+      <option name="closed" value="true" />
+      <created>1701802098434</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1701802098434</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -462,7 +472,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="error debug server" />
     <MESSAGE value="post book done" />
     <MESSAGE value="post book done part 2" />
     <MESSAGE value="post book done part 3 for varun" />
@@ -487,14 +496,15 @@
     <MESSAGE value="back button added" />
     <MESSAGE value="order website completed" />
     <MESSAGE value="receipt added" />
-    <option name="LAST_COMMIT_MESSAGE" value="receipt added" />
+    <MESSAGE value="desktop application validations complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="desktop application validations complete" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/OrderBookViewController.java</url>
-          <line>324</line>
+          <line>326</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -513,29 +523,9 @@
           <option name="timeStamp" value="111" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/OrderBookServer.java</url>
-          <line>42</line>
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/RemoteDataAdapter.java</url>
           <line>106</line>
           <option name="timeStamp" value="114" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/OrderBookServer.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="117" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/OrderBookServer.java</url>
-          <line>44</line>
-          <option name="timeStamp" value="118" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/LMS_Website/login.html</url>
-          <line>50</line>
-          <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/DataAdapter2.java</url>

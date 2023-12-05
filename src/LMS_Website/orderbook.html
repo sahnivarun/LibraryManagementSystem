@@ -67,6 +67,12 @@
     function loadStudentDetails() {
         const studentID = document.getElementById('studentID').value;
 
+        // Validate studentID input
+        if (parseInt(studentID) > 10 || isNaN(parseInt(studentID)) || parseInt(studentID) <= 0) {
+            alert('Student ID should be a number between 1 and 10.');
+            return;
+        }
+
         // Use Fetch API to load student details from server
         fetch(`http://localhost:5059/student/${studentID}`, {
             method: 'GET',
@@ -78,7 +84,8 @@
             .then(student => {
                 // Display student details on the page
                 const studentDetails = `Student Name: ${student.studentName}\nEmail ID: ${student.emailID}\nStudent Number: ${student.studentNumber}`;
-                alert(studentDetails); // Display in alert (you can modify this to display in specific areas)
+                alert(studentDetails); // Display in alert
+
                 // Store student name in a variable accessible for saving book order
                 window.currentStudentName = student.studentName;
                 window.currentStudentEmail = student.emailID;
@@ -94,6 +101,12 @@
     function addBook() {
         const bookID = document.getElementById('bookID').value;
         const quantity = document.getElementById('quantity').value;
+
+        // Validate quantity
+        if (parseInt(quantity) <= 0 || isNaN(parseInt(quantity))) {
+            alert('Quantity should be a number greater than 0.');
+            return;
+        }
 
         // Use Fetch API to get book information from server
         fetch(`http://localhost:5058/book/${bookID}`, {
@@ -142,6 +155,7 @@
                 window.currentBookName = data.bookName;
             })
             .catch((error) => {
+                alert('Please enter a valid bookID.');
                 console.error('Error:', error);
             });
     }
