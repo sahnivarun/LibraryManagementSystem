@@ -223,7 +223,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
         studentPanel.setLayout(new GridLayout(0, 2));
 
         JLabel lblInfo = new JLabel("Existing student IDs exist from: ");
-        JLabel lblInfo2 = new JLabel("1 - 40");
+        JLabel lblInfo2 = new JLabel("1 - 10");
         Font boldFont = new Font(lblInfo.getFont().getFontName(), Font.BOLD, lblInfo.getFont().getSize());
         lblInfo.setFont(boldFont);
         lblInfo2.setFont(boldFont);
@@ -266,6 +266,8 @@ public class OrderBookViewController extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int studentID = Integer.parseInt(txtStudentID.getText());
+                if(studentID > 10)
+                    JOptionPane.showMessageDialog(null, "This student ID does not exist in our records. Please enter correct student ID from 1-10.");
 
                 // Attempt to load student details
                 Student student = null;
