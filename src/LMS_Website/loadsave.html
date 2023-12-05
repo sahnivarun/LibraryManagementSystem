@@ -130,6 +130,12 @@
         const quantity = document.getElementById('bookQuantity').value;
         const status = document.getElementById('status').value;
 
+        if (parseInt(bookID) <= 0 || isNaN(parseInt(bookID))) {
+            // Display alert if bookID is 0 or negative or not a number
+            alert('Please enter a valid Book ID greater than 0.');
+            return;
+        }
+
         // Validation for empty bookName or authorName fields
         if (bookName.trim() === '' || authorName.trim() === '') {
             alert('Please enter non empty Book Name and Author Name.');
