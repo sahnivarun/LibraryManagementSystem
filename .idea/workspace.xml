@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="addbook_to_order_implemented">
+    <list default="true" id="348af481-df8e-48c4-91b2-e459dc9a2b64" name="Changes" comment="back button added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/loadsave.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MainScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/LMS_Website/orderbook.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OrderBookServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OrderBookViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OrderBookViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RemoteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RemoteDataAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -409,7 +412,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701423783912</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="back button added">
+      <option name="closed" value="true" />
+      <created>1701747127169</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1701747127169</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -440,7 +451,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Almost completed. Minor Fixes." />
     <MESSAGE value="loadstudent raw" />
     <MESSAGE value="loadstudent raw2" />
     <MESSAGE value="error debug server" />
@@ -465,7 +475,8 @@
     <MESSAGE value="loadbook_done" />
     <MESSAGE value="loadsavebook_web_implemented" />
     <MESSAGE value="addbook_to_order_implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="addbook_to_order_implemented" />
+    <MESSAGE value="back button added" />
+    <option name="LAST_COMMIT_MESSAGE" value="back button added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -481,14 +492,34 @@
           <option name="timeStamp" value="77" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/BookServer.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="84" />
+          <url>file://$PROJECT_DIR$/src/OrderBookViewController.java</url>
+          <line>267</line>
+          <option name="timeStamp" value="110" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/BookServer.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="95" />
+          <url>file://$PROJECT_DIR$/src/OrderBookViewController.java</url>
+          <line>234</line>
+          <option name="timeStamp" value="111" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/OrderBookServer.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="113" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/RemoteDataAdapter.java</url>
+          <line>106</line>
+          <option name="timeStamp" value="114" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/OrderBookServer.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="117" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/OrderBookServer.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/LMS_Website/login.html</url>
@@ -498,7 +529,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/DataAdapter2.java</url>
           <line>251</line>
-          <properties class="DataAdapter2">
+          <properties class="DataAdapter2" method="loadUser">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>

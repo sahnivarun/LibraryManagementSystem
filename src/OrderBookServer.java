@@ -24,12 +24,25 @@ public class OrderBookServer {
     static class OrderHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+
+            // Set CORS headers for all requests
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:20000");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
+
+            if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(200, -1); // preflight request successful
+                return;
+            }
+
             Connection conn = null;
 
             DataAdapter2 dataAdapter = new DataAdapter2(conn);
             if ("POST".equals(exchange.getRequestMethod())) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 OrderBook receivedOrder = objectMapper.readValue(exchange.getRequestBody(), OrderBook.class);
+                System.out.println("received order is:" +receivedOrder);
                 dataAdapter.saveOrderBook(receivedOrder);
 
                 String jsonResponse = objectToJson(receivedOrder);
@@ -47,6 +60,18 @@ public class OrderBookServer {
     static class StudentHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+
+            // Set CORS headers for all requests
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:20000");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
+
+            if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(200, -1); // preflight request successful
+                return;
+            }
+
             Connection conn = null;
 
             DataAdapter2 dataAdapter = new DataAdapter2(conn);
@@ -73,6 +98,17 @@ public class OrderBookServer {
     static class ReceiptHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:20000");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Credentials", "true");
+
+            if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(200, -1); // preflight request successful
+                return;
+            }
+
             Connection conn = null;
 
             DataAdapter2 dataAdapter = new DataAdapter2(conn);

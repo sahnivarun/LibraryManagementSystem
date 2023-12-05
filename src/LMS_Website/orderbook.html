@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Book View</title>
     <style>
-        /* Add your CSS styles here */
         table {
             border-collapse: collapse;
             width: 100%;
@@ -35,6 +34,11 @@
 <label for="studentID">Student ID:</label>
 <input type="text" id="studentID">
 
+<!-- "Load Student" button -->
+<button id="loadStudentBtn">Load Student</button>
+
+<button id="backToMainBtn">Back to Main Page</button>
+
 
 <table id="orderTable">
     <thead>
@@ -59,8 +63,34 @@
 
 <script>
 
+    function loadStudentDetails() {
+        const studentID = document.getElementById('studentID').value;
+
+        // Use Fetch API to load student details from server
+        fetch(`http://localhost:5059/student/${studentID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(student => {
+                // Display student details on the page
+                const studentDetails = `Student Name: ${student.studentName}\nEmail ID: ${student.emailID}\nStudent Number: ${student.studentNumber}`;
+                alert(studentDetails); // Display in alert (you can modify this to display in specific areas)
+                // Store student name in a variable accessible for saving book order
+                window.currentStudentName = student.studentName;
+                window.currentStudentEmail = student.emailID;
+                window.currentStudentNumber = student.studentNumber;
+
+            })
+            .catch(error => {
+                console.error('Error fetching student details:', error);
+                alert('Error fetching student details. Please try again.');
+            });
+    }
+
     function addBook() {
-        // Replace '1' with the desired book ID or obtain it dynamically
         const bookID = document.getElementById('bookID').value;
         const quantity = document.getElementById('quantity').value;
 
@@ -101,13 +131,14 @@
                     data.bookID,
                     data.bookName,
                     data.authorName,
-                    formattedCurrentDate, // Current date
-                    formattedFutureDate, // Date 60 days from now
+                    formattedCurrentDate,
+                    formattedFutureDate,
                     quantity,
                 ];
 
                 // Add the new row to the table
                 addRow(newRow);
+                window.currentBookName = data.bookName;
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -124,52 +155,80 @@
         });
     }
 
-
-
-    // Example JavaScript function to save book order
     function saveBookOrder() {
-        // Get studentID from the input field
+        // Get necessary values from the input fields
         const studentID = document.getElementById('studentID').value;
+        const studentName = window.currentStudentName;
+        const emailID = window.currentStudentEmail;
+        const studentNumber = window.currentStudentNumber
+        const bookID = document.getElementById('bookID').value;
+        const quantity = document.getElementById('quantity').value;
+        const bookName = window.currentBookName;
 
-        // Use Fetch API to load student details from server
-        fetch(`http://localhost:5059/student/${studentID}`, {
-            method: 'GET',
+        if (!studentName) {
+            alert('Please load student details first.');
+            return;
+        }
+
+        const currentDate = new Date();
+        const formattedCurrentDate = currentDate.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        });
+
+        // Calculate the date 60 days from now
+        const futureDate = new Date();
+        futureDate.setDate(currentDate.getDate() + 60);
+        const formattedFutureDate = futureDate.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        });
+
+        // Prepare orderDetails
+        const orderDetails = {
+            orderID: 0,
+            studentID: studentID,
+            orderDate: formattedCurrentDate,
+            returnDate: formattedFutureDate,
+            student: {
+                studentID: studentID,
+                studentName: studentName,
+                emailID: emailID,
+                studentNumber: studentNumber,
+            },
+            lines: [
+                {
+                    orderID: 0,
+                    bookID: bookID,
+                    quantity: quantity,
+                    bookName: bookName,
+                }
+            ]
+        };
+
+        // Use Fetch API to send a POST request to save the book order
+        fetch('http://localhost:5059/order', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify(orderDetails),
         })
             .then(response => response.json())
-            .then(student => {
-
-                // Display student details in an alert
-                const alertMessage = `Student Name: ${student.studentName}\nEmail ID: ${student.emailID}\nStudent Number: ${student.studentNumber}`;
-                alert(alertMessage);
-
-                // After loading student details, proceed to save the book order
-                const orderDetails = {
-                    studentID: student.studentID,
-                    // Include other necessary order details
-                };
-
-                // Use Fetch API to send a POST request to save the book order
-                fetch('http://localhost:5059/order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(orderDetails),
-                })
-                    .then(response => response.json())
-                    .then(order => {
-                        // Handle the response after saving the book order
-                        console.log('Book order saved:', order);
-                    })
-                    .catch(error => {
-                        console.error('Error saving book order:', error);
-                    });
+            .then(order => {
+                // Handle the response after saving the book order
+                console.log('Book order saved:', order);
             })
             .catch(error => {
-                console.error('Error loading student details:', error);
+                console.error('Error saving book order:', error);
             });
     }
 
@@ -177,6 +236,16 @@
     // Attach event listeners to buttons
     document.getElementById('addBookBtn').addEventListener('click', addBook);
     document.getElementById('orderBookBtn').addEventListener('click', saveBookOrder);
+
+    // Attach event listener to the "Load Student" button
+    document.getElementById('loadStudentBtn').addEventListener('click', loadStudentDetails);
+
+    // Function to redirect to main.html
+    document.getElementById('backToMainBtn').addEventListener('click', function() {
+        // Redirect to the main.html page
+        window.location.href = 'manage.html';
+    });
+
 </script>
 </body>
 </html>

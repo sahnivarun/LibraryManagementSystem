@@ -105,6 +105,7 @@ public class RemoteDataAdapter {
 
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode orderNode = objectMapper.valueToTree(order);
+        System.out.println("orderNode is: "+orderNode);
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = objectMapper.writeValueAsBytes(orderNode);
             os.write(input);
@@ -138,6 +139,7 @@ public class RemoteDataAdapter {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             JsonNode responseJson = objectMapper.readTree(connection.getInputStream());
+            System.out.println("student json is:" + responseJson);
             student = objectMapper.readValue(responseJson, Student.class);
             System.out.println("Response from GET Student request:");
             System.out.println("Receiving a Student object");

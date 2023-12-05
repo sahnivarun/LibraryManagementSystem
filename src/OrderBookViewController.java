@@ -121,7 +121,7 @@ public class OrderBookViewController extends JFrame implements ActionListener {
                 }
             }
 
-            // Create a new Receipt instance and set its properties
+            //Create a new Receipt instance and set its properties
             Receipt receipt = new Receipt();
             receipt.setOrderId(orderBook.getOrderID());
 
